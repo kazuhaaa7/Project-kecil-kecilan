@@ -5,7 +5,8 @@ import tabulate
 import os
 from fitur.fituradmin import view_reports, atur_harga_jasa, crud_customers
 from fitur.admin.change import ubah_password, change_username, ubahPw, ubahUser
-from fitur.operator.crudop import add_customer, search_farmers
+from fitur.operator.crudop import add_customer, search_farmers, input_transaction
+from fitur.operator.reportop import laporan_hari_ini,laporan_transaksi, riwayat_laporan, laporan_transaksi_customer 
 
 
 # registrasi dulu
@@ -182,11 +183,12 @@ def operator_menu(username):
     os.system('cls')
     while True:
         print(f"\nLogin berhasil sebagai OPERATOR! Selamat datang, {username}")
-        print("[1]. Input Transaksi Penggilingan")
-        print("[2]. Cari Petani")
-        print("[3]. Lihat Riwayat Transaksi")
-        print("[4]. Ubah Password")
-        print("[5]. Ubah Username")
+        print("[1]. Tambah Pelanggan (Petani)")
+        print("[2]. Transaksi")
+        print("[3]. Cari Petani")
+        print("[4]. Lihat Riwayat Transaksi")
+        print("[5]. Ubah Password")
+        print("[6]. Ubah Username")
         print("[0]. Logout")
         
         choice = input("\nPilih menu: ")
@@ -194,17 +196,19 @@ def operator_menu(username):
         if choice == "1":
             add_customer()
         elif choice == "2":
+            input_transaction(username)
+        elif choice == "3":
             search_farmers()
-        # elif choice == "3":
-            # view_transaction_history()
         elif choice == "4":
+            laporan_transaksi()
+        elif choice == "5":
             new_password = ubahPw(username)
             if new_password:
                 # Logout after username change
                 print("\nAnda akan logout untuk login ulang dengan username baru.")
                 input("Tekan Enter untuk melanjutkan...")
                 break
-        elif choice == "5":
+        elif choice == "6":
             new_username = ubahUser(username)
             if new_username:
                 # Logout after username change
@@ -228,7 +232,7 @@ while True:
     print("[2]. LOGIN AKUN")
     print("[0]. KELUAR")
 
-    piliihan = input("\nMenu yang dipilih: ")
+    piliihan = input("\nMenu yang dipilih: (pilih angka) ")
     os.system('cls')
     if piliihan == '1':
         os.system('cls')
@@ -237,9 +241,9 @@ while True:
             print("PILIHAN MENU | REGISTRASI ".center(50))
             print("=" * 50 + "\n")
             
-            print("1. SEBAGAI ADMIN")
-            print("2. SEBAGAI OPERATOR")
-            print("0. Kembali")
+            print("[1]. SEBAGAI ADMIN")
+            print("[2]. SEBAGAI OPERATOR")
+            print("[0]. Kembali")
             subchoice = input("\n REGISTRASI SEBAGAI (pilih angka): ")
             if subchoice == '1':
                 registrasi_admin()
@@ -271,8 +275,6 @@ while True:
             else:
                 print("Pilihan tidak valid!")
                 input("Tekan Enter untuk melanjutkan...")
-
-
 
     elif piliihan == "0" :
         os.system('cls')

@@ -14,11 +14,11 @@ def crud_customers():
     os.system('cls')
     while True:
         print("MANAJEMEN DATA PELANGGAN (PETANI)")
-        print("1. Lihat Semua Pelanggan")
-        print("2. Cari Pelanggan")
-        print("3. Edit Pelanggan")
-        print("4. Hapus Pelanggan")
-        print("0. Kembali")
+        print("[1]. Lihat Semua Pelanggan")
+        print("[2]. Cari Pelanggan")
+        print("[3]. Edit Pelanggan")
+        print("[4]. Hapus Pelanggan")
+        print("[0]. Kembali")
         
         choice = input("\nPilih menu: ")
         
@@ -103,17 +103,16 @@ def crud_customers():
 #     # Get current price
 
 def atur_harga_jasa():
-    """Atur atau perbarui harga jasa per kg dan simpan ke CSV"""
     os.system('cls' if os.name == 'nt' else 'clear')
     print("=" * 50)
     print("ATUR HARGA JASA PER KG".center(50))
     print("=" * 50)
 
-    file_path = "harga_jasa.csv"
+    file_path = "data_harga.csv"
 
     # Pastikan file CSV ada
     if not os.path.exists(file_path):
-        df = pd.DataFrame(columns=["Harga_per_Kg", "Tanggal_Ditetapkan"])
+        df = pd.DataFrame(columns=["price_per_kg", "effective_date"])
         df.to_csv(file_path, index=False)
 
     # Baca data CSV
@@ -121,8 +120,8 @@ def atur_harga_jasa():
 
     # Tampilkan harga terakhir jika ada
     if not df.empty:
-        last_price = df.iloc[-1]["Harga_per_Kg"]
-        last_date = df.iloc[-1]["Tanggal_Ditetapkan"]
+        last_price = df.iloc[-1]["price_per_kg"]
+        last_date = df.iloc[-1]["effective_date"]
         print(f"\nHarga saat ini: Rp{int(last_price):,}/kg (ditetapkan pada {last_date})".replace(",", "."))
     else:
         print("\n Belum ada harga jasa yang ditetapkan.")
@@ -150,8 +149,8 @@ def atur_harga_jasa():
 
     # Simpan ke CSV
     new_data = {
-        "Harga_per_Kg": new_price,
-        "Tanggal_Ditetapkan": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        "price_per_kg": new_price,
+        "effective_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
     df = pd.concat([df, pd.DataFrame([new_data])], ignore_index=True)
     df.to_csv(file_path, index=False)
@@ -160,7 +159,7 @@ def atur_harga_jasa():
     input("\nTekan Enter untuk melanjutkan...")
 
 
-    
+
 
 # ============================= FITUR ADMIN 3 ===================
 def view_reports():
