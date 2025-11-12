@@ -3,139 +3,279 @@ import pandas as pd
 import time
 import tabulate
 import os
-from fitur.fituradmin import crud_customers, 
-
+from fitur.fituradmin import view_reports, atur_harga_jasa, crud_customers
+from fitur.admin.change import ubah_password, change_username, ubahPw, ubahUser
+from fitur.operator.crudop import add_customer, search_farmers
 
 
 # registrasi dulu
-def registrasi():
+def registrasi_admin():
     os.system('cls')
-    print("=== REGISTER ADMIN ===")
+    print("=" * 50)
+    print("REGISTER AKUN".center(50))
+    print("=" * 50 + "\n")
 
-    ussername = input("Buat Ussername: ").strip()
-    password = input("Buat Password (min 8 karakter): ").strip()
+
+    username = input("Masukkan Username: ").strip()
+    password = input("Masukkan Password (min 8 karakter): ").strip()
 
     # Validasi password
     if len(password) < 8:
-        print("⚠ Password minimal 8 karakter!")
-        time.sleep(2)
+        print("Password minimal 8 karakter!")
         return
         
 
     # Jika file belum ada, buat file baru
     if not os.path.exists('data_admin.csv'):
-        df = pd.DataFrame(columns=['Ussername', 'Password'])
+        df = pd.DataFrame(columns=['Username', 'Password'])
         df.to_csv('data_admin.csv', index=False)
 
     # Cek apakah username sudah ada
     df = pd.read_csv('data_admin.csv')
-    if ussername in df['Ussername'].values:
-        print("⚠ Ussername sudah terpakai! Gunakan yang lain.")
-        time.sleep(2)
+    if username in df['Username'].values:
+        print("Username sudah terpakai! Gunakan yang lain.")
         return
 
     # Simpan data baru
-    new_data = pd.DataFrame([[ussername, password]], columns=['Ussername', 'Password'])
+    new_data = pd.DataFrame([[username, password]], columns=['Username', 'Password'])
     df = pd.concat([df, new_data], ignore_index=True)
     df.to_csv('data_admin.csv', index=False)
 
-    print("✅ Registrasi berhasil! Silakan login...")
-    time.sleep(2)
+    print("Registrasi berhasil! Silakan login...")
+
+
+def registrasi_operator():
+    os.system('cls')
+    print("=" * 50)
+    print("REGISTER AKUN".center(50))
+    print("=" * 50 + "\n")
+
+
+    username = input("Masukkan Username: ").strip()
+    password = input("Masukkan Password (min 8 karakter): ").strip()
+
+    # Validasi password
+    if len(password) < 8:
+        print("Password minimal 8 karakter!")
+        return
+        
+
+    # Jika file belum ada, buat file baru
+    if not os.path.exists('dt_operator.csv'):
+        df = pd.DataFrame(columns=['Username', 'Password'])
+        df.to_csv('operator.csv', index=False)
+
+    # Cek apakah username sudah ada
+    df = pd.read_csv('dt_operator.csv')
+    if username in df['Username'].values:
+        print("Username sudah terpakai! Gunakan yang lain.")
+        return
+
+    # Simpan data baru
+    new_data = pd.DataFrame([[username, password]], columns=['Username', 'Password'])
+    df = pd.concat([df, new_data], ignore_index=True)
+    df.to_csv('dt_operator.csv', index=False)
+
+    print("Registrasi berhasil! Silakan login...")
 
 # fungsi login
-def login():
+def login(role):
     os.system('cls')
-    print("LOGIN SISTEM PENGGILINGAN PADI")
+    print("=" * 50)
+    print("SISTEM PENGGGILINGAN PADI".center(50))
+    print("=" * 50 + "\n")
+
     
     # Cek apakah file admin ada
     if not os.path.exists('data_admin.csv'):
-        print("⚠ File data_admin.csv tidak ditemukan!")
+        print("File data_admin.csv tidak ditemukan!")
         df = pd.DataFrame(columns=['Username', 'Password'])
         df.to_csv('data_admin.csv', index=False)
         print("Silakan buat akun admin terlebih dahulu.")
         input("Tekan Enter...")
         return
+    
+    if not os.path.exists('dt_operator.csv'):
+        print("File data_operator.csv tidak ditemukan!")
+        df = pd.DataFrame(columns=['Username', 'Password'])
+        df.to_csv('dt_operator.csv', index=False)
+        print("Silakan buat akun admin terlebih dahulu.")
+        input("Tekan Enter...")
+        return
     # baca file
-    df = pd.read_csv('data_admin.csv')
+    df_admin = pd.read_csv('data_admin.csv')
+    df_operator = pd.read_csv('dt_operator.csv')
 
-    ussername = input("Ussername: ").strip()
+    username = input("Username: ").strip()
     password = input("Password: ").strip()
     if len(password) < 8 :
-        print("Sedang di proses ya...")
-        time.sleep(1.1)
-        print("⚠ Password harus minimal 8 karakter!")
+        print("Password harus minimal 8 karakter!")
         return  
     
 # Cek username & password di CSV
-    user_exists = df[(df['Ussername'] == ussername) & (df['Password'] == password)]
+# Dalam pandas, kamu tidak bisa memakai and, or, atau not langsung.
+# Kamu harus pakai &, |, dan ~, serta setiap kondisi harus dalam tanda kurung ( ).
+    user_exists_admin = df_admin[(df_admin['Username'] == username) & (df_admin['Password'] == password)]
+    user_exists_operator = df_operator[(df_operator['Username'] == username) & (df_operator['Password'] == password)]
 
-    if not user_exists.empty:
-        print(f"\n✅ Login berhasil! Selamat datang, {ussername}")
-        time.sleep(1.5)
-        admin_menu(ussername)
+    if not user_exists_admin.empty :
+        time.sleep(1)
+        admin_menu(username)
+    elif not user_exists_operator.empty:
+        time.sleep(1)
+        operator_menu(username)
     else:
-        print("\n❌ Ussername atau password salah!")
-        time.sleep(2)
-
+        print("\nUssername atau password salah!")
+        return
     # df= pd.DataFrame({'Ussername' : [ussername], 'Password' : [password]})
     # df = pd.concat([df, pd.DataFrame([{'Ussername' : ussername, 'Password': password}])], ignore_index=True)
     # df = df.to_csv('data_admin.csv', index=False)
     # print("DATA ADMIN SUDAH DITAMBAHKAN")
 
 
-def admin_menu(ussername):
-    os.system('cls')
+def admin_menu(username):
     while True:
-        print("MENU ADMIN")
-        print(f"Selamat datang, {ussername}!")
-        print()
-        print("1. Manajemen Data Pelanggan (Petani)")
-        print("2. Atur Harga Jasa per kg")
-        print("3. Lihat Laporan Penggilingan")
-        print("4. Ubah Password")
-        print("5. Ubah Username")
-        print("0. Logout")
+        os.system('cls')
+        print("=" * 50)
+        print("MENU ADMIN".center(50))
+        print("=" * 50 + "\n")
+
+        # print(f"Selamat datang, {username}!\n")
+        print(f"\nLogin berhasil sebagai ADMIN! Selamat datang, {username}")
+        print("[1]. Manajemen Data Pelanggan (Petani)")
+        print("[2]. Atur Harga Jasa per kg")
+        print("[3]. Lihat Laporan Penggilingan ")
+        print("[4]. Ubah Password")
+        print("[5]. Ubah Username")
+        print("[0]. Logout")
         
         choice = input("\nPilih menu: ")
         
         if choice == "1":
             crud_customers()
         elif choice == "2":
-            set_price()
-        # elif choice == "3":
-            # view_reports()
-        # elif choice == "4":
-            # change_password(username)
-        # elif choice == "5":
-            # new_username = change_username(username)
-            # if new_username:
+            atur_harga_jasa()
+        elif choice == "3":
+            view_reports()
+        elif choice == "4":
+            new_password =  ubah_password(username)
+            if new_password:
                 # Logout after username change
-                # print("\nAnda akan logout untuk login ulang dengan username baru.")
-                # time.sleep(3)
-                # input("Tekan Enter untuk melanjutkan...")
-                # break
+                print("\nAnda akan logout untuk login ulang dengan username baru.")
+                input("Tekan Enter untuk melanjutkan...")
+                return
+        elif choice == "5":
+            new_username = change_username(username)
+            if new_username:
+                # Logout after username change
+                print("\nAnda akan logout untuk login ulang dengan username baru.")
+                input("Tekan Enter untuk melanjutkan...")
+                return
         elif choice == "0":
             break
         else:
-            time.sleep(3)
             print("Pilihan tidak valid!")
             input("Tekan Enter untuk melanjutkan...")
 
-            
+def operator_menu(username):
+    """Operator menu"""
+    os.system('cls')
+    while True:
+        print(f"\nLogin berhasil sebagai OPERATOR! Selamat datang, {username}")
+        print("[1]. Input Transaksi Penggilingan")
+        print("[2]. Cari Petani")
+        print("[3]. Lihat Riwayat Transaksi")
+        print("[4]. Ubah Password")
+        print("[5]. Ubah Username")
+        print("[0]. Logout")
+        
+        choice = input("\nPilih menu: ")
+        
+        if choice == "1":
+            add_customer()
+        elif choice == "2":
+            search_farmers()
+        # elif choice == "3":
+            # view_transaction_history()
+        elif choice == "4":
+            new_password = ubahPw(username)
+            if new_password:
+                # Logout after username change
+                print("\nAnda akan logout untuk login ulang dengan username baru.")
+                input("Tekan Enter untuk melanjutkan...")
+                break
+        elif choice == "5":
+            new_username = ubahUser(username)
+            if new_username:
+                # Logout after username change
+                print("\nAnda akan logout untuk login ulang dengan username baru.")
+                input("Tekan Enter untuk melanjutkan...")
+                break
+        elif choice == "0":
+            break
+        else:
+            print("Pilihan tidak valid!")
+            input("Tekan Enter untuk melanjutkan...")
+
+# ========================Home Page
 while True:
     os.system('cls')
-    print("pilih menu")
-    print("1. regist akun")
-    print("2. login akun")
-    print("0. keluar")
+    print("=" * 50)
+    print("PILIHAN MENU".center(50))
+    print("=" * 50 + "\n")
 
-    piliihan = input("\nmenu yg dipilih: ")
+    print("[1]. REGISTRASI AKUN")
+    print("[2]. LOGIN AKUN")
+    print("[0]. KELUAR")
+
+    piliihan = input("\nMenu yang dipilih: ")
+    os.system('cls')
     if piliihan == '1':
-        registrasi()
+        os.system('cls')
+        while True:
+            print("=" * 50)
+            print("PILIHAN MENU | REGISTRASI ".center(50))
+            print("=" * 50 + "\n")
+            
+            print("1. SEBAGAI ADMIN")
+            print("2. SEBAGAI OPERATOR")
+            print("0. Kembali")
+            subchoice = input("\n REGISTRASI SEBAGAI (pilih angka): ")
+            if subchoice == '1':
+                registrasi_admin()
+            elif subchoice == '2':
+                registrasi_operator()
+            elif subchoice == '0':
+                break
+            else:
+                print("Pilihan tidak valid!")
+                input("Tekan Enter untuk melanjutkan...")
     elif piliihan == '2':
-        login()
+        os.system('cls')
+        while True:
+            print("=" * 50)
+            print("PILIHAN MENU | LOGIN".center(50))
+            print("=" * 50 + "\n")
+            
+            print("1. SEBAGAI ADMIN")
+            print("2. SEBAGAI OPERATOR")
+            print("0. Kembali")
+            subchoice = input("\n LOGIN SEBAGAI (pilih angka): ")
+            if subchoice == '1':
+                login("admin") #role
+            elif subchoice == '2':
+                login("operator") #role
+            elif subchoice == '0':
+                os.system('cls')
+                break
+            else:
+                print("Pilihan tidak valid!")
+                input("Tekan Enter untuk melanjutkan...")
+
+
 
     elif piliihan == "0" :
+        os.system('cls')
         break
     else: 
         print("Pilihan tidak valid!")
@@ -144,42 +284,7 @@ while True:
 
 
 
-# def operator_menu(username: str):
-#     """Operator menu"""
-#     while True:
-#         clear_screen()
-#         print_header("MENU OPERATOR")
-#         print(f"Selamat datang, {username}!")
-#         print()
-#         print("1. Input Transaksi Penggilingan")
-#         print("2. Cari Petani")
-#         print("3. Lihat Riwayat Transaksi")
-#         print("4. Ubah Password")
-#         print("5. Ubah Username")
-#         print("0. Logout")
-        
-#         choice = input("\nPilih menu: ")
-        
-#         if choice == "1":
-#             input_transaction(username)
-#         elif choice == "2":
-#             search_farmers()
-#         elif choice == "3":
-#             view_transaction_history()
-#         elif choice == "4":
-#             change_password(username)
-#         elif choice == "5":
-#             new_username = change_username(username)
-#             if new_username:
-#                 # Logout after username change
-#                 print("\nAnda akan logout untuk login ulang dengan username baru.")
-#                 input("Tekan Enter untuk melanjutkan...")
-#                 break
-#         elif choice == "0":
-#             break
-#         else:
-#             print("Pilihan tidak valid!")
-#             input("Tekan Enter untuk melanjutkan...")
+
 
 # def main():
 #     """Main application function"""

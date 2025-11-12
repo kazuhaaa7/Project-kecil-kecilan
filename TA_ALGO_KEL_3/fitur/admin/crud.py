@@ -3,63 +3,71 @@ import pandas as pd
 import time
 from tabulate import tabulate
 
+file_path = os.path.join(os.path.dirname(__file__), "data_admin.csv")
+
 data_customer = 'data_customer.csv'
 
 # =========================FITUR 1=============================
-def add_customer():
-    """Add new customer"""
-    os.system('cls')
-    print("TAMBAH PELANGGAN BARU")
-
-# jika file blm ada, buat file baru
-    if not os.path.exists(data_customer):
-        with open(data_customer, mode="w", newline="", encoding="utf-8") as file:
-            writer = csv.writer(file)
-            writer.writerow(["ID", "Nama_Petani", "No_Telp", "Alamat"])  # <-- header kolom
+# def add_customer():
+#     """Add new customer"""
+#     os.system('cls')
+#     print("=" * 50)
+#     print("TAMBAH PELANGGAN BARU".center(50))
+#     print("=" * 50 + "\n")
 
 
+# # jika file blm ada, buat file baru
+#     if not os.path.exists(data_customer):
+#         with open(data_customer, mode="w", newline="", encoding="utf-8") as file:
+#             writer = csv.writer(file)
+#             writer.writerow(["ID", "Nama_Petani", "No_Telp", "Alamat"])  # <-- header kolom
 
-    name = input("Nama Petani: ").strip()
-    if not name:
-        print("Nama tidak boleh kosong!")
-        input("Tekan Enter untuk melanjutkan...")
-        return
+
+
+#     name = input("Nama Petani: ").strip().upper()
+#     if not name:
+#         print("Nama tidak boleh kosong!")
+#         input("Tekan Enter untuk melanjutkan...")
+#         return
     
-    try:
-        phone = int(input("No. Telepon (opsional): "))
-    except ValueError:
-        print("Sedang di proses ya...")
-        time.sleep(3)
-        print("Masukkan nomor telp dnegan angka ya :<")
-        return
-    address = input("Alamat (opsional): ").strip()
+#     try:
+#         phone = int(input("Masukkan No. Telepon : "))
+#     except ValueError:
+#         print("Sedang di proses ya...")
+#         time.sleep(3)
+#         print("Masukkan nomor telp dnegan angka ya :<")
+#         return
+#     address = input("Masukkan Alamat Lengkap : ").strip().lower()
     
-# cari id cus
-    # if os.path.exists(data_customer):
-    customer_id = 1
-    try:
-        with open("data_customer.csv", mode="r", encoding="utf-8") as file:
-            read = list(csv.reader(file))
-        if len(read) >= 1:
-            last_id = int(read[-1][0]) #pahami syntax
-            customer_id = last_id + 1
-    except:
-            pass
+# # cari id cus
+#     # if os.path.exists(data_customer):
+#     customer_id = 1
+#     try:
+#         with open("data_customer.csv", mode="r", encoding="utf-8") as file:
+#             read = list(csv.reader(file))
+#         if len(read) >= 1:
+#             last_id = int(read[-1][0]) #pahami syntax
+#             customer_id = last_id + 1
+#     except:
+#             pass
 
 
-    # sv ke csv
-    with open(data_customer, mode='a', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        writer.writerow([customer_id, name, phone, address])
+#     # sv ke csv
+#     with open(data_customer, mode='a', newline='', encoding='utf-8') as file:
+#         writer = csv.writer(file)
+#         writer.writerow([customer_id, name, phone, address])
     
     
-    print(f"\n✅ Pelanggan '{name}' berhasil ditambahkan! (ID: {customer_id})")
-    input("\nEnter untuk lanjut...")
+#     print(f"\nPelanggan '{name}' berhasil ditambahkan! (ID: {customer_id})")
+#     input("\nEnter untuk lanjut...")
 
 # =======================FITUR 2===============================
 def view_all_customers():
     os.system('cls')
-    print("DAFTAR SEMUA PELANGGAN")
+    print("=" * 50)
+    print("DAFTAR SEMUA PELANGGAN".center(50))
+    print("=" * 50 + "\n")
+
     if not os.path.exists(data_customer):
         print(" Belum ada data pelanggan.")
         input("\nTekan Enter untuk melanjutkan...")
@@ -83,7 +91,10 @@ def view_all_customers():
 def search_customer():
     """Search customer by name or phone"""
     os.system('cls')
-    print("CARI PELANGGAN")
+    print("=" * 50)
+    print("CARI PELANGGAN".center(50))
+    print("=" * 50 + "\n")
+
 
     
 
@@ -102,7 +113,7 @@ def search_customer():
         print(f"Terjadi kesalahan saat membaca data: {e}")
 
 
-    keyword = input("Masukkan nama atau nomor telepon: ").strip()
+    keyword = input("Cari berdasarkan nama: ").strip().upper()
     
     if not keyword:
         print("Keyword tidak boleh kosong!")
@@ -120,24 +131,26 @@ def search_customer():
 # tampilkan hasil pencarian
     if not hasil.empty:
         os.system('cls')
-        print("\n✅ Hasil pencarian ditemukan:\n")
-        headers = ['ID','Nama_Petani','No_Telp','Alamat']
-        print(tabulate(hasil, headers=headers, tablefmt="fancy_grid", showindex=False))
+        print("\n Hasil pencarian ditemukan:\n")
+        print(tabulate(hasil, headers='keys', tablefmt="fancy_grid", showindex=False))
         input("Tekan Enter untuk melanjutkan...")
         return
     
     else:
-        print("\n❌ Tidak ada data yang cocok dengan keyword tersebut.")
+        print("\nTidak ada data yang cocok dengan keyword tersebut.")
 
 # =======================FITUR 4===============================
 def edit_customer():
     """Edit customer information"""
     os.system('cls')
-    print("EDIT PELANGGAN")
+    print("=" * 50)
+    print("EDIT PELANGGAN".center(50))
+    print("=" * 50 + "\n")
+
 
         # pastikan file ada
     if not os.path.exists(data_customer):
-        print("❌ Belum ada data pelanggan.")
+        print("Belum ada data pelanggan.")
         input("\nTekan Enter untuk melanjutkan...")
         return
     
@@ -145,7 +158,7 @@ def edit_customer():
         df= pd.read_csv(data_customer)
 
         if df.empty:
-            print("❌ Data pelanggan masih kosong.")
+            print("Data pelanggan masih kosong.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         headers = ['ID','Nama_Petani','No_Telp','Alamat']
@@ -155,14 +168,14 @@ def edit_customer():
         try:
             customer_id = int(input("Masukkan ID Pelanggan yang ingin diedit: "))
         except ValueError:
-            print("⚠️ ID harus berupa angka!")
+            print("ID harus berupa angka!")
             input("\nTekan Enter untuk melanjutkan...")
             return
 
 
         # cek apakah ID ada
         if customer_id not in df['ID'].values:
-            print("❌ Pelanggan dengan ID tersebut tidak ditemukan!")
+            print("Pelanggan dengan ID tersebut tidak ditemukan!")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
@@ -178,14 +191,21 @@ def edit_customer():
     
 
     # input data baru
-        name = input(f"Nama baru (Enter untuk tidak mengubah): ").strip()
+        name = input(f"Nama baru (Enter untuk tidak mengubah): ").strip().upper()
         try:
-            phone = int(input(f"Telepon baru (Enter untuk tidak mengubah): ")).strip()
+            phone = input(f"Telepon baru (Enter untuk tidak mengubah): ")
+            if phone: 
+                if phone.isdigit() :
+                    df.loc[df['ID'] == customer_id, 'No_Telp'] = phone
+                else: 
+                    print("Masukkan nomor dengan angka!")
+                    return
         except:
-            print("Masukkan nomor telp dengan angka!!")
-            time.sleep(1.5)
-            return
-        address = input(f"Alamat baru (Enter untuk tidak mengubah): ").strip()
+            print("Bagian penginputan nomor ada masalah")
+
+            
+
+        address = input(f"Alamat baru (Enter untuk tidak mengubah): ").strip().lower()
     
         if name:
             df.loc[df['ID'] == customer_id, 'Nama_Petani'] = name
@@ -199,7 +219,7 @@ def edit_customer():
 
 
         print(f"\n✓ Data pelanggan berhasil diupdate!")
-        print(f"\n✅ Data pelanggan ID {customer_id} berhasil diperbarui!")
+        print(f"\nData pelanggan ID {customer_id} berhasil diperbarui!")
     
     except:
         print("Terjadi kesalahan: ")
@@ -211,7 +231,10 @@ def edit_customer():
 def delete_customer():
     """Delete customer"""
     os.system('cls')
-    print("HAPUS PELANGGAN")
+    print("=" * 50)
+    print("HAPUS PELANGGAN".center(50))
+    print("=" * 50 + "\n")
+
     data_customer = 'data_customer.csv'
 
     if not os.path.exists(data_customer):
@@ -222,7 +245,7 @@ def delete_customer():
 
         # Pastikan file ada
     if not os.path.exists(data_customer):
-        print("❌ Belum ada data pelanggan.")
+        print("Belum ada data pelanggan.")
         input("\nTekan Enter untuk melanjutkan...")
         return
 
@@ -230,7 +253,7 @@ def delete_customer():
         df = pd.read_csv('data_customer.csv')
   
         if df.empty:
-            print("❌ Data pelanggan masih kosong.")
+            print("Data pelanggan masih kosong.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
@@ -238,12 +261,12 @@ def delete_customer():
         customer_id = input("Masukkan ID Pelanggan yang akan dihapus: ")
     
         if not customer_id:
-            print("❌ ID tidak boleh kosong!")
+            print("ID tidak boleh kosong!")
             input("\nTekan Enter untuk melanjutkan...")
             return
     
         if customer_id not in df['ID'].astype(str).values:
-            print("❌ Pelanggan dengan ID tersebut tidak ditemukan.")
+            print("Pelanggan dengan ID tersebut tidak ditemukan.")
             input("\nTekan Enter untuk melanjutkan...")
             return
     
@@ -256,11 +279,11 @@ def delete_customer():
             # Optional: perbarui kolom ID agar urut kembali
             df['ID'] = range(1, len(df) + 1)
             df.to_csv(data_customer, index=False)  
-            print("✓ Pelanggan berhasil dihapus!")
+            print("Pelanggan berhasil dihapus!")
         else:
             print("Penghapusan dibatalkan.")
 
     except Exception as e:
-        print(f"⚠️ Terjadi kesalahan: {e}")
+        print(f"Terjadi kesalahan: {e}")
 
     input("Tekan Enter untuk melanjutkan...")
