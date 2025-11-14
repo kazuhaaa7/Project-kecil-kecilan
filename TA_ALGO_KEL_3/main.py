@@ -6,7 +6,7 @@ import os
 from fitur.fituradmin import view_reports, atur_harga_jasa, crud_customers
 from fitur.admin.change import ubah_password, change_username, ubahPw, ubahUser
 from fitur.operator.crudop import add_customer, search_farmers, input_transaction
-from fitur.operator.reportop import laporan_hari_ini,laporan_transaksi, riwayat_laporan, laporan_transaksi_customer 
+# from fitur.operator.reportop import laporan_hari_ini,laporan_transaksi, riwayat_laporan, laporan_transaksi_customer 
 
 
 # registrasi dulu
@@ -107,19 +107,20 @@ def login(role):
     df_admin = pd.read_csv('data_admin.csv')
     df_operator = pd.read_csv('dt_operator.csv')
 
-    username = input("Username: ").strip()
-    password = input("Password: ").strip()
+    username = input("Username: ")
+    password = input("Password: ")
     if len(password) < 8 :
         print("Password harus minimal 8 karakter!")
+        input()
         return  
     
 # Cek username & password di CSV
 # Dalam pandas, kamu tidak bisa memakai and, or, atau not langsung.
 # Kamu harus pakai &, |, dan ~, serta setiap kondisi harus dalam tanda kurung ( ).
-    user_exists_admin = df_admin[(df_admin['Username'] == username) & (df_admin['Password'] == password)]
-    user_exists_operator = df_operator[(df_operator['Username'] == username) & (df_operator['Password'] == password)]
+    user_exists_admin = df_admin[(df_admin['Username'] == username) & (df_admin['Password'] == password)].astype(str)
+    user_exists_operator = df_operator[(df_operator['Username'] == username) & (df_operator['Password'] == password)].astype(str)
 
-    if not user_exists_admin.empty :
+    if not user_exists_admin.empty :##
         time.sleep(1)
         admin_menu(username)
     elif not user_exists_operator.empty:
@@ -164,7 +165,7 @@ def admin_menu(username):
                 # Logout after username change
                 print("\nAnda akan logout untuk login ulang dengan username baru.")
                 input("Tekan Enter untuk melanjutkan...")
-                return
+                return 
         elif choice == "5":
             new_username = change_username(username)
             if new_username:
@@ -199,8 +200,8 @@ def operator_menu(username):
             input_transaction(username)
         elif choice == "3":
             search_farmers()
-        elif choice == "4":
-            laporan_transaksi()
+        # elif choice == "4":
+        #     laporan_transaksi()
         elif choice == "5":
             new_password = ubahPw(username)
             if new_password:

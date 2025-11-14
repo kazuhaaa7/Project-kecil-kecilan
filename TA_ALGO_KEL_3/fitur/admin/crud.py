@@ -60,8 +60,7 @@ data_customer = 'data_customer.csv'
     
 #     print(f"\nPelanggan '{name}' berhasil ditambahkan! (ID: {customer_id})")
 #     input("\nEnter untuk lanjut...")
-
-# =======================FITUR 2===============================
+ =======================FITUR 2===============================
 def view_all_customers():
     os.system('cls')
     print("=" * 50)
@@ -70,7 +69,8 @@ def view_all_customers():
 
     if not os.path.exists(data_customer):
         print(" Belum ada data pelanggan.")
-        input("\nTekan Enter untuk melanjutkan...")
+        input("
+#\nTekan Enter untuk melanjutkan...")
         return
 
     try:
@@ -194,12 +194,11 @@ def edit_customer():
         name = input(f"Nama baru (Enter untuk tidak mengubah): ").strip().upper()
         try:
             phone = input(f"Telepon baru (Enter untuk tidak mengubah): ")
-            if phone: 
-                if phone.isdigit() :
-                    df.loc[df['ID'] == customer_id, 'No_Telp'] = phone
-                else: 
-                    print("Masukkan nomor dengan angka!")
-                    return
+            if phone.isdigit() :
+                df.loc[df['ID'] == customer_id, 'No_Telp'] = phone
+            else: 
+                print("Masukkan nomor dengan angka!")
+                return
         except:
             print("Bagian penginputan nomor ada masalah")
 

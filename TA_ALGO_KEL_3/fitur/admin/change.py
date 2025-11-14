@@ -18,7 +18,7 @@ def ubah_password(password): #pahami dan ubah syntax sepaham kmu
     if not os.path.exists('data_admin.csv'):
         print("File data_admin.csv belum ditemukan!")
         input("\nTekan Enter untuk melanjutkan...")
-        return password
+        return 
 
     # Baca file CSV
     df = pd.read_csv('data_admin.csv')
@@ -27,7 +27,7 @@ def ubah_password(password): #pahami dan ubah syntax sepaham kmu
     if not {'Username', 'Password'}.issubset(df.columns):
         print("File CSV tidak memiliki kolom 'username' atau 'password'.")
         input("\nTekan Enter untuk melanjutkan...")
-        return password
+        return 
     
     print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
     
@@ -39,7 +39,7 @@ def ubah_password(password): #pahami dan ubah syntax sepaham kmu
     if user_row.empty:
         print("Username tidak ditemukan!")
         input("\nTekan Enter untuk melanjutkan...")
-        return username
+        return 
 
     # Verifikasi password
     if username != user_row.iloc[0]['Username']:
@@ -52,11 +52,12 @@ def ubah_password(password): #pahami dan ubah syntax sepaham kmu
     if not new_password:
         print("Password baru tidak boleh kosong!")
         input("\nTekan Enter untuk melanjutkan...")
-        return
+        return 
     
     if len(new_password) < 8:
         print("masukkan Minimal 8 karakter") 
-        return
+        input("aa")
+        return 
 
     if new_password == password:
         print("Username baru sama dengan yang lama.")

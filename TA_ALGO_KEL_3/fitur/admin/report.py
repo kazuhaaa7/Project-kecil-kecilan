@@ -8,7 +8,6 @@ file_path = os.path.join(os.path.dirname(__file__), "data_admin.csv")
 
 #  Laporan harian
 def view_daily_report():
-    """Menampilkan laporan transaksi harian (berdasarkan CSV)"""
     os.system('cls')  # Bersihkan layar terminal
     print("=" * 50)
     print("LAPORAN HARIAN".center(50))
@@ -94,14 +93,14 @@ def view_monthly_report():
         month_str = datetime.now().strftime("%m-%Y")
 
     # Pastikan file ada
-    if not os.path.exists("data/transactions.csv") or not os.path.exists("data/customers.csv"):
+    if not os.path.exists("data_transactions.csv") or not os.path.exists("data_customers.csv"):
         print("File data transaksi atau pelanggan tidak ditemukan!")
         input("\nTekan Enter untuk melanjutkan...")
         return
 
     # Baca data
-    df_trans = pd.read_csv("data/transactions.csv")
-    df_cust = pd.read_csv("data/customers.csv")
+    df_trans = pd.read_csv("data_transactions.csv")
+    df_cust = pd.read_csv("data_customers.csv")
 
     # Gabungkan transaksi dengan nama pelanggan
     df = df_trans.merge(df_cust, left_on="customer_id", right_on="id", suffixes=("_t", "_c"))
@@ -147,14 +146,14 @@ def view_all_transactions():
         return f"Rp{amount:,.0f}".replace(",", ".")
 
     # Pastikan file ada
-    if not os.path.exists("data/transactions.csv") or not os.path.exists("data/customers.csv"):
+    if not os.path.exists("data_transactions.csv") or not os.path.exists("data_customers.csv"):
         print("File data transaksi atau pelanggan tidak ditemukan!")
         input("\nTekan Enter untuk melanjutkan...")
         return
 
     # Baca data
-    df_trans = pd.read_csv("data/transactions.csv")
-    df_cust = pd.read_csv("data/customers.csv")
+    df_trans = pd.read_csv("data_transactions.csv")
+    df_cust = pd.read_csv("data_customers.csv")
 
     # Gabungkan transaksi dan pelanggan
     df = df_trans.merge(df_cust, left_on="customer_id", right_on="id", suffixes=("_t", "_c"))
