@@ -7,9 +7,11 @@ from datetime import datetime
 
 FILE_ADMIN = 'data_admin.csv'
 FILE_OPERATOR = 'data_operator.csv'
-FILE_HARGA = 'data_harga.csv'
+FILE_HARGA = 'dt_harga.csv'
 FILE_PELANGGAN = 'data_pelanggan.csv'
 FILE_TRANSAKSI = 'data_trasaksi.csv'
+
+# sinkronkan kata katanya ketika error dari kedua fungsi login
 # ================================================ CEK DATA ======================================================
 def cekData():
     if not os.path.exists(FILE_ADMIN):  
@@ -19,7 +21,7 @@ def cekData():
         user = pd.DataFrame(columns=['username', 'password']) 
         user.to_csv(FILE_OPERATOR, index=False) 
     if not os.path.exists(FILE_HARGA):  
-        user = pd.DataFrame(columns=['harga/kg', 'tanggal','dibuat']) 
+        user = pd.DataFrame(columns=['harga/kg','tglDibuat']) 
         user.to_csv(FILE_HARGA, index=False) 
     if not os.path.exists(FILE_PELANGGAN):  
         user = pd.DataFrame(columns=['id', 'namaPetani','noTelp', 'alamat']) 
@@ -28,12 +30,6 @@ def cekData():
         user = pd.DataFrame(columns=['no', 'berat','harga/kg', 'total', 'tanggal']) 
         user.to_csv(FILE_TRANSAKSI, index=False) 
 
-    # if not os.path.exists(folder_admin):
-    #     os.makedirs(folder_admin)
-    # if not os.path.exists(folder_toko):
-    #     os.makedirs(folder_toko)
-    # if not os.path.exists(folder_pembeli):
-    #     os.makedirs(folder_pembeli)
 # ================================================ REGIS AS ADMIN ======================================================
 def regisAdmin():
     os.system('cls')
@@ -62,7 +58,7 @@ def regisAdmin():
 
     # kondisi 2
     while True:
-        password = input("Masukkan Password: ").strip()
+        password = input("Masukkan Password: "). strip()
         break
     # Jika file belum ada, buat file baru
     if not os.path.exists(FILE_ADMIN):
@@ -99,7 +95,7 @@ def regisOperator():
     # kondisi 1
     while True:
         username = input("Masukkan Username: ").strip()
-        if len(username) <= 3:
+        if len(username) < 2:
             print('Username harus berisi minimal 3 karakter!')
         else:
             break
@@ -249,13 +245,22 @@ def loginOperator():
 
 # ==================================MENU FITUR ADMIN===========================================
 # ==================================MENU FITUR ADMIN - CRUD===========================================
-# =========================FITUR 1=============================
+# =========================FITUR 1 -- FITUR ADMIN=============================
 def tambahDataPelanggan():
-    """Add new customer"""
     os.system('cls')
-    print("=" * 50)
-    print("TAMBAH PELANGGAN BARU".center(50))
-    print("=" * 50 + "\n")
+    teks = """
+
+    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+    ╚█████╗░██║██████╔╝███████║██║░░██║██║
+    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+    """
+    print(teks)
+    print('╔' + '═'*48 + '╗')
+    print('║' + "TAMBAH PELANGGAN BARU".center(48) + '║')
+    print('╚' + '═'*48 + '╝') 
 
 
 # jika file blm ada, buat file baru
@@ -264,7 +269,7 @@ def tambahDataPelanggan():
         input("\nTekan Enter untuk melanjutkan...")
 
     df = pd.read_csv(FILE_PELANGGAN)
-        # writer.writerow(["ID", "Nama_Petani", "No_Telp", "Alamat"])  # <-- header kolom
+    # writer.writerow(["ID", "Nama_Petani", "No_Telp", "Alamat"])  # <-- header kolom
 
 
     name = input("Nama Petani: ").strip().upper()
@@ -274,11 +279,11 @@ def tambahDataPelanggan():
         return
     
     try:
-        phone = int(input("Masukkan No. Telepon : "))
+        phone = int(input("Masukkan No. Telepon (awali dengan 62): "))
     except ValueError:
-        print("Sedang di proses ya...")
-        time.sleep(3)
         print("Masukkan nomor telp dnegan angka ya :<")
+        print("Porgram akan kembali ke menu dalam 3 detik dari sekarang")
+        time.sleep(3)
         return
     address = input("Masukkan Alamat Lengkap : ").strip().lower()
     
@@ -307,12 +312,23 @@ def tambahDataPelanggan():
     
     print(f"\nPelanggan '{name}' berhasil ditambahkan! (ID: {customer_id})")
     input("\nEnter untuk lanjut...")
-# =======================FITUR 2===============================
+# =======================FITUR 2 -- FITUR ADMIN===============================\
+# ADA BUG YG PERLU DIFIX
 def lihatData():
     os.system('cls')
-    print("=" * 50)
-    print("DAFTAR SEMUA PELANGGAN".center(50))
-    print("=" * 50 + "\n")
+    teks = """
+
+    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+    ╚█████╗░██║██████╔╝███████║██║░░██║██║
+    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+    """
+    print(teks)
+    print('╔' + '═'*48 + '╗')
+    print('║' + "DAFTAR PELANGGAN".center(48) + '║')
+    print('╚' + '═'*48 + '╝') 
 
     if not os.path.exists(FILE_PELANGGAN):
         print(" Belum ada data pelanggan.")
@@ -326,19 +342,32 @@ def lihatData():
             print(" Data pelanggan masih kosong.")
             input("\nTekan Enter untuk melanjutkan...")
             return
+        # ubah type data
+        df['noTelp'] = df['noTelp'].astype(str)
         print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
         input("\nTekan Enter untuk melanjutkan...")
     except Exception as e:
         print(f"Terjadi kesalahan saat membaca data: {e}")
+        time.sleep(2)
+        return
 
 
-# =======================FITUR 3===============================
+# =======================FITUR 3 -- FITUR ADMIN===============================
 def cariPelanggan():
-    """Search customer by name or phone"""
     os.system('cls')
-    print("=" * 50)
-    print("CARI PELANGGAN".center(50))
-    print("=" * 50 + "\n")
+    teks = """
+
+    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+    ╚█████╗░██║██████╔╝███████║██║░░██║██║
+    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+    """
+    print(teks)
+    print('╔' + '═'*48 + '╗')
+    print('║' + "CARI PELANGGAN".center(48) + '║')
+    print('╚' + '═'*48 + '╝') 
 
 # tampilkan tabel customer
     try:
@@ -362,7 +391,7 @@ def cariPelanggan():
     # lakukan pencarian
     df = df.astype(str)
     hasil = df[
-            df['Nama_Petani'].str.contains(keyword, case=False)]
+            df['namaPetani'].str.contains(keyword, case=False)]
 # tampilkan hasil pencarian
     if not hasil.empty:
         os.system('cls')
@@ -374,14 +403,22 @@ def cariPelanggan():
     else:
         print("\nTidak ada data yang cocok dengan keyword tersebut.")
 
-# =======================FITUR 4===============================
+# =======================FITUR 4 -- FITUR ADMIN===============================
 def editDataPelanggan():
-    """Edit customer information"""
     os.system('cls')
-    print("=" * 50)
-    print("EDIT PELANGGAN".center(50))
-    print("=" * 50 + "\n")
+    teks = """
 
+    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+    ╚█████╗░██║██████╔╝███████║██║░░██║██║
+    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+    """
+    print(teks)
+    print('╔' + '═'*48 + '╗')
+    print('║' + "EDIT DATA PELANGGAN".center(48) + '║')
+    print('╚' + '═'*48 + '╝') 
 
         # pastikan file ada
     if not os.path.exists(FILE_PELANGGAN):
@@ -390,7 +427,7 @@ def editDataPelanggan():
         return
     
 
-    df= pd.read_csv(FILE_PELANGGAN)
+    df= pd.read_csv(FILE_PELANGGAN, dtype={'noTelp': 'string'})
 
     if df.empty:
         print("Data pelanggan masih kosong.")
@@ -405,42 +442,51 @@ def editDataPelanggan():
     except ValueError:
         print("ID harus berupa angka!")
         input("\nTekan Enter untuk melanjutkan...")
-        return
+        return editDataPelanggan()
 
 
     # cek apakah ID ada
-    if idPelanggan not in df['ID'].values:
+    if idPelanggan not in df['id'].values:
         print("Pelanggan dengan ID tersebut tidak ditemukan!")
         input("\nTekan Enter untuk melanjutkan...")
-        return
+        return editDataPelanggan()
     
 
     # ambil data pelanggan yang sesuai
-    dt_Customer = df[df['ID'] == idPelanggan].iloc[0]
+    dt_Customer = df[df['id'] == idPelanggan].iloc[0]
     
 
     print(f"\nData saat ini:")
-    print(f"Nama: {dt_Customer['Nama_Petani']}")
-    print(f"Telepon: {dt_Customer['No_Telp']}")
-    print(f"Alamat: {dt_Customer['Alamat'] } \n")
+    print(f"Nama: {dt_Customer['namaPetani']}")
+    print(f"Telepon: {dt_Customer['noTelp']}")
+    print(f"Alamat: {dt_Customer['alamat'] } \n")
     
 
     # input data baru
     namaBaru = input(f"Nama baru (Enter untuk tidak mengubah): ").strip().upper()
-    notelpBaru = int(input(f"Telepon baru (Enter untuk tidak mengubah): "))
-    if notelpBaru.isdigit() :
-        df.loc[df['ID'] == idPelanggan, 'No_Telp'] = notelpBaru
+    notelpBaru = input(f"Telepon baru (Enter untuk tidak mengubah) | (awali dengan 62): ")
+# kelemahan: ga bisa memprediksi outputnya juka angka yg diawali bukan 62
+    if notelpBaru.isdigit():
+        df['noTelp'] = df['noTelp'].astype('string')
+        df.loc[df['id'] == idPelanggan, 'noTelp'] = notelpBaru
+        df["noTelp"] = df["noTelp"].astype("string").str.replace(".0", "", regex=False)
+
+    elif not notelpBaru:
+        df.loc[df['id'] == idPelanggan, 'noTelp'] = str(notelpBaru)# why diubah jadi str, karna kolom sblmny aaku jadikan float- kalo jadi float untuk output setelah input notelp akan jadi format ribuan dan bisa bisa angka 0 nya hilang
+        pass
     else: 
         print("Masukkan nomor dengan angka!")
-        return
+        time.sleep(1)
+        return editDataPelanggan()
+    
     alamatBaru = input(f"Alamat baru (Enter untuk tidak mengubah): ").strip().lower()
 
     if namaBaru:
-        df.loc[df['ID'] == idPelanggan, 'Nama_Petani'] = namaBaru
+        df.loc[df['id'] == idPelanggan, 'namaPetani'] = namaBaru
     if notelpBaru :
-        df.loc[df['ID'] == idPelanggan, 'No_Telp'] = notelpBaru
+        df.loc[df['id'] == idPelanggan, 'noTelp'] = str(notelpBaru)
     if alamatBaru :
-        df.loc[df['ID'] == idPelanggan, 'Alamat'] = alamatBaru
+        df.loc[df['id'] == idPelanggan, 'alamat'] = alamatBaru
 
 # sv perubahan di csv
     df.to_csv(FILE_PELANGGAN, index=False, encoding='utf-8')
@@ -452,13 +498,22 @@ def editDataPelanggan():
 input("\nTekan Enter untuk melanjutkan...")
 
 
-# =======================FITUR 5==============================
+# =======================FITUR 5 -- FITUR ADMIN==============================
 def hapusDataPelanggan():
-    """Delete customer"""
     os.system('cls')
-    print("=" * 50)
-    print("HAPUS PELANGGAN".center(50))
-    print("=" * 50 + "\n")
+    teks = """
+
+    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+    ╚█████╗░██║██████╔╝███████║██║░░██║██║
+    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+    """
+    print(teks)
+    print('╔' + '═'*48 + '╗')
+    print('║' + "HAPUS DATA PELANGGAN".center(48) + '║')
+    print('╚' + '═'*48 + '╝') 
 
         # Pastikan file ada
     if not os.path.exists(FILE_PELANGGAN):
@@ -466,7 +521,7 @@ def hapusDataPelanggan():
         input("\nTekan Enter untuk melanjutkan...")
         return
 
-    df = pd.read_csv('data_customer.csv')
+    df = pd.read_csv(FILE_PELANGGAN)
 
     if df.empty:
         print("Data pelanggan masih kosong.")
@@ -481,7 +536,7 @@ def hapusDataPelanggan():
         input("\nTekan Enter untuk melanjutkan...")
         return
 
-    if idPelanggan not in df['ID'].astype(str).values:
+    if idPelanggan not in df['id'].astype(str).values:
         print("Pelanggan dengan ID tersebut tidak ditemukan.")
         input("\nTekan Enter untuk melanjutkan...")
         return
@@ -490,25 +545,42 @@ def hapusDataPelanggan():
     confirm = input("\nYakin ingin menghapus? (y/n): ").strip().lower()
     if confirm == 'y':
         # Hapus data dan reset index agar tetap rapi
-        df = df[df['ID'].astype(str) != idPelanggan]  
-        df.reset_index(drop=True, inplace=True)  # Optional: perbarui kolom ID agar urut kembali
+        df = df[df['id'].astype(str) != idPelanggan]  
+        df.reset_index(drop=True, inplace=False)  # Optional: perbarui kolom ID agar urut kembali
 
-        df['ID'] = range(1, len(df) + 1)
+        df['id'] = range(1, len(df) + 1)
         df.to_csv(FILE_PELANGGAN, index=False)  
         print("Pelanggan berhasil dihapus!")
     elif confirm == 'n':
-        print("Penghapusan dibatalkan.")
+        print("Penghapusan data dibatalkan. \nprogram akan berjalan 2 detik dari sekarang")
+        time.sleep(2)
+        return hapusDataPelanggan()
     else:
-        print("Masukkan huruf yang sesuai dengan pilihan")
+        print("Masukkan huruf yang sesuai dengan pilihan. \nprogram akan berjalan 2 detik dari sekarang")
+        time.sleep(2)
+        return hapusDataPelanggan()
 
 
     input("Tekan Enter untuk melanjutkan...")
 
 # ============================= FITUR ADMIN 1 |AKU ADMIN DAN KAU ROOTS ===================
 def crud_customers():
-    os.system('cls')
+
     while True:
-        print("MANAJEMEN DATA PELANGGAN (PETANI)")
+        os.system('cls')    
+        teks = """
+
+        ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+        ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+        ╚█████╗░██║██████╔╝███████║██║░░██║██║
+        ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+        ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+        ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+        """
+        print(teks)
+        print('╔' + '═'*48 + '╗')
+        print('║' + "MANAJEMEN DATA PELANGGAN (PETANI)".center(48) + '║')
+        print('╚' + '═'*48 + '╝') 
         print("[1]. Tambah Data Pelanggan")
         print("[2]. Lihat Semua Pelanggan")
         print("[3]. Cari Pelanggan")
@@ -536,15 +608,25 @@ def crud_customers():
 # ============================= FITUR ADMIN 2 | set harga ===================
 def setHarga():
     os.system('cls')
-    print("=" * 50)
-    print("ATUR HARGA JASA PER KG".center(50))
-    print("=" * 50)
+    teks = """
+
+    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+    ╚█████╗░██║██████╔╝███████║██║░░██║██║
+    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+    """
+    print(teks)
+    print('╔' + '═'*48 + '╗')
+    print('║' + "ATUR HARGA JASA PER KG)".center(48) + '║')
+    print('╚' + '═'*48 + '╝') 
     
     read = pd.read_csv(FILE_HARGA)
 
     # Pastikan file CSV ada
     if not os.path.exists(FILE_HARGA):
-        df = pd.DataFrame(columns=["price_per_kg", "effective_date"])
+        df = pd.DataFrame(columns=['harga/kg','tglDibuat'])
         df.to_csv(FILE_HARGA, index=False)
 
     # Baca data CSV
@@ -552,9 +634,9 @@ def setHarga():
 
     # Tampilkan harga terakhir jika ada
     if not df.empty:
-        last_price = df.iloc[-1]["price_per_kg"]
-        last_date = df.iloc[-1]["effective_date"]
-        print(f"\nHarga saat ini: Rp{int(last_price):,}/kg (ditetapkan pada {last_date})".replace(",", "."))
+        hargaTerakhir = df.iloc[-1]["harga/kg"] #mengambil nilai dari var df dengan atribut .iloc[] (yg bisa diakses dengan indeks atau nama kolom)  lalu -1 karna ingin mengambil nilai paling akhir yg ada di kolom p
+        last_date = df.iloc[-1]["tglDibuat"]
+        print(f"\nHarga saat ini: Rp{int(hargaTerakhir):,}/kg (ditetapkan pada {last_date}") # format replace: ("yg akan diganti", "pengganti")
     else:
         print("\n Belum ada harga jasa yang ditetapkan.")
 
@@ -569,8 +651,8 @@ def setHarga():
 
     # Input harga baru jika user memilih "y"
     try:
-        new_price = float(input("\nMasukkan harga baru per kg: "))
-        if new_price <= 0:
+        hargaBaru = float(input("\nMasukkan harga baru per kg: "))
+        if hargaBaru <= 0:
             print("Harga harus lebih dari 0!")
             input("Tekan Enter untuk kembali...")
             return
@@ -580,24 +662,38 @@ def setHarga():
         return
 
     # Simpan ke CSV
-    new_data = {
-        "price_per_kg": new_price,
-        "effective_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    dataBaru = {
+        "harga/kg": hargaBaru,
+        "tglDibuat": datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     }
-    df = pd.concat([df, pd.DataFrame([new_data])], ignore_index=True)
+    df = pd.concat([df, pd.DataFrame([dataBaru])], ignore_index=True)
     df.to_csv(FILE_HARGA, index=False)
 
-    print(f"\nHarga baru Rp{int(new_price):,}/kg berhasil disimpan!".replace(",", "."))
+    print(f"\nHarga baru Rp{int(hargaBaru):,}/kg berhasil disimpan!")
     input("\nTekan Enter untuk melanjutkan...")
 
-
+# ============================= FITUR ADMIN 1 | LAPORAN===================
+# laporan hari based tgl
 
 
 # ============================= FITUR ADMIN 3 | LAPORAN===================
 def view_reports():
-    """View milling reports"""
     while True:
-        print("LAPORAN PENGGILINGAN")
+        os.system('cls')
+        teks = """
+
+        ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+        ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+        ╚█████╗░██║██████╔╝███████║██║░░██║██║
+        ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+        ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+        ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+        """
+        print(teks)
+        print('╔' + '═'*48 + '╗')
+        print('║' + "LAPORAN PENGGILINGAN".center(48) + '║')
+        print('╚' + '═'*48 + '╝')   
+        print()
         print("1. Laporan Harian")
         print("2. Laporan Bulanan")
         print("3. Laporan Semua Transaksi")
@@ -623,9 +719,20 @@ def view_reports():
 # ============================= FITUR ADMIN 3 | UBAH PW===================
 def ubahPassword(password): #pahami dan ubah syntax sepaham kmu"
     os.system('cls')
-    print("=" * 50)
-    print("UBAH PASSWORD".center(50))
-    print("=" * 50 + "\n")
+    teks = """
+
+    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+    ╚█████╗░██║██████╔╝███████║██║░░██║██║
+    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+    """
+    print(teks)
+    print('╔' + '═'*48 + '╗')
+    print('║' + "UBAH PASSWORD".center(48) + '║')
+    print('╚' + '═'*48 + '╝') 
+
 
     # Pastikan file ada
     if not os.path.exists(FILE_ADMIN):
@@ -677,14 +784,23 @@ def ubahPassword(password): #pahami dan ubah syntax sepaham kmu"
     os.system('cls')
     return 
 
-
-
 def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
 
     os.system('cls')
-    print("=" * 50)
-    print("UBAH USERNAME".center(50))
-    print("=" * 50 + "\n")
+    teks = """
+
+    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+    ╚█████╗░██║██████╔╝███████║██║░░██║██║
+    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+    """
+    print(teks)
+    print('╔' + '═'*48 + '╗')
+    print('║' + "UBAH USERNAME".center(48) + '║')
+    print('╚' + '═'*48 + '╝') 
+
 
 # baca file
     df = pd.read_csv(FILE_ADMIN)
@@ -751,14 +867,153 @@ def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
 
 
 
+# ==================================MENU FITUR OPERATOR===========================================
+# ==================================MENU FITUR OPERATOR - add cust ====================================
+def tambahDataPelanggan():
+    os.system('cls')
+    teks = """
+
+    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+    ╚█████╗░██║██████╔╝███████║██║░░██║██║
+    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+    """
+    print(teks)
+    print('╔' + '═'*48 + '╗')
+    print('║' + "TAMBAH PELANGGAN BARU".center(48) + '║')
+    print('╚' + '═'*48 + '╝') 
 
 
+# jika file blm ada, buat file baru
+    if not os.path.exists(FILE_PELANGGAN):
+        print(" Belum ada data pelanggan.")
+        input("\nTekan Enter untuk melanjutkan...")
+
+    df = pd.read_csv(FILE_PELANGGAN)
+    # writer.writerow(["ID", "Nama_Petani", "No_Telp", "Alamat"])  # <-- header kolom
 
 
+    nama = input("Nama Petani: ").strip().upper()
+    if not nama:
+        print("Nama tidak boleh kosong!")
+        input("Tekan Enter untuk melanjutkan...")
+        return
+    
+    try:
+        notelp = int(input("Masukkan No. Telepon (awali dengan 62): "))
+    except ValueError:
+        print("Masukkan nomor telp dengan angka ya :<")
+        input("Tekan Enter untuk melanjutkan...")
+        return
+    alamat = input("Masukkan Alamat Lengkap : ").strip().lower()
+    
+# cari id cus
+    # if os.path.exists(data_customer):
+    idPelanggan = 1
+    try:
+        with open(FILE_PELANGGAN, mode="r") as file: #ecnode agar dijadikan bytes
+            baca = list(csv.reader(file))
+        if len(baca) >= 1:
+            idTerakhir = int(baca[-1][0]) #pahami syntax
+            idPelanggan = idTerakhir + 1
+    except:
+            pass #placeholder — yaitu perintah kosong yang tidak melakukan apa-apa.
+
+            # membuat file + menulis header - ga usah karna udah bikin dan udah ada headernya juga
+    # df = pd.DataFrame(columns= ['id','namaPetani','noTelp', 'alamat'] )
+    # df.to_csv(FILE_PELANGGAN, index=False, encoding='utf-8')
+
+    # sv ke csv | a for append
+    with open(FILE_PELANGGAN, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([idPelanggan, nama, notelp, alamat])
+    
+    
+    print(f"\nPelanggan '{nama}' berhasil ditambahkan! (ID: {idPelanggan})")
+    input("\nEnter untuk lanjut...")
+
+# ==================================MENU FITUR OPERATOR - transaksi ====================================
+def transaksi():
+    os.system('cls')
+    teks = """
+
+    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+    ╚█████╗░██║██████╔╝███████║██║░░██║██║
+    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+    """
+    print(teks)
+    print('╔' + '═'*48 + '╗')
+    print('║' + "TANSAKSI PELANGGAN".center(48) + '║')
+    print('╚' + '═'*48 + '╝') 
+    while True:
+# bikin alert jika tidak ada file pelanggan
+        if not os.path.exists(FILE_PELANGGAN):
+            print(" Belum ada data pelanggan.")
+            input("\nTekan Enter untuk melanjutkan...")
 
 
+        df = pd.read_csv(FILE_PELANGGAN, )
+        print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
 
+        id = input("Transaksi akan dilakukan berdasarkan id :")
+        
+        # alert jika var namaPncarian kosong
+        if not id:
+            print("Keyword tidak boleh kosong!")
+            input("Enter untuk lanjut...")
+            return
+        
+        # tujuan diencoding untuk data menjadi byts dann menghindar error ketika value dari csv mengandung karakter unik
+#         with open(FILE_PELANGGAN, mode='r', encoding='utf-8') as file:
+#             baca = list(csv.reader(file))
+#             data = baca[1:]
 
+# # menambah data ke list
+#         pelanggan = []
+#         for i in data:
+#             if id in i[1]:
+#                 pelanggan.append(i)
+        
+#         # alert jika iterasi di atas gagal
+#         if not pelanggan:
+#             print("Petani tidak ditemukan!")
+#             input("Enter untuk lanjut...")
+#             return
+        
+        # if len(pelanggan) > 1:
+        #     print("\n ditemukan beberapa petani")
+        #     print(tabulate(pelanggan, headers='keys', showindex=False))
+
+            # mencari baris yang ID-nya sama dengan input user
+        elif id in df['id'].astype(str).values:
+            # .loc[ ..., 'namaPetani']
+# → ambil kolom namaPetani
+            nama = df.loc[df['id'].astype(str) == id, 'namaPetani'].values[0] #→ ambil nilai pertama (karena hasil pencarian berupa array)
+            print(f"Petani ditemukan, atas nama {nama}")
+
+# baca data harga
+        if not os.path.exists(FILE_HARGA):
+            print("Harga belum ditetapkan admin!")
+            input("Enter untuk lanjut...")
+            return
+
+        with open(FILE_HARGA, mode='r', encoding='utf-8') as file:
+            harga = list(csv.reader(file)) [1:]
+        
+        if harga:
+            w = harga[-1]
+            p = float(w[0])
+            print(f'harga jasa penggilingan saat ini {p}/kg')
+        
+        # input gabah
+        gabah = float(
+            input("Masukkan berat gabah yang akan digiling:  "))
+            # next stepp dikali sm harga tiap kg dgn gabah
 
 
 
@@ -843,7 +1098,7 @@ def admin_menu(username):
 
 
         elif choice == "0":
-            break
+            return main()
         # else:
         #     print("Pilihan tidak valid!")
         #     input("Tekan Enter untuk melanjutkan...")
@@ -877,9 +1132,9 @@ def operator_menu(username):
         choice = input("\nPilih menu: ")
         
         if choice == "1":
-            print('jkahdjkabwka')
-        # elif choice == "2":
-        #     input_transaction(username)
+            tambahDataPelanggan()
+        elif choice == "2":
+            transaksi()
         # elif choice == "3":
         #     search_farmers()
         # # elif choice == "4":
@@ -899,14 +1154,15 @@ def operator_menu(username):
         #         input("Tekan Enter untuk melanjutkan...")
         #         break
         elif choice == "0":
-            break
+            return main()
         # else:
         #     print("Pilihan tidak valid!")
         #     input("Tekan Enter untuk melanjutkan...")
 
 # ========================Home Page
-def main():
 
+
+def main():
     cekData()
     while True:
         os.system('cls')
@@ -925,7 +1181,7 @@ def main():
         print('╠' + '═'*48 + '╣')
         print('║' + 'Penggilingan Padi Terpercaya di Indonesia'.center(48) + '║')
         print('╚' + '═'*48 + '╝') 
-        print('\n [1]. Registrasi\n [2]. Login\n [0]. Keluar\n ')
+        print('\n [1]. Registrasi\n [2]. Login\n [0]. Keluar\n ')  
     
         piliihan = input("\nMenu yang dipilih: (1/2/0) ")
         while True:
@@ -946,7 +1202,6 @@ def main():
                     print('╔' + '═'*48 + '╗')
                     print('║' + 'PILIHAN MENU | REGISTRASI '.center(48) + '║')
                     print('╚' + '═'*48 + '╝')  
-                    
                     print("[1]. SEBAGAI ADMIN")
                     print("[2]. SEBAGAI OPERATOR")
                     print("[0]. Kembali")
@@ -954,18 +1209,8 @@ def main():
                     if pilih == '1':
                         regisAdmin()
                         os.system('cls')
-                        '''pilihan1 = input('\n(Y) untuk kembali | (enter) untuk keluar : ').lower()
-                        if pilihan1 == 'y':
-                            os.system('cls')
-                        else:
-                            kondisi = False'''
                     elif pilih == '2':
                         regisOperator()
-                        '''pilihan2 = input('\n(Y) untuk kembali | (enter) untuk keluar : ').lower()
-                        if pilihan2 == 'y':
-                            os.system('cls')
-                        else:
-                            kondisi = False'''
                     elif pilih == '0':
                         os.system('cls')
                         break
