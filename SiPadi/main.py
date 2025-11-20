@@ -673,8 +673,74 @@ def setHarga():
 
 # ============================= FITUR ADMIN 1 | LAPORAN===================
 # laporan hari based tgl
+def laporanHarian():
+    os.system('cls')
+    teks = """
+
+    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+    ╚█████╗░██║██████╔╝███████║██║░░██║██║
+    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+    """
+    print(teks)
+    print('╔' + '═'*48 + '╗')
+    print('║' + "RIWAYAT HARIAN".center(48) + '║')
+    print('╚' + '═'*48 + '╝') 
+    while True:
+        df = pd.read_csv(FILE_TRANSAKSI) 
+
+        # input tanggal yg ingin ditentukkan
+        inpTgl = input("Masukkan tanggal (DD-MM-YYY) atau Enter untuk hari ini: ").strip()
+        if not inpTgl:
+            inpTgl = df['tanggal'].iloc[-1]
+
+    # cek keberadaan file
+        if not os.path.exists(FILE_TRANSAKSI) or not  os.path.exists(FILE_PELANGGAN) :
+            print(" Belum ada data tranksaski.")
+            input("\nTekan Enter untuk melanjutkan...")
+            return
+        
+
+        if df.empty:
+            print(" Data transaksi masih kosong.")
+            input("\nTekan Enter untuk melanjutkan...")
+            return
+        try:     
+            os.system('cls')
+            teks = """
+            ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+            ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+            ╚█████╗░██║██████╔╝███████║██║░░██║██║
+            ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+            ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+            ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+            """
+            print(teks)
+            print('╔' + '═'*48 + '╗')
+            print('║' + "RIWAYAT HARIAN".center(48) + '║')
+            print('╚' + '═'*48 + '╝ ') 
+            print("Rincian Laporan Transaksi Hari Ini: ")
+            print(tabulate(df, headers='keys', tablefmt='fancy_grid', showindex=False))
+
+            jumlahTf= len(df['idPel'])
+            jumlahBobot= df['berat'].sum()
+            jumlahTotal = df['total'].sum()
+
+            print(f"\n Tanggal {inpTgl}")
+            print(f" Jumlah Transaksi: {jumlahTf}")
+            print(f" Total Berat: {jumlahBobot}")
+            print(f" Total Pendapatan: {jumlahTotal}")
+            input("\n Enter untuk kembali...")
+            return
+        except ValueError:
+            print("Ada yang salah dari program")
+
+
+
 # ============================= FITUR ADMIN 3 | LAPORAN===================
-def view_reports():
+def laporan():
     while True:
         os.system('cls')
         teks = """
@@ -699,18 +765,18 @@ def view_reports():
         
         choice = input("\nPilih menu: ")
         
-        # if choice == "1":
-        #     view_daily_report()
+        if choice == "1":
+            laporanHarian()
         # elif choice == "2":
         #     view_monthly_report()
         # elif choice == "3":
         #     view_all_transactions()
         # elif choice == "4":
         #     view_statistics()
-        # elif choice == "0":
-        #     break
-        # else:
-        #     print("Pilihan tidak valid!")
+        elif choice == "0":
+            break
+        else:
+            print("Pilihan tidak valid!")
 
 # ============================= FITUR ADMIN 3 | UBAH PW===================
 def ubahPassword(): #pahami dan ubah syntax sepaham kmu"
@@ -1194,8 +1260,100 @@ def riwayatHarian():
 
 
         input("\nKlik Enter untuk kemabli...")
-        return
+        return riwaywatTranskasi()
         
+# ==================================MENU FITUR OPERATOR - Tansaksi based petani ====================================
+def riwayatBasedPetani():
+    os.system('cls')
+    teks = """
+
+    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+    ╚█████╗░██║██████╔╝███████║██║░░██║██║
+    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+    """
+    print(teks)
+    print('╔' + '═'*48 + '╗')
+    print('║' + "RIWAYAT BERDASARKAN PETANI".center(48) + '║')
+    print('╚' + '═'*48 + '╝') 
+    while True:
+
+# tampilkan data pelanggan
+        df1 = pd.read_csv(FILE_PELANGGAN)
+        print(tabulate(df1, headers='keys', tablefmt='fancy_grid', showindex=False))
+
+
+
+# input tanggal yg ingin ditentukkan
+        inpPetani = input("Masukkan nama Petani: ").strip().upper()
+        if not inpPetani:
+            print("Nama petani tidak boleh kosong")
+            input("Enter untuk kembali...")
+            return
+
+    # cek keberadaan file
+        if not os.path.exists(FILE_TRANSAKSI) or not  os.path.exists(FILE_PELANGGAN) :
+            print(" Belum ada data tranksaski.")
+            input("\nTekan Enter untuk melanjutkan...")
+            return
+        
+# baca file
+        df1 = pd.read_csv(FILE_PELANGGAN)
+        df2 = pd.read_csv(FILE_TRANSAKSI)
+
+# memeriksa file
+        if df1.empty or df2.empty:
+                print(" Data pelanggan atau data transaksi masih kosong.")
+                input("\nTekan Enter untuk melanjutkan...")
+                return
+        
+        # gabungkan data
+        dfc = pd.merge(df1, df2, left_on = 'id', right_on='idPel' ,how='inner')
+
+# apabila dfc ada value yg kosong
+        if dfc.empty:
+            print(" Data pelanggan atau data transaksi masih kosong.")
+            input("\nTekan Enter untuk melanjutkan...")
+            return
+
+# Pastikan kolom tanggal dalam format datetime
+        # dfc['tanggal'] = pd.to_datetime(dfc['namaPetani'], ) 
+        # mengubah value 'tanggal' menjaddi object pd datetime| dayfrist= dimulai dari hari
+
+# filter transaksi based tanggal yg gdiinout
+        filter = dfc[dfc['namaPetani'] == inpPetani]
+        filter = dfc[dfc['namaPetani'].str.contains(inpPetani, case= False)]
+
+    # Urutkan berdasarkan tanggal terbaru
+        # dfc = dfc.sort_values(by="tanggal", ascending=False)
+        # mengurutkan baris' dlm kolom based (by='tanggal)| asceding=false => mengurutkan data daru yg terbaru ke terlama, jika asceding=true => mengurutkan data terlama ke terbaru
+        # if dfc.empty:
+        #     print("Belum ada transaksi atau belum ada pelanggan.")
+        #     input("\nTekan Enter untuk melanjutkan...")
+
+
+        totalBerat = filter['berat'].sum()
+        totalBiaya = filter['total'].sum()
+        namaPetani = filter['namaPetani'].iloc[0]
+        namatgl = filter['tanggal'].unique()
+
+        # tampilkan ringkasan
+        os.system('cls')
+
+        print("Petani ditemukan")
+        print(f"\nNama petani: {namaPetani}")
+        print(f"Jumlah Transaksi: {len(filter)}")
+        print(f"Total Berat: {totalBerat}")
+        print(f"Total Pendapatan: {totalBiaya}\n")
+# tabel yg divari
+        print(tabulate(filter,headers='keys', tablefmt='fancy_grid', showindex=False))
+
+
+        input("\nKlik Enter untuk kembali...")
+        return riwaywatTranskasi()
+
 # ==================================MENU FITUR OPERATOR - Tansaksi ====================================
 def riwaywatTranskasi():
     os.system('cls')
@@ -1213,7 +1371,7 @@ def riwaywatTranskasi():
     print('║' + "DAFTAR PELANGGAN".center(48) + '║')
     print('╚' + '═'*48 + '╝') 
     while True:
-        
+    
         print("[1]. Riwayat transaksi harian")
         print("[2]. Riwayat transaksi berdasrkan nama petani")
         print("[3]. Riwayat Keseleruhan")
@@ -1224,8 +1382,8 @@ def riwaywatTranskasi():
         
         if choice == "1":
             riwayatHarian()
-        # elif choice == "2":
-        #     setHarga()
+        elif choice == "2":
+            riwayatBasedPetani()
         # elif choice == "3":
         #     view_reports()
         elif choice == "0":
@@ -1464,7 +1622,7 @@ def admin_menu(username):
         elif choice == "2":
             setHarga()
         elif choice == "3":
-            view_reports()
+            laporan()
         elif choice == "4":
             ubahPassword()
             input()
