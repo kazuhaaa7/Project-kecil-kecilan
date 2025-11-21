@@ -27,53 +27,57 @@ def cekData():
         user = pd.DataFrame(columns=['id', 'namaPetani','noTelp', 'alamat']) 
         user.to_csv(FILE_PELANGGAN, index=False) 
     if not os.path.exists(FILE_TRANSAKSI):  
-        user = pd.DataFrame(columns=['idPel', 'berat','harPerKg', 'total', 'tanggal']) 
+        user = pd.DataFrame(columns=['idPel','tanggal', 'berat','harPerKg', 'total' ]) 
         user.to_csv(FILE_TRANSAKSI, index=False) 
 
 # ================================================ REGIS AS ADMIN ======================================================
-def regisAdmin():
-    os.system('cls')
-    teks = """
+# def regisAdmin():
+#     os.system('cls')
+#     teks = """
 
-    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
-    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
-    ╚█████╗░██║██████╔╝███████║██║░░██║██║
-    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
-    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
-    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
-    """
-    print(teks)
-    print('╔' + '═'*48 + '╗')
-    print('║' + "REGISTER AKUN ADMIN".center(48) + '║')
-    print('╚' + '═'*48 + '╝') 
+#     ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+#     ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+#     ╚█████╗░██║██████╔╝███████║██║░░██║██║
+#     ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+#     ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+#     ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+#     """
+#     print(teks)
+#     print('╔' + '═'*48 + '╗')
+#     print('║' + "REGISTER AKUN ADMIN".center(48) + '║')
+#     print('╚' + '═'*48 + '╝') 
 
+#     df = pd.read_csv(FILE_ADMIN)
+#     # kondisi 1
+#     while True:
+#         username = input("Masukkan Username: ").strip().lower()
+#         if not username:
+#             print("\nUsername tidak boleh kosong")
+#         elif len(username) < 3:
+#             print('\nUnsername harus berisi minimal 3 karakter!')
+#         if (df['username'] == username).any():
+#             print("\nUsername sudah ada. tentukan yang lain")
+#             # error| fix bug
 
-    # kondisi 1
-    while True:
-        username = input("Masukkan Username: ").strip()
-        if len(username) <= 3:
-            print('Username harus berisi minimal 3 karakter!')
-        else:
-            break
+#     # kondisi 2
+#     while True:
+#         password = input("Masukkan Password: ").strip().lower()
+#         break
+#     # Jika file belum ada, buat file baru
+#     if not os.path.exists(FILE_ADMIN):
+#         df = pd.DataFrame(columns=['username', 'password'])
+#         df.to_csv(FILE_ADMIN, index=False)
 
-    # kondisi 2
-    while True:
-        password = input("Masukkan Password: "). strip()
-        break
-    # Jika file belum ada, buat file baru
-    if not os.path.exists(FILE_ADMIN):
-        df = pd.DataFrame(columns=['username', 'password'])
-        df.to_csv(FILE_ADMIN, index=False)
+#     # Simpan data baru
+#     df = pd.read_csv(FILE_ADMIN)
+#     dataBaru = {'username' : username, 'password': password}
+#     dataBaruDf = pd.DataFrame([dataBaru])
+#     df = pd.concat([df, dataBaruDf], ignore_index=True)
+#     df.to_csv(FILE_ADMIN, index=False)
+#     print(f"\nRegistrasi {username} sebagai admin berhasil!")
 
-    # Simpan data baru
-    df = pd.read_csv(FILE_ADMIN)
-    dataBaru = {'username' : username, 'password': password}
-    dataBaruDf = pd.DataFrame([dataBaru])
-    df = pd.concat([df, dataBaruDf], ignore_index=True)
-    df.to_csv(FILE_ADMIN, index=False)
-    print(f"\nRegistrasi {username} sebagai admin berhasil!")
-
-    i = input("\nKetik apa saja untuk kembali")
+#     i = input("\nKetik apa saja untuk kembali...")
+#     return main()
 
 # ================================================ REGIS AS OPERATOR ======================================================
 def regisOperator():
@@ -92,32 +96,86 @@ def regisOperator():
     print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
     print('╚' + '═'*48 + '╝') 
 
+    df = pd.read_csv(FILE_OPERATOR)
     # kondisi 1
     while True:
-        username = input("Masukkan Username: ").strip()
-        if len(username) < 2:
-            print('Username harus berisi minimal 3 karakter!')
+        username = input("Masukkan Username: ").strip().lower()
+        if not username:
+            os.system('cls')
+            teks = """
+
+            ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+            ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+            ╚█████╗░██║██████╔╝███████║██║░░██║██║
+            ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+            ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+            ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+            """
+            print(teks)
+            print('╔' + '═'*48 + '╗')
+            print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
+            print('╚' + '═'*48 + '╝') 
+            print("\nUsername tidak boleh kosong")
+            continue
+        if len(username) < 3:
+            os.system('cls')
+            teks = """
+
+            ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+            ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+            ╚█████╗░██║██████╔╝███████║██║░░██║██║
+            ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+            ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+            ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+            """
+            print(teks)
+            print('╔' + '═'*48 + '╗')
+            print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
+            print('╚' + '═'*48 + '╝') 
+            print('\nUsername harus berisi minimal 3 karakter!')
+            continue
+        if (df['username'] == username).any():
+            os.system('cls')
+            teks = """
+
+            ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+            ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+            ╚█████╗░██║██████╔╝███████║██║░░██║██║
+            ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+            ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+            ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+            """
+            print(teks)
+            print('╔' + '═'*48 + '╗')
+            print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
+            print('╚' + '═'*48 + '╝') 
+            print("\nUsername sudah ada. tentukan yang lain")
+            continue
         else:
             break
 
-    # kondisi 2
+        # kondisi 2
     while True:
-        password = input("Masukkan Password: ").strip()
-        break
-    # Jika file belum ada, buat file baru
-    if not os.path.exists(FILE_OPERATOR):
-        df = pd.DataFrame(columns=['username', 'password'])
+        password = input("Masukkan Password: ").strip().lower()
+        if not password:
+            print("Passwrd tidak boleh kosong")
+            continue
+
+        # Jika file belum ada, buat file baru
+        if not os.path.exists(FILE_OPERATOR):
+            df = pd.DataFrame(columns=['username', 'password'])
+            df.to_csv(FILE_OPERATOR, index=False)
+
+        # Simpan data baru
+        df = pd.read_csv(FILE_OPERATOR)
+        dataBaru = {'username' : username, 'password': password}
+        dataBaruDf = pd.DataFrame([dataBaru])
+        df = pd.concat([df, dataBaruDf], ignore_index=True)
         df.to_csv(FILE_OPERATOR, index=False)
+        print(f"\nRegistrasi {username} sebagai admin berhasil!")
 
-    # Simpan data baru
-    df = pd.read_csv(FILE_OPERATOR)
-    dataBaru = {'username' : username, 'password': password}
-    dataBaruDf = pd.DataFrame([dataBaru])
-    df = pd.concat([df, dataBaruDf], ignore_index=True)
-    df.to_csv(FILE_OPERATOR, index=False)
-    print(f"\nRegistrasi {username} sebagai admin berhasil!")
-
-    i = input("\nKetik apa saja untuk kembali")
+        i = input("\nKetik apa saja untuk kembali")
+        return main()
 
 # ================================================ LOGIN ADMIN ======================================================
 # fungsi login
@@ -154,21 +212,57 @@ def loginAdmin():
         admin['password'] = admin['password'].astype(str)
 
         while True:
-            username = input("Masukkan Username: ").strip()
-            if len(username) <= 3:
-                print('Username harus berisi minimal 3 karakter!')
+            username = input("Masukkan Username: ").strip().lower()
+            if not username:
+                os.system('cls')
+                teks = """
+
+                ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+                ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+                ╚█████╗░██║██████╔╝███████║██║░░██║██║
+                ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+                ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+                ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+                """
+                print(teks)
+                print('╔' + '═'*48 + '╗')
+                print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
+                print('╚' + '═'*48 + '╝') 
+                print("\nUsername tidak boleh kosong")
+                continue
+            if len(username) < 3:
+                os.system('cls')
+                teks = """
+
+                ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+                ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+                ╚█████╗░██║██████╔╝███████║██║░░██║██║
+                ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+                ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+                ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+                """
+                print(teks)
+                print('╔' + '═'*48 + '╗')
+                print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
+                print('╚' + '═'*48 + '╝') 
+                print('\nUsername harus berisi minimal 3 karakter!')
+                continue
             else:
                 break
 
         # kondisi 2
         while True:
-            password = input("Masukkan Password: ").strip()
-            break
+            password = input("Masukkan Password: ").strip().lower()
+            if not password:
+                print("Password tidak boleh kosong")
+                continue
+            else:
+                break
 
 
         # operator
-        if not os.path.exists('dt_operator.csv'):
-            print("File data_operator.csv tidak ditemukan!")
+        if not os.path.exists(FILE_ADMIN):
+            print("File data_admin.csv tidak ditemukan!")
             df = pd.DataFrame(columns=['Username', 'Password'])
             df.to_csv('dt_operator.csv', index=False)
             print("Silakan buat akun admin terlebih dahulu.")
@@ -220,16 +314,51 @@ def loginOperator():
         admin['password'] = admin['password'].astype(str)
 
         while True:
-            username = input("Masukkan Username: ").strip()
-            if len(username) <= 3:
-                print('Username harus berisi minimal 3 karakter!')
+            username = input("Masukkan Username: ").strip().lower()
+            if not username:
+                os.system('cls')
+                teks = """
+
+                ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+                ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+                ╚█████╗░██║██████╔╝███████║██║░░██║██║
+                ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+                ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+                ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+                """
+                print(teks)
+                print('╔' + '═'*48 + '╗')
+                print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
+                print('╚' + '═'*48 + '╝') 
+                print("\nUsername tidak boleh kosong")
+                continue
+            if len(username) < 3:
+                os.system('cls')
+                teks = """
+
+                ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+                ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+                ╚█████╗░██║██████╔╝███████║██║░░██║██║
+                ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+                ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+                ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+                """
+                print(teks)
+                print('╔' + '═'*48 + '╗')
+                print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
+                print('╚' + '═'*48 + '╝') 
+                print('\nUsername harus berisi minimal 3 karakter!')
+                continue
             else:
                 break
-
         # kondisi 2
         while True:
-            password = input("Masukkan Password: ").strip()
-            break
+            password = input("Masukkan Password: ").strip().lower()
+            if not password:
+                print("Password tidak boleh kosong")
+                continue
+            else:
+                break
 
         # Cek username & password di CSV
         # Dalam pandas, kamu tidak bisa memakai and, or, atau not langsung.
@@ -344,14 +473,14 @@ def lihatData():
             return
         # ubah type data
         df['noTelp'] = df['noTelp'].astype(str)
+        print(type(df['noTelp'].iloc[-1]))
         print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
         input("\nTekan Enter untuk melanjutkan...")
     except Exception as e:
         print(f"Terjadi kesalahan saat membaca data: {e}")
         time.sleep(2)
         return
-
-
+    
 # =======================FITUR 3 -- FITUR ADMIN===============================
 def cariPelanggan():
     os.system('cls')
@@ -563,7 +692,7 @@ def hapusDataPelanggan():
     input("Tekan Enter untuk melanjutkan...")
 
 # ============================= FITUR ADMIN 1 |AKU ADMIN DAN KAU ROOTS ===================
-def crud_customers():
+def tambahPelanggan():
 
     while True:
         os.system('cls')    
@@ -635,7 +764,7 @@ def setHarga():
     if not df.empty:
         hargaTerakhir = df.iloc[-1]["harga/kg"] #mengambil nilai dari var df dengan atribut .iloc[] (yg bisa diakses dengan indeks atau nama kolom)  lalu -1 karna ingin mengambil nilai paling akhir yg ada di kolom p
         last_date = df.iloc[-1]["tglDibuat"]
-        print(f"\nHarga saat ini: Rp{int(hargaTerakhir):,}/kg (ditetapkan pada {last_date}") # format replace: ("yg akan diganti", "pengganti")
+        print(f"\nHarga saat ini: Rp{float(hargaTerakhir):,}/kg (ditetapkan pada {last_date}") # format replace: ("yg akan diganti", "pengganti")
     else:
         print("\n Belum ada harga jasa yang ditetapkan.")
 
@@ -737,8 +866,6 @@ def laporanHarian():
         except ValueError:
             print("Ada yang salah dari program")
 
-
-
 # ============================= FITUR ADMIN 3 | LAPORAN===================
 def laporan():
     while True:
@@ -779,7 +906,7 @@ def laporan():
             print("Pilihan tidak valid!")
 
 # ============================= FITUR ADMIN 3 | UBAH PW===================
-def ubahPassword(): #pahami dan ubah syntax sepaham kmu"
+def ubahPasswordAdmin(): #pahami dan ubah syntax sepaham kmu"
     os.system('cls')
     teks = """
 
@@ -795,57 +922,56 @@ def ubahPassword(): #pahami dan ubah syntax sepaham kmu"
     print('║' + "UBAH PASSWORD".center(48) + '║')
     print('╚' + '═'*48 + '╝') 
 
+    while True:
+        # Pastikan file ada
+        if not os.path.exists(FILE_ADMIN):
+            print("File data_admin.csv belum ditemukan!")
+            input("\nTekan Enter untuk melanjutkan...")
+            return 
 
-    # Pastikan file ada
-    if not os.path.exists(FILE_ADMIN):
-        print("File data_admin.csv belum ditemukan!")
-        input("\nTekan Enter untuk melanjutkan...")
-        return 
+        # Baca file CSV
+        df = pd.read_csv(FILE_ADMIN)
 
-    # Baca file CSV
-    df = pd.read_csv(FILE_ADMIN)
+        # Cek apakah kolom yang dibutuhkan ada
+        if not {'username', 'password'}.issubset(df.columns):
+            print("File CSV tidak memiliki kolom 'username' atau 'password'.")
+            input("\nTekan Enter untuk melanjutkan...")
+            return 
+        
+        print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
+        
+        # Cari user
+        password = input("Masukkan password sebelumnya untuk konfirmasi: ").strip().lower()
+        passwordCheck = df[df['password'] == password]
 
-    # Cek apakah kolom yang dibutuhkan ada
-    if not {'username', 'password'}.issubset(df.columns):
-        print("File CSV tidak memiliki kolom 'username' atau 'password'.")
-        input("\nTekan Enter untuk melanjutkan...")
-        return 
+
+        if passwordCheck.empty:
+            print("Username tidak ditemukan!")
+            input("\nTekan Enter untuk melanjutkan...")
+            return 
+
+        # # Verifikasi password
+        if password != passwordCheck.iloc[0]['password']:
+            print("Username salah!")
+            input("\nTekan Enter untuk melanjutkan...")
+            return 
     
-    print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
-    
-    # Cari user
-
-    username = input("Masukkan username untuk konfirmasi: ").strip()
-    user_row = df[df['Username'] == username]
-
-    if user_row.empty:
-        print("Username tidak ditemukan!")
-        input("\nTekan Enter untuk melanjutkan...")
+        # Input pw baru       
+        passwordBaru = input("Masukkan password baru: ").strip().lower()     
+        if not passwordBaru:
+            print("Password baru tidak boleh kosong!")
+            input("\nTekan Enter untuk melanjutkan...")
+            return 
+        
+        # Update password
+        df.loc[df['password'] == password, 'password'] = passwordBaru
+        df.to_csv(FILE_ADMIN, index=False)
+        print(f"\npassword berhasil diubah menjadi '{passwordBaru}'!")
+        time.sleep(1.5)
+        os.system('cls')
         return 
 
-    # Verifikasi password
-    if username != user_row.iloc[0]['Username']:
-        print("Username salah!")
-        input("\nTekan Enter untuk melanjutkan...")
-        return password
-
-    # Input pw baru
-    passwordBaru = input(f"Masukkan password baru (saat ini: {password}): ").strip()
-    if not passwordBaru:
-        print("Password baru tidak boleh kosong!")
-        input("\nTekan Enter untuk melanjutkan...")
-        return 
-    
-
-    # Update password
-    df.loc[df['password'] == password, 'password'] = passwordBaru
-    df.to_csv(FILE_ADMIN, index=False)
-
-    print(f"\npassword berhasil diubah menjadi '{passwordBaru}'!")
-    # time.sleep(1.5)
-    os.system('cls')
-    return 
-
+## ==============================l====MENU FITUR ADMIN - ubah admin operator ====================================
 def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
 
     os.system('cls')
@@ -883,16 +1009,16 @@ def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
         input("\nTekan Enter untuk melanjutkan...")
         return 
     
-    # print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
+    print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
     # Cari user
-    user = df[df['username'] == username]
+    username = input("Masukkan username sebelumnya untuk konfirmasi: ").strip()
+    user = df[df['username'] == username] 
     if user.empty:
         print("Username tidak ditemukan!")
         input("\nTekan Enter untuk melanjutkan...")
         return 
 
     # Verifikasi password
-    username = input("Masukkan username sebelumnya untuk konfirmasi: ").strip()
     if username != user.iloc[0]['username']:
         print("username salah!")
         print(user)
@@ -923,11 +1049,7 @@ def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
 
     print(f"\nUsername berhasil diubah menjadi '{usernameBaru}'!")
     # time.sleep(1.5)
-    os.system('cls')
     return
-
-
-
 
 
 # ==================================MENU FITUR OPERATOR===========================================
@@ -1097,7 +1219,7 @@ def transaksi():
     # save ke csv
         with open(FILE_TRANSAKSI, mode='a', newline='', encoding='utf-8') as file:
             sv = csv.writer(file)
-            sv.writerow([id, gabah, p, x, tgl])
+            sv.writerow([id, tgl ,gabah, p, x])
             input("\nTransaksi selesai, tekan Enter untuk kembali...")
             return
         # kolom id tidak + 1
@@ -1392,8 +1514,8 @@ def riwaywatTranskasi():
             print("Pilihan tidak valid!")
             input("Tekan Enter untuk melanjutkan...")
 
-## ==================================MENU FITUR OPERATOR - ubah pw operator ====================================
-def ubahPW():
+## ==============================l====MENU FITUR OPERATOR - ubah pw operator ====================================
+def ubahPWOperator():
     os.system('cls')
     teks = """
 
@@ -1429,7 +1551,7 @@ def ubahPW():
         
         # Cari user
 
-        password = input("Masukkan password sebelumnya : ").strip()
+        password = input("Masukkan password sebelumnya untuk konfirmasi: ").strip().lower()
         pwCheck= df[df['password'] == password]
 
         if pwCheck.empty:
@@ -1443,10 +1565,8 @@ def ubahPW():
             input("\nTekan Enter untuk melanjutkan...")
             return password
 
-
-
             # Input pw baru
-        passwordBaru = input(f"Masukkan password baru (saat ini: {password}): ").strip()
+        passwordBaru = input(f"Masukkan password baru (saat ini: {password}): ").strip().lower()
         if not passwordBaru:
             print("Password baru tidak boleh kosong!")
             input("\nTekan Enter untuk melanjutkan...")
@@ -1462,7 +1582,7 @@ def ubahPW():
         os.system('cls')
         return password
 
-def ubahUSER(username):
+def ubahUSEROperator(username):
     
     os.system('cls')
     teks = """
@@ -1551,44 +1671,6 @@ def ubahUSER(username):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # ==================================MENU ADMIN===========================================
 def admin_menu(username):
     print(f"\nLogin berhasil sebagai ADMIN!Selamat datang, {username}")
@@ -1618,16 +1700,15 @@ def admin_menu(username):
         choice = input("\nPilih menu: ")
         
         if choice == "1":
-            crud_customers()
+            tambahPelanggan()
         elif choice == "2":
             setHarga()
         elif choice == "3":
             laporan()
         elif choice == "4":
-            ubahPassword()
-            input()
+            ubahPasswordAdmin()
         elif choice == "5":
-            ubahUsername()
+            ubahUsername(username)
             input()
         elif choice == "0":
             return main()
@@ -1711,51 +1792,14 @@ def main():
         print('╠' + '═'*48 + '╣')
         print('║' + 'Penggilingan Padi Terpercaya di Indonesia'.center(48) + '║')
         print('╚' + '═'*48 + '╝') 
-        print('\n [1]. Registrasi\n [2]. Login\n [0]. Keluar\n ')  
+        print('\n [1]. Registrasi Sebagai Operator\n [2]. Login\n [0]. Keluar\n ')  
     
         piliihan = input("\nMenu yang dipilih: (1/2/0) ")
         while True:
 # ==============================================REGISTRASI======================================================
             if piliihan == '1':
-
-                    os.system('cls')
-                    teks = """
-
-                    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
-                    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
-                    ╚█████╗░██║██████╔╝███████║██║░░██║██║
-                    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
-                    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
-                    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
-                    """
-                    print(teks)
-                    print('╔' + '═'*48 + '╗')
-                    print('║' + 'PILIHAN MENU | REGISTRASI '.center(48) + '║')
-                    print('╚' + '═'*48 + '╝')  
-                    print("[1]. SEBAGAI ADMIN")
-                    print("[2]. SEBAGAI OPERATOR")
-                    print("[0]. Kembali")
-                    pilih = input("\n REGISTRASI SEBAGAI (pilih angka): ")
-                    if pilih == '1':
-                        regisAdmin()
-                        os.system('cls')
-                    elif pilih == '2':
-                        regisOperator()
-                    elif pilih == '0':
-                        os.system('cls')
-                        break
-                    else:
-                        os.system('cls')
-                        print('╔' + '═'*48 + '╗')
-                        print('║' + 'Sipadi'.center(48) + '║')
-                        print('╠' + '═'*48 + '╣')
-                        print('║' + 'Pilihan Terpercaya Petani Indonesia'.center(48) + '║')
-                        print('╚' + '═'*48 + '╝') 
-                        print('\n1. Registrasi\n2. Login\n3. Keluar\n')
-                        print('Input anda tidak sesuai pilihan!')
-
-                    print('\nTerima kasih telah menggunakan program ini :)')
-
+                regisOperator()
+                        
 # ==============================================LOGIN======================================================
             elif piliihan == '2':
                 os.system('cls')
