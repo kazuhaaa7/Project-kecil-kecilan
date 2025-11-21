@@ -30,125 +30,37 @@ def cekData():
         user = pd.DataFrame(columns=['idPel','tanggal', 'berat','harPerKg', 'total' ]) 
         user.to_csv(FILE_TRANSAKSI, index=False) 
 
-# ================================================ REGIS AS ADMIN ======================================================
-# def regisAdmin():
-#     os.system('cls')
-#     teks = """
-
-#     ░██████╗██╗██████╗░░█████╗░██████╗░██╗
-#     ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
-#     ╚█████╗░██║██████╔╝███████║██║░░██║██║
-#     ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
-#     ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
-#     ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
-#     """
-#     print(teks)
-#     print('╔' + '═'*48 + '╗')
-#     print('║' + "REGISTER AKUN ADMIN".center(48) + '║')
-#     print('╚' + '═'*48 + '╝') 
-
-#     df = pd.read_csv(FILE_ADMIN)
-#     # kondisi 1
-#     while True:
-#         username = input("Masukkan Username: ").strip().lower()
-#         if not username:
-#             print("\nUsername tidak boleh kosong")
-#         elif len(username) < 3:
-#             print('\nUnsername harus berisi minimal 3 karakter!')
-#         if (df['username'] == username).any():
-#             print("\nUsername sudah ada. tentukan yang lain")
-#             # error| fix bug
-
-#     # kondisi 2
-#     while True:
-#         password = input("Masukkan Password: ").strip().lower()
-#         break
-#     # Jika file belum ada, buat file baru
-#     if not os.path.exists(FILE_ADMIN):
-#         df = pd.DataFrame(columns=['username', 'password'])
-#         df.to_csv(FILE_ADMIN, index=False)
-
-#     # Simpan data baru
-#     df = pd.read_csv(FILE_ADMIN)
-#     dataBaru = {'username' : username, 'password': password}
-#     dataBaruDf = pd.DataFrame([dataBaru])
-#     df = pd.concat([df, dataBaruDf], ignore_index=True)
-#     df.to_csv(FILE_ADMIN, index=False)
-#     print(f"\nRegistrasi {username} sebagai admin berhasil!")
-
-#     i = input("\nKetik apa saja untuk kembali...")
-#     return main()
 
 # ================================================ REGIS AS OPERATOR ======================================================
 def regisOperator():
-    os.system('cls')
-    teks = """
-
-    ░██████╗██╗██████╗░░█████╗░██████╗░██╗
-    ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
-    ╚█████╗░██║██████╔╝███████║██║░░██║██║
-    ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
-    ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
-    ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
-    """
-    print(teks)
-    print('╔' + '═'*48 + '╗')
-    print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
-    print('╚' + '═'*48 + '╝') 
-
-    df = pd.read_csv(FILE_OPERATOR)
-    # kondisi 1
+    # KASIH WHILE TRUE DI AWAL SAJA (SARAN)
     while True:
+        os.system('cls')
+        teks = """
+
+        ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+        ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+        ╚█████╗░██║██████╔╝███████║██║░░██║██║
+        ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+        ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+        ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+        """
+        print(teks)
+        print('╔' + '═'*48 + '╗')
+        print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
+        print('╚' + '═'*48 + '╝') 
+
+        df = pd.read_csv(FILE_OPERATOR)
+        # kondisi 1
+        # while True:
         username = input("Masukkan Username: ").strip().lower()
         if not username:
-            os.system('cls')
-            teks = """
-
-            ░██████╗██╗██████╗░░█████╗░██████╗░██╗
-            ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
-            ╚█████╗░██║██████╔╝███████║██║░░██║██║
-            ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
-            ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
-            ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
-            """
-            print(teks)
-            print('╔' + '═'*48 + '╗')
-            print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
-            print('╚' + '═'*48 + '╝') 
             print("\nUsername tidak boleh kosong")
             continue
         if len(username) < 3:
-            os.system('cls')
-            teks = """
-
-            ░██████╗██╗██████╗░░█████╗░██████╗░██╗
-            ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
-            ╚█████╗░██║██████╔╝███████║██║░░██║██║
-            ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
-            ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
-            ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
-            """
-            print(teks)
-            print('╔' + '═'*48 + '╗')
-            print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
-            print('╚' + '═'*48 + '╝') 
             print('\nUsername harus berisi minimal 3 karakter!')
             continue
         if (df['username'] == username).any():
-            os.system('cls')
-            teks = """
-
-            ░██████╗██╗██████╗░░█████╗░██████╗░██╗
-            ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
-            ╚█████╗░██║██████╔╝███████║██║░░██║██║
-            ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
-            ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
-            ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
-            """
-            print(teks)
-            print('╔' + '═'*48 + '╗')
-            print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
-            print('╚' + '═'*48 + '╝') 
             print("\nUsername sudah ada. tentukan yang lain")
             continue
         else:
@@ -175,13 +87,12 @@ def regisOperator():
         print(f"\nRegistrasi {username} sebagai admin berhasil!")
 
         i = input("\nKetik apa saja untuk kembali")
-        return main()
+        return 
 
 # ================================================ LOGIN ADMIN ======================================================
 # fungsi login
 def loginAdmin():
     while True:
-
         os.system('cls')
         teks = """
         ░██████╗██╗██████╗░░█████╗░██████╗░██╗
@@ -214,72 +125,38 @@ def loginAdmin():
         while True:
             username = input("Masukkan Username: ").strip().lower()
             if not username:
-                os.system('cls')
-                teks = """
-
-                ░██████╗██╗██████╗░░█████╗░██████╗░██╗
-                ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
-                ╚█████╗░██║██████╔╝███████║██║░░██║██║
-                ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
-                ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
-                ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
-                """
-                print(teks)
-                print('╔' + '═'*48 + '╗')
-                print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
-                print('╚' + '═'*48 + '╝') 
                 print("\nUsername tidak boleh kosong")
                 continue
             if len(username) < 3:
-                os.system('cls')
-                teks = """
-
-                ░██████╗██╗██████╗░░█████╗░██████╗░██╗
-                ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
-                ╚█████╗░██║██████╔╝███████║██║░░██║██║
-                ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
-                ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
-                ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
-                """
-                print(teks)
-                print('╔' + '═'*48 + '╗')
-                print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
-                print('╚' + '═'*48 + '╝') 
                 print('\nUsername harus berisi minimal 3 karakter!')
                 continue
-            else:
-                break
 
-        # kondisi 2
-        while True:
+            # kondisi 2
             password = input("Masukkan Password: ").strip().lower()
             if not password:
                 print("Password tidak boleh kosong")
                 continue
-            else:
-                break
 
 
-        # operator
-        if not os.path.exists(FILE_ADMIN):
-            print("File data_admin.csv tidak ditemukan!")
-            df = pd.DataFrame(columns=['Username', 'Password'])
-            df.to_csv('dt_operator.csv', index=False)
-            print("Silakan buat akun admin terlebih dahulu.")
-            input("Tekan Enter...")
-            return
-        # Cek username & password di CSV
-        # Dalam pandas, kamu tidak bisa memakai and, or, atau not langsung.
-        # Kamu harus pakai &, |, dan ~, serta setiap kondisi harus dalam tanda kurung ( ).
-        min = admin[(admin['username'] == username) & (admin['password'] == password)].astype(str)
-        if not min.empty:
-            admin_menu(username)
-        else: 
-            print('\nLogin gagal! Username atau password salah.')
-            print("\nTunggu sebentar, kmau akan diarahkan ke halaman login")
+            if not os.path.exists(FILE_ADMIN):
+                print("File data_admin.csv tidak ditemukan!")
+                df = pd.DataFrame(columns=['Username', 'Password'])
+                df.to_csv('dt_operator.csv', index=False)
+                print("Silakan buat akun admin terlebih dahulu.")
+                input("Tekan Enter...")
+                return
+            # Cek username & password di CSV
+            # Dalam pandas, kamu tidak bisa memakai and, or, atau not langsung.
+            # Kamu harus pakai &, |, dan ~, serta setiap kondisi harus dalam tanda kurung ( ).
+            min = admin[(admin['username'] == username) & (admin['password'] == password)].astype(str)
+            if not min.empty:
+                admin_menu(username)
+            else: 
+                print('\nLogin gagal! Username atau password salah.')
+                print("\nTunggu sebentar, kmau akan diarahkan ke halaman login")
 
-            time.sleep(2) #delay
-            return
+                time.sleep(2) #delay
+                return
 
 # ==================================LOGIN MENU===========================================
 def loginOperator():
@@ -316,37 +193,9 @@ def loginOperator():
         while True:
             username = input("Masukkan Username: ").strip().lower()
             if not username:
-                os.system('cls')
-                teks = """
-
-                ░██████╗██╗██████╗░░█████╗░██████╗░██╗
-                ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
-                ╚█████╗░██║██████╔╝███████║██║░░██║██║
-                ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
-                ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
-                ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
-                """
-                print(teks)
-                print('╔' + '═'*48 + '╗')
-                print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
-                print('╚' + '═'*48 + '╝') 
                 print("\nUsername tidak boleh kosong")
                 continue
             if len(username) < 3:
-                os.system('cls')
-                teks = """
-
-                ░██████╗██╗██████╗░░█████╗░██████╗░██╗
-                ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
-                ╚█████╗░██║██████╔╝███████║██║░░██║██║
-                ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
-                ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
-                ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
-                """
-                print(teks)
-                print('╔' + '═'*48 + '╗')
-                print('║' + "REGISTER AKUN OPERATOR".center(48)+ '║')
-                print('╚' + '═'*48 + '╝') 
                 print('\nUsername harus berisi minimal 3 karakter!')
                 continue
             else:
@@ -371,6 +220,7 @@ def loginOperator():
             print("\nTunggu sebentar, kmau akan diarahkan ke halaman login")
             time.sleep(2) #delay
             return
+
 
 # ==================================MENU FITUR ADMIN===========================================
 # ==================================MENU FITUR ADMIN - CRUD===========================================
@@ -412,9 +262,8 @@ def tambahDataPelanggan():
     except ValueError:
         print("Masukkan nomor telp dnegan angka ya :<")
         print("Porgram akan kembali ke menu dalam 3 detik dari sekarang")
-        time.sleep(3)
         return
-    alamat = input("Masukkan Alamat Lengkap : ").strip().lower()
+    alamat = input("Masukkan Alamat Lengkap : ").strip()
     
 # cari id cus
     # if os.path.exists(data_customer):
@@ -613,6 +462,7 @@ def editDataPelanggan():
     if namaBaru:
         df.loc[df['id'] == idPelanggan, 'namaPetani'] = namaBaru
     if notelpBaru :
+        # notelpBaru = f"62{notelpBaru}"
         df.loc[df['id'] == idPelanggan, 'noTelp'] = str(notelpBaru)
     if alamatBaru :
         df.loc[df['id'] == idPelanggan, 'alamat'] = alamatBaru
@@ -624,7 +474,7 @@ def editDataPelanggan():
     print(f"\n✓ Data pelanggan berhasil diupdate!")
     print(f"\nData pelanggan ID {idPelanggan} berhasil diperbarui!")
 
-input("\nTekan Enter untuk melanjutkan...")
+
 
 # =======================FITUR 5 -- FITUR ADMIN==============================
 def hapusDataPelanggan():
@@ -823,7 +673,7 @@ def laporanHarian():
         # input tanggal yg ingin ditentukkan
         inpTgl = input("Masukkan tanggal (DD-MM-YYY) atau Enter untuk hari ini: ").strip()
         if not inpTgl:
-            inpTgl = df['tanggal'].iloc[-1]
+            inpTgl = datetime.now().strftime("%d-%m-%Y")
 
     # cek keberadaan file
         if not os.path.exists(FILE_TRANSAKSI) or not  os.path.exists(FILE_PELANGGAN) :
@@ -893,13 +743,13 @@ def laporan():
         choice = input("\nPilih menu: ")
         
         if choice == "1":
-            laporanHarian()
+            riwayatHarian()
         # elif choice == "2":
         #     view_monthly_report()
-        # elif choice == "3":
-        #     view_all_transactions()
-        # elif choice == "4":
-        #     view_statistics()
+        elif choice == "3":
+            riwayatKeseluruhan()
+        elif choice == "4":
+            statistik()
         elif choice == "0":
             break
         else:
@@ -1050,6 +900,7 @@ def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
     print(f"\nUsername berhasil diubah menjadi '{usernameBaru}'!")
     # time.sleep(1.5)
     return
+
 
 
 # ==================================MENU FITUR OPERATOR===========================================
@@ -1325,7 +1176,7 @@ def riwayatHarian():
     while True:
 
 # input tanggal yg ingin ditentukkan
-        inpTanggal = input("Masukkan tanggal (DD-MM-YYY) atau Enter untuk hari ini: ").strip()
+        inpTanggal = input("\nMasukkan tanggal (DD-MM-YYY) atau Enter untuk hari ini: ").strip()
         if not inpTanggal:
             inpTanggal = datetime.now().strftime("%d-%m-%Y")
 
@@ -1347,6 +1198,7 @@ def riwayatHarian():
         
         # gabungkan data
         dfc = pd.merge(df1, df2, left_on = 'id', right_on='idPel' ,how='inner')
+        dfc.drop(columns=['idPel'], inplace=True)
 
 # apabila dfc ada value yg kosong
         if dfc.empty:
@@ -1371,6 +1223,7 @@ def riwayatHarian():
 
         totalBerat = filter['berat'].sum()
         totalBiaya = filter['total'].sum()
+        print(tabulate(filter,headers='keys', tablefmt='fancy_grid', showindex=False))
 
         # tampilkan ringkasan
         print(f"\nTanggal {inpTanggal}")
@@ -1378,11 +1231,10 @@ def riwayatHarian():
         print(f"Total Berat {totalBerat}")
         print(f"Total Pendapatan {totalBiaya}\n")
 
-        print(tabulate(filter,headers='keys', tablefmt='fancy_grid', showindex=False))
 
 
         input("\nKlik Enter untuk kemabli...")
-        return riwaywatTranskasi()
+        return riwayatTransaksi()
         
 # ==================================MENU FITUR OPERATOR - Tansaksi based petani ====================================
 def riwayatBasedPetani():
@@ -1398,20 +1250,21 @@ def riwayatBasedPetani():
     """
     print(teks)
     print('╔' + '═'*48 + '╗')
-    print('║' + "RIWAYAT BERDASARKAN PETANI".center(48) + '║')
+    print('║' + "RIWAYAT BERDASARKAN ID PETANI".center(48) + '║')
     print('╚' + '═'*48 + '╝') 
     while True:
 
 # tampilkan data pelanggan
         df1 = pd.read_csv(FILE_PELANGGAN)
+        print("Daftar Petani:".center(50))
         print(tabulate(df1, headers='keys', tablefmt='fancy_grid', showindex=False))
 
 
 
 # input tanggal yg ingin ditentukkan
-        inpPetani = input("Masukkan nama Petani: ").strip().upper()
+        inpPetani = input("Masukkan id Petani: ")
         if not inpPetani:
-            print("Nama petani tidak boleh kosong")
+            print("id petani tidak boleh kosong")
             input("Enter untuk kembali...")
             return
 
@@ -1432,21 +1285,31 @@ def riwayatBasedPetani():
                 return
         
         # gabungkan data
-        dfc = pd.merge(df1, df2, left_on = 'id', right_on='idPel' ,how='inner')
 
+        dfc = pd.merge(df1, df2, left_on = 'id', right_on='idPel' ,how='inner')
+        dfc['id'] = dfc['id'].astype(str) 
+        dfc = dfc.drop(columns=['idPel'])
 # apabila dfc ada value yg kosong
         if dfc.empty:
             print(" Data pelanggan atau data transaksi masih kosong.")
             input("\nTekan Enter untuk melanjutkan...")
             return
+        
 
 # Pastikan kolom tanggal dalam format datetime
         # dfc['tanggal'] = pd.to_datetime(dfc['namaPetani'], ) 
         # mengubah value 'tanggal' menjaddi object pd datetime| dayfrist= dimulai dari hari
 
-# filter transaksi based tanggal yg gdiinout
-        filter = dfc[dfc['namaPetani'] == inpPetani]
-        filter = dfc[dfc['namaPetani'].str.contains(inpPetani, case= False)]
+# filter transaksi based tanggal yg iidinput
+        filter = dfc[dfc['id'] == inpPetani]
+        if filter.empty:
+            print("\nPetani yang kamu cari belum melakukan transaksi")
+            print("Silahkan isi dengan id yang sudah melakukan transaksi")
+            time.sleep(1.4)
+            return riwayatBasedPetani()
+        # if not filter.empty:
+        #     namaPetani = filter['namaPetani'].iloc[0]
+        # filter = dfc[dfc['id'].str.contains(inpPetani)]
 
     # Urutkan berdasarkan tanggal terbaru
         # dfc = dfc.sort_values(by="tanggal", ascending=False)
@@ -1463,21 +1326,144 @@ def riwayatBasedPetani():
 
         # tampilkan ringkasan
         os.system('cls')
+        print(tabulate(filter,headers='keys', tablefmt='fancy_grid', showindex=False))
 
-        print("Petani ditemukan")
+        print("Petani ditemukan".center(50))
         print(f"\nNama petani: {namaPetani}")
         print(f"Jumlah Transaksi: {len(filter)}")
         print(f"Total Berat: {totalBerat}")
         print(f"Total Pendapatan: {totalBiaya}\n")
 # tabel yg divari
-        print(tabulate(filter,headers='keys', tablefmt='fancy_grid', showindex=False))
 
 
         input("\nKlik Enter untuk kembali...")
-        return riwaywatTranskasi()
+        return riwayatTransaksi()
 
 # ==================================MENU FITUR OPERATOR - Tansaksi ====================================
-def riwaywatTranskasi():
+def riwayatKeseluruhan():
+    os.system('cls')
+    while True:
+        teks = """
+
+        ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+        ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+        ╚█████╗░██║██████╔╝███████║██║░░██║██║
+        ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+        ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+        ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+        """
+        print(teks)
+        print('╔' + '═'*48 + '╗')
+        print('║' + "DAFTAR PELANGGAN".center(48) + '║')
+        print('╚' + '═'*48 + '╝') 
+
+        if not os.path.exists(FILE_PELANGGAN):
+            print(" Belum ada data pelanggan.")
+            input("\nTekan Enter untuk melanjutkan...")
+            return
+        
+
+        if not os.path.exists(FILE_TRANSAKSI):
+            print(" Belum ada data pelanggan.")
+            input("\nTekan Enter untuk melanjutkan...")
+            return
+        
+        
+        try:
+            df1 = pd.read_csv(FILE_PELANGGAN)
+            df2 = pd.read_csv(FILE_TRANSAKSI)
+
+            if df1.empty or df2.empty:
+                print(" Data pelanggan masih kosong.")
+                input("\nTekan Enter untuk melanjutkan...")
+                return
+            # ubah type data
+            dfc = pd.merge(df1, df2, left_on='id', right_on='idPel', how='inner')
+            dfc.drop(columns=['idPel'], inplace=True)
+            print(tabulate(dfc, headers='keys', tablefmt="fancy_grid", showindex=False))
+
+        except Exception as e:
+            print(f"Terjadi kesalahan saat membaca data: {e}")
+            time.sleep(2)
+            return
+        id = len(dfc['id'])
+        sumbobot = dfc['berat'].sum()
+        sumpendapatan = dfc['total'].sum()
+
+        print(f"\nJumlah Transkasi: {id}  ")
+        print(f"Jumlah berat: {sumbobot}")
+        print(f"Jumlah Pendapatn: {sumpendapatan}")
+        input("\nTekan Enter untuk melanjutkan...")
+        os.system('cls')
+        return
+
+def statistik():
+    os.system('cls')
+    while True:
+        teks = """
+
+        ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+        ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+        ╚█████╗░██║██████╔╝███████║██║░░██║██║
+        ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+        ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+        ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+        """
+        print(teks)
+        print('╔' + '═'*48 + '╗')
+        print('║' + "DAFTAR PELANGGAN".center(48) + '║')
+        print('╚' + '═'*48 + '╝') 
+
+        if not os.path.exists(FILE_PELANGGAN):
+            print(" Belum ada data pelanggan.")
+            input("\nTekan Enter untuk melanjutkan...")
+            return
+        
+
+        if not os.path.exists(FILE_TRANSAKSI):
+            print(" Belum ada data pelanggan.")
+            input("\nTekan Enter untuk melanjutkan...")
+            return
+        
+        try:
+            df1 = pd.read_csv(FILE_PELANGGAN)
+            df2 = pd.read_csv(FILE_TRANSAKSI)
+
+            if df1.empty or df2.empty:
+                print(" Data pelanggan masih kosong.")
+                input("\nTekan Enter untuk melanjutkan...")
+                return
+            # ubah type data
+            dfc = pd.merge(df1, df2, left_on='id', right_on='idPel', how='inner')
+            dfc.drop(columns=['idPel'], inplace=True)
+            # print(tabulate(dfc, headers='keys', tablefmt="fancy_grid", showindex=False))
+
+        except Exception as e:
+            print(f"Terjadi kesalahan saat membaca data: {e}")
+            return
+        id = len(dfc['id'])
+        sumbobot = dfc['berat'].sum()
+        sumpendapatan = dfc['total'].sum()
+        sumpelanggan = len(df1)
+        sumtransaski = len(df2)
+        hargaNow = df2['harPerKg'].iloc[-1]
+        sigmaBobot = sumbobot // id
+        sigmaPendapatan = sumpendapatan // id
+
+
+        print(f"\nTotal Pelanggan: {sumpelanggan} ")
+        print(f"Total Transaksi: {sumtransaski}")
+        print(f"Total Berat Diling: {sumbobot}")
+        print(f"Total Pendapatan: {sumpendapatan}")
+        print(f"Harga Saat Ini: {hargaNow}")
+        print(f"Rata-rata Berat per Transaksi: {sigmaBobot}")
+        print(f"Rata-rata Pendapatan per Transaksi: {sigmaPendapatan}")
+        input("\nTekan Enter untuk melanjutkan...")
+        os.system('cls')
+        return
+
+# ==================================MENU FITUR OPERATOR - Tansaksi ====================================
+def riwayatTransaksi():
     os.system('cls')
     teks = """
 
@@ -1495,9 +1481,9 @@ def riwaywatTranskasi():
     while True:
     
         print("[1]. Riwayat transaksi harian")
-        print("[2]. Riwayat transaksi berdasrkan nama petani")
+        print("[2]. Riwayat transaksi berdasarkan nama petani")
         print("[3]. Riwayat Keseleruhan")
-        print("[0]. Logout")
+        print("[0]. Keluar")
         
         choice = input("\nPilih menu: ")
 
@@ -1506,10 +1492,10 @@ def riwaywatTranskasi():
             riwayatHarian()
         elif choice == "2":
             riwayatBasedPetani()
-        # elif choice == "3":
-        #     view_reports()
+        elif choice == "3":
+            riwayatKeseluruhan()
         elif choice == "0":
-            return main()
+            return 
         else:
             print("Pilihan tidak valid!")
             input("Tekan Enter untuk melanjutkan...")
@@ -1574,13 +1560,12 @@ def ubahPWOperator():
             
 
         # Update password
-        df.loc[df['password'] == password, 'password'] = passwordBaru #eror disini bang
+        df.loc[df['password'] == password, 'password'] = passwordBaru
         df.to_csv(FILE_OPERATOR, index=False)
 
         print(f"\npassword berhasil diubah menjadi '{passwordBaru}'!")
-        # time.sleep(1.5)
         os.system('cls')
-        return password
+        return
 
 def ubahUSEROperator(username):
     
@@ -1653,7 +1638,7 @@ def ubahUSEROperator(username):
             input("\nTekan Enter untuk melanjutkan...")
             return 
         
-        # apabila len user < 3\
+        # apabila len user < 3
         if len(usernameBaru) <3 :
             print("\nUsername minimmal 3 character")
             input("Enter untuk kembali ke menu")
@@ -1664,7 +1649,6 @@ def ubahUSEROperator(username):
         df.to_csv( FILE_OPERATOR, index=False)
 
         print(f"\nUsername berhasil diubah menjadi '{usernameBaru}'!")
-        # time.sleep(1.5)
         os.system('cls')
         return
 
@@ -1695,7 +1679,7 @@ def admin_menu(username):
         print("[3]. Lihat Laporan Penggilingan ")
         print("[4]. Ubah Password")
         print("[5]. Ubah Username")
-        print("[0]. Logout")
+        print("[0]. Logout ")
         
         choice = input("\nPilih menu: ")
         
@@ -1751,21 +1735,21 @@ def operator_menu(username):
         elif choice == "3":
             cariPetani()
         elif choice == "4":
-            riwaywatTranskasi()
+            riwayatTransaksi()
         elif choice == "5":
-            new_password = ubahPW()
+            new_password = ubahPWOperator()
             if new_password:
                 # Logout after username change
                 print("\nAnda akan logout untuk login ulang.\nSilahkan Login ulang")
                 input("Tekan Enter untuk melanjutkan...")
                 return loginOperator()
         elif choice == "6":
-            new_username = ubahUSER(username)
+            new_username = ubahUSEROperator(username)
             if new_username:
                 # Logout after username change
-                print("\nAnda akan logout untuk login ulang dengan username baru.")
+                print("\nAnda akan logout untuk login ulang.\nSilahkan Login ulang")
                 input("Tekan Enter untuk melanjutkan...")
-                break
+                return loginOperator()
         elif choice == "0":
             return main()
         else:
@@ -1816,7 +1800,7 @@ def main():
                 print('╔' + '═'*48 + '╗')
                 print('║' + "LOGIN AKUN".center(48) + '║')
                 print('╚' + '═'*48 + '╝') 
-                print('\n[1]. SEBAGAI ADMIN \n[2]. SEBAGAI OPERATOR \n[3]. Keluar\n')
+                print('\n[1]. SEBAGAI ADMIN \n[2]. SEBAGAI OPERATOR \n[0]. Keluar\n')
 
                 pilih = input("\n LOGIN SEBAGAI (pilih angka): ")
                 if pilih == '1':
