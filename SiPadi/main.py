@@ -247,7 +247,7 @@ def tambahDataPelanggan():
         print(" Belum ada data pelanggan.")
         input("\nTekan Enter untuk melanjutkan...")
 
-    df = pd.read_csv(FILE_PELANGGAN)
+    df = pd.read_csv(FILE_PELANGGAN, dtype={'noTelp': 'str'})
     # writer.writerow(["ID", "Nama_Petani", "No_Telp", "Alamat"])  # <-- header kolom
 
 
@@ -257,9 +257,9 @@ def tambahDataPelanggan():
         input("Tekan Enter untuk melanjutkan...")
         return
     
-    try:
-        notelp = int(input("Masukkan No. Telepon (awali dengan 62): "))
-    except ValueError:
+
+    notelp = input("Masukkan No. Telepon (awali dengan 62): ")
+    if not notelp.isdigit():
         print("Masukkan nomor telp dnegan angka ya :<")
         print("Porgram akan kembali ke menu dalam 3 detik dari sekarang")
         return
@@ -272,8 +272,8 @@ def tambahDataPelanggan():
         with open(FILE_PELANGGAN, mode="r", encoding="utf-8") as file:
             read = list(csv.reader(file))
         if len(read) >= 1:
-            last_id = int(read[-1][0]) #pahami syntax
-            customer_id = last_id + 1
+            idTerakhir = int(read[-1][0]) #pahami syntax
+            customer_id = idTerakhir + 1
     except:
             pass #placeholder — yaitu perintah kosong yang tidak melakukan apa-apa.
 
@@ -314,7 +314,7 @@ def lihatData():
         return
 
     try:
-        df = pd.read_csv(FILE_PELANGGAN)
+        df = pd.read_csv(FILE_PELANGGAN, dtype={'noTelp': 'str'})
 
         if df.empty:
             print(" Data pelanggan masih kosong.")
@@ -349,7 +349,7 @@ def cariPelanggan():
 
 # tampilkan tabel customer
     try:
-        df = pd.read_csv(FILE_PELANGGAN)
+        df = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
    
         if df.empty:
             print(" Data pelanggan masih kosong.")
@@ -420,14 +420,14 @@ def editDataPelanggan():
     except ValueError:
         print("ID harus berupa angka!")
         input("\nTekan Enter untuk melanjutkan...")
-        return editDataPelanggan()
+        return
 
 
     # cek apakah ID ada
     if idPelanggan not in df['id'].values:
         print("Pelanggan dengan ID tersebut tidak ditemukan!")
         input("\nTekan Enter untuk melanjutkan...")
-        return editDataPelanggan()
+        return 
     
 
     # ambil data pelanggan yang sesuai
@@ -454,8 +454,7 @@ def editDataPelanggan():
         pass
     else: 
         print("Masukkan nomor dengan angka!")
-        time.sleep(1)
-        return editDataPelanggan()
+        return
     
     alamatBaru = input(f"Alamat baru (Enter untuk tidak mengubah): ").strip().lower()
 
@@ -499,7 +498,7 @@ def hapusDataPelanggan():
         input("\nTekan Enter untuk melanjutkan...")
         return
 
-    df = pd.read_csv(FILE_PELANGGAN)
+    df = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
 
     if df.empty:
         print("Data pelanggan masih kosong.")
@@ -716,6 +715,88 @@ def laporanHarian():
         except ValueError:
             print("Ada yang salah dari program")
 
+# ============================= FITUR ADMIN 3 | LAPORAN PERIODE ===================
+def laporanPerdiode():
+    os.system('cls')
+    while True:
+        teks = """
+
+        ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+        ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+        ╚█████╗░██║██████╔╝███████║██║░░██║██║
+        ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+        ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+        ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+        """
+        print(teks)
+        print('╔' + '═'*48 + '╗')
+        print('║' + "Laporan Periode Penggilingan".center(48) + '║')
+        print('╚' + '═'*48 + '╝')
+        
+        if not os.path.exists(FILE_PELANGGAN):
+            print(" Belum ada data pelanggan.")
+            input("\nTekan Enter untuk melanjutkan...")
+            return
+        
+
+        if not os.path.exists(FILE_TRANSAKSI):
+            print(" Belum ada data pelanggan.")
+            input("\nTekan Enter untuk melanjutkan...")
+            return
+        
+        df1 = pd.read_csv(FILE_PELANGGAN, dtype={'noTelp' : 'str'})    
+        df2 = pd.read_csv(FILE_TRANSAKSI)    
+
+        if df1.empty or df2.empty:
+            print(" Data pelanggan masih kosong.")
+            input("\nTekan Enter untuk melanjutkan...")
+            return
+        
+        dfc = pd.merge(df1, df2, left_on='id', right_on='idPel', how='inner')
+        dfc.drop(columns=['idPel'], inplace=True)
+        print(tabulate(dfc, headers='keys', tablefmt="fancy_grid", showindex=False))
+
+        dfc['tanggal'] = pd.to_datetime(dfc['tanggal'], format='%d-%m-%Y')
+        while True:
+            try:
+                print("\nMasukkan tanggal dalam format DD-MM-YYY") 
+                start = input("Tanggal Awal: ")
+                end = input("Tanggal Akhir: ")
+
+                start_date = pd.to_datetime(start, format='%d-%m-%Y')
+                end_date = pd.to_datetime(end, format='%d-%m-%Y')
+
+                if start_date > end_date:
+                    print("Tanggal awal tidak boleh lebih besar dari tanggal akhir")
+                    return
+                namaPeriode = f"Periode {start} s/d {end}"
+                break
+
+            except:
+                print("Format tangall salah, Gunakan format DD-MM-YYYY")
+        
+        # memfilter tanggal yg diminta yg ada di var dfc
+        filtered = dfc[
+            (dfc['tanggal']>= start_date) &
+            (dfc['tanggal'] <= end_date)
+        ] 
+        
+        #mengelompokkan data tanggal yg ada di var filtered dan (agg = > agregat) mencari totalnya 
+        laporanPerdiode = filtered.groupby(filtered['tanggal']).agg({
+            'total' : 'sum'
+        }).reset_index()
+        laporanPerdiode.index += 1
+
+        print(f"Laporan Periode {namaPeriode}:")
+        if len(laporanPerdiode) > 0:
+            print(tabulate(laporanPerdiode, headers='keys', tablefmt="fancy_grid", showindex=False))
+            print(f"Total keuntungan: Rp {laporanPerdiode['total'].sum():,.0f}")
+            input("Tekan Enter untuk kembali...")
+            return
+#             : = Menandakan awal dari format specifier
+#             , = Pemisah ribuan(menambahkan koma sebagai pemisah ribuan, jutaan, dst.)
+#             .0 = tidak menampilkan desimal
+#             f = Tipe format: fixed-point number (angka desimal, tapi di sini dibulatkan karena.0 
 # ============================= FITUR ADMIN 3 | LAPORAN===================
 def laporan():
     while True:
@@ -744,14 +825,14 @@ def laporan():
         
         if choice == "1":
             riwayatHarian()
-        # elif choice == "2":
-        #     view_monthly_report()
+        elif choice == "2":
+            laporanPerdiode()
         elif choice == "3":
             riwayatKeseluruhan()
         elif choice == "4":
             statistik()
         elif choice == "0":
-            break
+            return
         else:
             print("Pilihan tidak valid!")
 
@@ -898,7 +979,6 @@ def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
     df.to_csv( FILE_ADMIN, index=False)
 
     print(f"\nUsername berhasil diubah menjadi '{usernameBaru}'!")
-    # time.sleep(1.5)
     return
 
 
@@ -927,7 +1007,7 @@ def tambahDataPelanggan():
         print(" Belum ada data pelanggan.")
         input("\nTekan Enter untuk melanjutkan...")
 
-    df = pd.read_csv(FILE_PELANGGAN)
+    df = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
     # writer.writerow(["ID", "Nama_Petani", "No_Telp", "Alamat"])  # <-- header kolom
 
 
@@ -993,7 +1073,7 @@ def transaksi():
             input("\nTekan Enter untuk melanjutkan...")
 
 
-        df_pelanggan = pd.read_csv(FILE_PELANGGAN, )
+        df_pelanggan = pd.read_csv(FILE_PELANGGAN, dtype={'noTelp': 'str'})
         print(tabulate(df_pelanggan, headers='keys', tablefmt="fancy_grid", showindex=False))
 
         id = input("Transaksi akan dilakukan berdasarkan id :")
@@ -1102,7 +1182,7 @@ def cariPetani():
         # df1 = df1['id'] .astype(str)
         # df2 = df2['idPelanggan'].astype(str)
         try:
-            df1 = pd.read_csv(FILE_PELANGGAN)
+            df1 = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
             df2 = pd.read_csv(FILE_TRANSAKSI)
         
             if df1.empty or df2.empty:
@@ -1187,7 +1267,7 @@ def riwayatHarian():
             return
         
 # baca file
-        df1 = pd.read_csv(FILE_PELANGGAN)
+        df1 = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
         df2 = pd.read_csv(FILE_TRANSAKSI)
 
 # memeriksa file
@@ -1236,7 +1316,7 @@ def riwayatHarian():
         input("\nKlik Enter untuk kemabli...")
         return riwayatTransaksi()
         
-# ==================================MENU FITUR OPERATOR - Tansaksi based petani ====================================
+# ==================================MENU FITUR OPERATOR - Tansaksi | based petani ====================================
 def riwayatBasedPetani():
     os.system('cls')
     teks = """
@@ -1253,9 +1333,8 @@ def riwayatBasedPetani():
     print('║' + "RIWAYAT BERDASARKAN ID PETANI".center(48) + '║')
     print('╚' + '═'*48 + '╝') 
     while True:
-
 # tampilkan data pelanggan
-        df1 = pd.read_csv(FILE_PELANGGAN)
+        df1 = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
         print("Daftar Petani:".center(50))
         print(tabulate(df1, headers='keys', tablefmt='fancy_grid', showindex=False))
 
@@ -1275,7 +1354,7 @@ def riwayatBasedPetani():
             return
         
 # baca file
-        df1 = pd.read_csv(FILE_PELANGGAN)
+        df1 = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
         df2 = pd.read_csv(FILE_TRANSAKSI)
 
 # memeriksa file
@@ -1333,11 +1412,10 @@ def riwayatBasedPetani():
         print(f"Jumlah Transaksi: {len(filter)}")
         print(f"Total Berat: {totalBerat}")
         print(f"Total Pendapatan: {totalBiaya}\n")
-# tabel yg divari
-
 
         input("\nKlik Enter untuk kembali...")
         return riwayatTransaksi()
+
 
 # ==================================MENU FITUR OPERATOR - Tansaksi ====================================
 def riwayatKeseluruhan():
@@ -1370,7 +1448,7 @@ def riwayatKeseluruhan():
         
         
         try:
-            df1 = pd.read_csv(FILE_PELANGGAN)
+            df1 = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
             df2 = pd.read_csv(FILE_TRANSAKSI)
 
             if df1.empty or df2.empty:
@@ -1397,6 +1475,7 @@ def riwayatKeseluruhan():
         os.system('cls')
         return
 
+# ==================================MENU FITUR OPERATOR - Tansaksi statistik ====================================
 def statistik():
     os.system('cls')
     while True:
@@ -1426,7 +1505,7 @@ def statistik():
             return
         
         try:
-            df1 = pd.read_csv(FILE_PELANGGAN)
+            df1 = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
             df2 = pd.read_csv(FILE_TRANSAKSI)
 
             if df1.empty or df2.empty:
@@ -1459,8 +1538,7 @@ def statistik():
         print(f"Rata-rata Berat per Transaksi: {sigmaBobot}")
         print(f"Rata-rata Pendapatan per Transaksi: {sigmaPendapatan}")
         input("\nTekan Enter untuk melanjutkan...")
-        os.system('cls')
-        return
+        return riwayatTransaksi()
 
 # ==================================MENU FITUR OPERATOR - Tansaksi ====================================
 def riwayatTransaksi():
@@ -1567,6 +1645,7 @@ def ubahPWOperator():
         os.system('cls')
         return
 
+## ==============================l====MENU FITUR OPERATOR - ubah user operator ====================================
 def ubahUSEROperator(username):
     
     os.system('cls')
