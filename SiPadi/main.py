@@ -952,7 +952,6 @@ def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
     # Verifikasi password
     if username != user.iloc[0]['username']:
         print("username salah!")
-        print(user)
         input("\nTekan Enter untuk melanjutkan...")
         return
 
@@ -1561,7 +1560,7 @@ def riwayatTransaksi():
         print("[1]. Riwayat transaksi harian")
         print("[2]. Riwayat transaksi berdasarkan nama petani")
         print("[3]. Riwayat Keseleruhan")
-        print("[0]. Keluar")
+        print("[0]. Kembali")
         
         choice = input("\nPilih menu: ")
 
@@ -1758,7 +1757,7 @@ def admin_menu(username):
         print("[3]. Lihat Laporan Penggilingan ")
         print("[4]. Ubah Password")
         print("[5]. Ubah Username")
-        print("[0]. Logout ")
+        print("[0]. Kembali ")
         
         choice = input("\nPilih menu: ")
         
@@ -1803,7 +1802,7 @@ def operator_menu(username):
         print("[4]. Lihat Riwayat Transaksi")
         print("[5]. Ubah Password")
         print("[6]. Ubah Username")
-        print("[0]. Logout")
+        print("[0]. Kembali")
         
         choice = input("\nPilih menu: ")
         
@@ -1855,7 +1854,7 @@ def main():
         print('╠' + '═'*48 + '╣')
         print('║' + 'Penggilingan Padi Terpercaya di Indonesia'.center(48) + '║')
         print('╚' + '═'*48 + '╝') 
-        print('\n [1]. Registrasi Sebagai Operator\n [2]. Login\n [0]. Keluar\n ')  
+        print('\n [1]. Registrasi Sebagai Operator\n [2]. Masuk\n [0]. Keluar\n ')  
     
         piliihan = input("\nMenu yang dipilih: (1/2/0) ")
         while True:
@@ -1879,7 +1878,7 @@ def main():
                 print('╔' + '═'*48 + '╗')
                 print('║' + "LOGIN AKUN".center(48) + '║')
                 print('╚' + '═'*48 + '╝') 
-                print('\n[1]. SEBAGAI ADMIN \n[2]. SEBAGAI OPERATOR \n[0]. Keluar\n')
+                print('\n[1]. Sebagai Admin \n[2]. Sebagai Operator \n[0]. Kembali\n')
 
                 pilih = input("\n LOGIN SEBAGAI (pilih angka): ")
                 if pilih == '1':
