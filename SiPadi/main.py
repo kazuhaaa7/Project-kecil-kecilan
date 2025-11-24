@@ -33,7 +33,6 @@ def cekData():
 
 # ================================================ REGIS AS OPERATOR ======================================================
 def regisOperator():
-    # KASIH WHILE TRUE DI AWAL SAJA (SARAN)
     while True:
         os.system('cls')
         teks = """
@@ -286,8 +285,6 @@ def tambahDataPelanggan():
         writer = csv.writer(file)
         writer.writerow([customer_id, nama, notelp, alamat])
     
-    
-    
     print(f"\nPelanggan '{nama}' berhasil ditambahkan! (ID: {customer_id})")
     input("\nEnter untuk lanjut...")
 # =======================FITUR 2 -- FITUR ADMIN===============================\
@@ -321,13 +318,11 @@ def lihatData():
             input("\nTekan Enter untuk melanjutkan...")
             return
         # ubah type data
-        df['noTelp'] = df['noTelp'].astype(str)
-        print(type(df['noTelp'].iloc[-1]))
         print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
         input("\nTekan Enter untuk melanjutkan...")
     except Exception as e:
         print(f"Terjadi kesalahan saat membaca data: {e}")
-        time.sleep(2)
+        input("\nTekan Enter untuk melanjutkan...")
         return
     
 # =======================FITUR 3 -- FITUR ADMIN===============================
@@ -525,16 +520,14 @@ def hapusDataPelanggan():
         df = df[df['id'].astype(str) != idPelanggan]  
         df.reset_index(drop=True, inplace=False)  # Optional: perbarui kolom ID agar urut kembali
 
-        df['id'] = range(1, len(df) + 1)
+        # df['id'] = range(1, len(df) + 1)
         df.to_csv(FILE_PELANGGAN, index=False)  
         print("Pelanggan berhasil dihapus!")
     elif confirm == 'n':
         print("Penghapusan data dibatalkan. \nprogram akan berjalan 2 detik dari sekarang")
-        time.sleep(2)
         return hapusDataPelanggan()
     else:
         print("Masukkan huruf yang sesuai dengan pilihan. \nprogram akan berjalan 2 detik dari sekarang")
-        time.sleep(2)
         return hapusDataPelanggan()
 
 
@@ -542,7 +535,6 @@ def hapusDataPelanggan():
 
 # ============================= FITUR ADMIN 1 |AKU ADMIN DAN KAU ROOTS ===================
 def tambahPelanggan():
-
     while True:
         os.system('cls')    
         teks = """
@@ -613,7 +605,7 @@ def setHarga():
     if not df.empty:
         hargaTerakhir = df.iloc[-1]["harga/kg"] #mengambil nilai dari var df dengan atribut .iloc[] (yg bisa diakses dengan indeks atau nama kolom)  lalu -1 karna ingin mengambil nilai paling akhir yg ada di kolom p
         last_date = df.iloc[-1]["tglDibuat"]
-        print(f"\nHarga saat ini: Rp{float(hargaTerakhir):,}/kg (ditetapkan pada {last_date}") # format replace: ("yg akan diganti", "pengganti")
+        print(f"\nHarga saat ini: Rp {float(hargaTerakhir):,}/kg (ditetapkan pada {last_date}") # format replace: ("yg akan diganti", "pengganti")
     else:
         print("\n Belum ada harga jasa yang ditetapkan.")
 
@@ -629,6 +621,7 @@ def setHarga():
     # Input harga baru jika user memilih "y"
     try:
         hargaBaru = float(input("\nMasukkan harga baru per kg: "))
+        hargaBaru = f"Rp {hargaBaru}"
         if hargaBaru <= 0:
             print("Harga harus lebih dari 0!")
             input("Tekan Enter untuk kembali...")
@@ -640,7 +633,7 @@ def setHarga():
 
     # Simpan ke CSV
     dataBaru = {
-        "harga/kg": hargaBaru,
+        "harga/kg":  hargaBaru,
         "tglDibuat": datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     }
     df = pd.concat([df, pd.DataFrame([dataBaru])], ignore_index=True)
@@ -700,16 +693,17 @@ def laporanHarian():
             print('║' + "RIWAYAT HARIAN".center(48) + '║')
             print('╚' + '═'*48 + '╝ ') 
             print("Rincian Laporan Transaksi Hari Ini: ")
-            print(tabulate(df, headers='keys', tablefmt='fancy_grid', showindex=False))
 
-            jumlahTf= len(df['idPel'])
-            jumlahBobot= df['berat'].sum()
-            jumlahTotal = df['total'].sum()
+            filter = df[df['tanggal'] == inpTgl]
+            print(tabulate(filter, headers='keys', tablefmt='fancy_grid', showindex=False))
+
+            jumlahTf= len(filter['idPel'])
+            jumlahBobot= filter['berat'].sum()
 
             print(f"\n Tanggal {inpTgl}")
             print(f" Jumlah Transaksi: {jumlahTf}")
-            print(f" Total Berat: {jumlahBobot}")
-            print(f" Total Pendapatan: {jumlahTotal}")
+            print(f" Total Berat: {jumlahBobot} Kg")
+            print(f" Total Pendapatan: Rp {filter['total'].sum():,.0f}")
             input("\n Enter untuk kembali...")
             return
         except ValueError:
@@ -816,7 +810,7 @@ def laporan():
         print('╚' + '═'*48 + '╝')   
         print()
         print("1. Laporan Harian")
-        print("2. Laporan Bulanan")
+        print("2. Laporan Periode")
         print("3. Laporan Semua Transaksi")
         print("4. Statistik Keseluruhan")
         print("0. Kembali")
@@ -824,7 +818,7 @@ def laporan():
         choice = input("\nPilih menu: ")
         
         if choice == "1":
-            riwayatHarian()
+            laporanHarian()
         elif choice == "2":
             laporanPerdiode()
         elif choice == "3":
@@ -872,6 +866,7 @@ def ubahPasswordAdmin(): #pahami dan ubah syntax sepaham kmu"
         print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
         
         # Cari user
+        df['password'] = df['password'].astype(str)
         password = input("Masukkan password sebelumnya untuk konfirmasi: ").strip().lower()
         passwordCheck = df[df['password'] == password]
 
@@ -898,7 +893,7 @@ def ubahPasswordAdmin(): #pahami dan ubah syntax sepaham kmu"
         df.loc[df['password'] == password, 'password'] = passwordBaru
         df.to_csv(FILE_ADMIN, index=False)
         print(f"\npassword berhasil diubah menjadi '{passwordBaru}'!")
-        time.sleep(1.5)
+        input("\nTekan Enter untuk melanjutkan...")
         os.system('cls')
         return 
 
@@ -942,7 +937,7 @@ def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
     
     print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
     # Cari user
-    username = input("Masukkan username sebelumnya untuk konfirmasi: ").strip()
+    username = input("Masukkan username sebelumnya untuk konfirmasi: ").strip().lower()
     user = df[df['username'] == username] 
     if user.empty:
         print("Username tidak ditemukan!")
@@ -956,7 +951,7 @@ def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
         return
 
     # Input username baru
-    usernameBaru = input(f"Masukkan username baru (saat ini: {username}): ").strip()
+    usernameBaru = input(f"Masukkan username baru (saat ini: {username}): ").strip().lower()
     if not usernameBaru :
         print("Username baru tidak boleh kosong!")
         input("\nTekan Enter untuk melanjutkan...")
@@ -1123,7 +1118,7 @@ def transaksi():
         if harga:
             w = harga[-1]
             p = float(w[0])
-            print(f'\nharga jasa penggilingan saat ini {p}/kg')
+            print(f'\nharga jasa penggilingan saat ini {p:,.0f} Kg')
         
         # input gabah
         try:
@@ -1135,7 +1130,6 @@ def transaksi():
             input('Klik Enter untuk kembali')
             return
         x = gabah * p
-        print(x)
     
         tgl = datetime.now().strftime("%d-%m-%Y")
         id_last = 1
@@ -1195,7 +1189,7 @@ def cariPetani():
                 print(f"Terjadi kesalahan saat membaca data: {e}")
 
 
-        object = input("Cari berdasarkan nama: ").upper()
+        object = input("Cari berdasarkan id: ")
         if not object:
             print("Keyword tidak boleh kosong!")
             input("Tekan Enter untuk melanjutkan...")
@@ -1220,7 +1214,8 @@ def cariPetani():
             print('╔' + '═'*48 + '╗')
             print('║' + "CARI PETANI".center(48) + '║')
             print('╚' + '═'*48 + '╝') 
-            hasil = dfc[dfc['namaPetani'].str.contains(object, case=False)] #case=False membuat pencarian tidak sensitif huruf besar/kecil
+            # hasil = dfc[dfc['id'].str.contains(object)] #case=False membuat pencarian tidak sensitif huruf besar/kecil
+            hasil = dfc[dfc['id'].astype(str) == object] # aku ubah biar jadi str, klo int ga kedeteksi
             print(tabulate(hasil, headers='keys', tablefmt="fancy_grid", showindex=False))
 
 
@@ -1228,11 +1223,12 @@ def cariPetani():
             print("ERROR bagian pencrian data")
             return
         # .str.contains() adalah fungsi pencarian teks (substring match) pada kolom bertipe string.
-        if not dfc['namaPetani'].str.contains(object, case=False).any():
-            print("Nama yang kamu cari mungkin belum didaftarkan")
+        # if not dfc['namaPetani'].str.contains(object, case=False).any():
+        if hasil.empty:
+            print("id yang kamu cari mungkin belum didaftarkan")
             print("\nSilahkan daftar terlebih dahulu")
 
-        input("\nEnter untuk kembali")
+        input("\nEnter untuk kembali...")
         return
 
 # ==================================MENU FITUR OPERATOR - Transkasi | harian ====================================
@@ -1301,14 +1297,13 @@ def riwayatHarian():
 
 
         totalBerat = filter['berat'].sum()
-        totalBiaya = filter['total'].sum()
         print(tabulate(filter,headers='keys', tablefmt='fancy_grid', showindex=False))
 
         # tampilkan ringkasan
         print(f"\nTanggal {inpTanggal}")
-        print(f"Jumlah Transaksi {len(filter)}")
-        print(f"Total Berat {totalBerat}")
-        print(f"Total Pendapatan {totalBiaya}\n")
+        print(f"Jumlah Transaksi: {len(filter)}")
+        print(f"Total Berat: {totalBerat} Kg")
+        print(f"Total Pendapatan: Rp {filter['total'].sum():,.0f}\n")
 
 
 
@@ -1409,8 +1404,8 @@ def riwayatBasedPetani():
         print("Petani ditemukan".center(50))
         print(f"\nNama petani: {namaPetani}")
         print(f"Jumlah Transaksi: {len(filter)}")
-        print(f"Total Berat: {totalBerat}")
-        print(f"Total Pendapatan: {totalBiaya}\n")
+        print(f"Total Berat: {totalBerat} Kg")
+        print(f"Total Pendapatan: Rp {totalBiaya:,.0f}\n")
 
         input("\nKlik Enter untuk kembali...")
         return riwayatTransaksi()
@@ -1465,11 +1460,10 @@ def riwayatKeseluruhan():
             return
         id = len(dfc['id'])
         sumbobot = dfc['berat'].sum()
-        sumpendapatan = dfc['total'].sum()
 
         print(f"\nJumlah Transkasi: {id}  ")
-        print(f"Jumlah berat: {sumbobot}")
-        print(f"Jumlah Pendapatn: {sumpendapatan}")
+        print(f"Jumlah berat: {sumbobot} Kg")
+        print(f"Jumlah Pendapatn: Rp {dfc['total'].sum():,.0f}")
         input("\nTekan Enter untuk melanjutkan...")
         os.system('cls')
         return
@@ -1526,18 +1520,18 @@ def statistik():
         sumtransaski = len(df2)
         hargaNow = df2['harPerKg'].iloc[-1]
         sigmaBobot = sumbobot // id
-        sigmaPendapatan = sumpendapatan // id
+        sigmaPendapatan = sumpendapatan // id 
 
 
         print(f"\nTotal Pelanggan: {sumpelanggan} ")
         print(f"Total Transaksi: {sumtransaski}")
-        print(f"Total Berat Diling: {sumbobot}")
-        print(f"Total Pendapatan: {sumpendapatan}")
-        print(f"Harga Saat Ini: {hargaNow}")
-        print(f"Rata-rata Berat per Transaksi: {sigmaBobot}")
-        print(f"Rata-rata Pendapatan per Transaksi: {sigmaPendapatan}")
+        print(f"Total Berat Diling: {sumbobot} Kg")
+        print(f"Total Pendapatan: Rp {dfc['total'].sum():,.0f}")
+        print(f"Harga Saat Ini: Rp {hargaNow}")
+        print(f"Rata-rata Berat per Transaksi: {sigmaBobot} Kg")
+        print(f"Rata-rata Pendapatan per Transaksi: Rp {sigmaPendapatan:,.0f}")
         input("\nTekan Enter untuk melanjutkan...")
-        return riwayatTransaksi()
+        return
 
 # ==================================MENU FITUR OPERATOR - Tansaksi ====================================
 def riwayatTransaksi():
@@ -1610,12 +1604,15 @@ def ubahPWOperator():
             input("\nTekan Enter untuk melanjutkan...")
             return 
         
+        print(df['password'].dtype)
         print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
         
+        # ubah jadi str
+        df['password'] = df['password'].astype(str)
         # Cari user
-
         password = input("Masukkan password sebelumnya untuk konfirmasi: ").strip().lower()
         pwCheck= df[df['password'] == password]
+
 
         if pwCheck.empty:
             print("Username tidak ditemukan!")
@@ -1629,7 +1626,7 @@ def ubahPWOperator():
             return password
 
             # Input pw baru
-        passwordBaru = input(f"Masukkan password baru (saat ini: {password}): ").strip().lower()
+        passwordBaru = input(f"Masukkan password baru : ").strip().lower()
         if not passwordBaru:
             print("Password baru tidak boleh kosong!")
             input("\nTekan Enter untuk melanjutkan...")
@@ -1691,6 +1688,9 @@ def ubahUSEROperator(username):
         username = input("Masukkan username sebelumnya untuk konfirmasi: ").strip()
         userCheck = df[df['username']== username]
 
+        # ubah jadi str
+        df = df[df['username'] == username].astype(str)
+
 
         if userCheck.empty:
             print("Username tidak ditemukan!")
@@ -1727,11 +1727,44 @@ def ubahUSEROperator(username):
         df.to_csv( FILE_OPERATOR, index=False)
 
         print(f"\nUsername berhasil diubah menjadi '{usernameBaru}'!")
-        os.system('cls')
+        input("Tekan Enter untuk kembali...")
         return
 
+# ================================== KELOLA AKUN OPERATOR ===========================================
+def kelolaOperator(username):
+    while True:
+        os.system('cls')
+        teks = """
 
+        ░██████╗██╗██████╗░░█████╗░██████╗░██╗
+        ██╔════╝██║██╔══██╗██╔══██╗██╔══██╗██║
+        ╚█████╗░██║██████╔╝███████║██║░░██║██║
+        ░╚═══██╗██║██╔═══╝░██╔══██║██║░░██║██║
+        ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
+        ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
+        """
+        print(teks)
+        print('╔' + '═'*48 + '╗')
+        print('║' + "MENU ADMIN".center(48) + '║')
+        print('╚' + '═'*48 + '╝') 
 
+        print("[1]. Registrasi Akun Operator")
+        print("[2]. Ubah Password Operator")
+        print("[3]. Ubah Ussername Operator")
+        print("[0]. Kembali")
+        
+        choice = input("\nPilih menu: ")
+        if choice == '1':
+            regisOperator()
+        elif choice == '2':
+            ubahPWOperator()
+        elif choice == '3':
+            ubahUSEROperator(username)
+        elif choice == '0':
+            return
+        else:
+            print("Pilihan tidak valid!")
+            input("Tekan Enter untuk melanjutkan...")
 
 # ==================================MENU ADMIN===========================================
 def admin_menu(username):
@@ -1757,6 +1790,7 @@ def admin_menu(username):
         print("[3]. Lihat Laporan Penggilingan ")
         print("[4]. Ubah Password")
         print("[5]. Ubah Username")
+        print("[6]. Kelola Akun Operator ")
         print("[0]. Kembali ")
         
         choice = input("\nPilih menu: ")
@@ -1771,7 +1805,8 @@ def admin_menu(username):
             ubahPasswordAdmin()
         elif choice == "5":
             ubahUsername(username)
-            input()
+        elif choice == "6":
+            kelolaOperator(username)
         elif choice == "0":
             return main()
         else:
@@ -1814,20 +1849,20 @@ def operator_menu(username):
             cariPetani()
         elif choice == "4":
             riwayatTransaksi()
-        elif choice == "5":
-            new_password = ubahPWOperator()
-            if new_password:
-                # Logout after username change
-                print("\nAnda akan logout untuk login ulang.\nSilahkan Login ulang")
-                input("Tekan Enter untuk melanjutkan...")
-                return loginOperator()
-        elif choice == "6":
-            new_username = ubahUSEROperator(username)
-            if new_username:
-                # Logout after username change
-                print("\nAnda akan logout untuk login ulang.\nSilahkan Login ulang")
-                input("Tekan Enter untuk melanjutkan...")
-                return loginOperator()
+        # elif choice == "5":
+        #     new_password = ubahPWOperator()
+        #     if new_password:
+        #         # Logout after username change
+        #         print("\nAnda akan logout untuk login ulang.\nSilahkan Login ulang")
+        #         input("Tekan Enter untuk melanjutkan...")
+        #         return loginOperator()
+        # elif choice == "6":
+        #     new_username = ubahUSEROperator(username)
+        #     if new_username:
+        #         # Logout after username change
+        #         print("\nAnda akan logout untuk login ulang.\nSilahkan Login ulang")
+        #         input("Tekan Enter untuk melanjutkan...")
+        #         return loginOperator()
         elif choice == "0":
             return main()
         else:
@@ -1852,18 +1887,18 @@ def main():
         print('╔' + '═'*48 + '╗')
         print('║' + 'SiPadi'.center(48) + '║')
         print('╠' + '═'*48 + '╣')
-        print('║' + 'Penggilingan Padi Terpercaya di Indonesia'.center(48) + '║')
+        print('║' + 'Penggilingan Padi Terpercaya di Indonesia'.center(50) + '║')
         print('╚' + '═'*48 + '╝') 
-        print('\n [1]. Registrasi Sebagai Operator\n [2]. Masuk\n [0]. Keluar\n ')  
+        print('\n [1]. Masuk\n [0]. Keluar\n ')  
     
         piliihan = input("\nMenu yang dipilih: (1/2/0) ")
         while True:
 # ==============================================REGISTRASI======================================================
-            if piliihan == '1':
-                regisOperator()
+            # if piliihan == '1':
+            #     regisOperator()
                         
 # ==============================================LOGIN======================================================
-            elif piliihan == '2':
+            if piliihan == '1':
                 os.system('cls')
                 teks = """
 
@@ -1893,6 +1928,8 @@ def main():
                     input("Tekan Enter untuk melanjutkan...")
 
             elif piliihan == "0" :
+                print('\nTerima kasih telah menggunakan aplikasi kami :)')
+                time.sleep(3)
                 os.system('cls')
                 exit()
             else: 
@@ -1905,6 +1942,7 @@ def main():
                 print('\n1. Registrasi\n2. Login\n3. Keluar\n')
                 print('Input anda tidak sesuai pilihan!')
 
-            print('\nTerima kasih telah menggunakan program ini :)')
+            print('\nTerima kasih telah menggunakan aplikasi kami :)')
+            time.sleep(3)
     
 main()
