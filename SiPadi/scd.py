@@ -1382,7 +1382,7 @@ def riwayatTransaksi():
     while True:
     
         print("[1]. Riwayat transaksi harian")
-        print("[2]. Riwayat transaksi berdasarkan nama petani")
+        print("[2]. Riwayat transaksi berdasarkan id petani")
         print("[3]. Riwayat Keseleruhan")
         print("[0]. Kembali")
         
