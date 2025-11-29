@@ -528,11 +528,11 @@ def kelolaPelanggan():
         print('║' + "MANAJEMEN DATA PELANGGAN (PETANI)".center(48) + '║')
         print('╚' + '═'*48 + '╝') 
         print("[1]. Tambah Data Pelanggan")
-        print("[2]. Cari Pelanggan")
+        print("[2]. Daftar Akun Petani")
         print("[3]. Edit Pelanggan")
         print("[4]. Hapus Pelanggan")
         print("[0]. Kembali")
-        
+
         pilih = input("\nPilih menu: ")
         
         if pilih == "1":
@@ -1085,6 +1085,13 @@ def cariPetani():
             print("id yang kamu cari mungkin belum didaftarkan")
             print("\nSilahkan daftar terlebih dahulu")
 
+        gabah = dfc['berat'].sum()
+        cost = dfc['total'].sum()
+
+
+        print(f"\nBerat total gabah: {gabah:.0f} Kg")
+        print(f"Total Pendapatan: {cost:,.0f}")
+
         input("\nEnter untuk kembali...")
         return
 
@@ -1634,7 +1641,7 @@ def operator_menu(username):
         print(f"\nLogin berhasil sebagai OPERATOR! Selamat datang, {username}")
         print("[1]. Tambah Pelanggan (Petani)")
         print("[2]. Transaksi Penggilingan")
-        print("[3]. Akun Petani")
+        print("[3]. Daftar Akun Petani")
         print("[4]. Lihat Riwayat Transaksi")
         print("[0]. Kembali")
         
