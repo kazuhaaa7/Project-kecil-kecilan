@@ -1187,13 +1187,13 @@ def riwayatBasedPetani():
         if not inpPetani:
             print("id petani tidak boleh kosong")
             input("Enter untuk kembali...")
-            return
+            return riwayatTransaksi()
 
     # cek keberadaan file
         if not os.path.exists(FILE_TRANSAKSI) or not  os.path.exists(FILE_PELANGGAN) :
             print(" Belum ada data tranksaski.")
             input("\nTekan Enter untuk melanjutkan...")
-            return
+            return riwayatTransaksi()
         
 # baca file
         df1 = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
@@ -1203,7 +1203,7 @@ def riwayatBasedPetani():
         if df1.empty or df2.empty:
                 print(" Data pelanggan atau data transaksi masih kosong.")
                 input("\nTekan Enter untuk melanjutkan...")
-                return
+                return riwayatTransaksi()
         
         # gabungkan data
 
@@ -1214,7 +1214,7 @@ def riwayatBasedPetani():
         if dfc.empty:
             print(" Data pelanggan atau data transaksi masih kosong.")
             input("\nTekan Enter untuk melanjutkan...")
-            return
+            return riwayatTransaksi()
 
 # filter transaksi based tanggal yg iidinput
         filter = dfc[dfc['id'] == inpPetani]
@@ -1297,7 +1297,7 @@ def riwayatKeseluruhan():
         print(f"Jumlah Pendapatn: Rp {dfc['total'].sum():,.0f}")
         input("\nTekan Enter untuk melanjutkan...")
         os.system('cls')
-        return
+        return riwayatTransaksi()
 
 # ==================================MENU FITUR OPERATOR - Tansaksi statistik ====================================
 def statistik():
@@ -1361,7 +1361,7 @@ def statistik():
         print(f"Rata-rata Berat per Transaksi: {sigmaBobot} Kg")
         print(f"Rata-rata Pendapatan per Transaksi: Rp {sigmaPendapatan:,.0f}")
         input("\nTekan Enter untuk melanjutkan...")
-        return
+        return riwayatTransaksi()
 
 # ==================================MENU FITUR OPERATOR - Tansaksi ====================================
 def riwayatTransaksi():
@@ -1641,7 +1641,7 @@ def operator_menu(username):
         print(f"\nLogin berhasil sebagai OPERATOR! Selamat datang, {username}")
         print("[1]. Tambah Pelanggan (Petani)")
         print("[2]. Transaksi Penggilingan")
-        print("[3]. Daftar Akun Petani")
+        print("[3]. Daftar Akun Petani (Yang Sudah Transaksi)")
         print("[4]. Lihat Riwayat Transaksi")
         print("[0]. Kembali")
         
@@ -1722,13 +1722,14 @@ def main():
                 print('╠' + '═'*48 + '╣')
                 print('║' + 'Pilihan Terpercaya Petani Indonesia'.center(48) + '║')
                 print('╚' + '═'*48 + '╝') 
-
                 exit()
-            else: 
-                os.system('cls')
-                print('\nTerima kasih telah menggunakan aplikasi kami :)')
-                print('Input anda tidak sesuai pilihan!')
 
+            else: 
+                print('Input anda tidak sesuai pilihan!')
+                print('Terima kasih telah menggunakan aplikasi kami :)')
+                time.sleep(3)     
+                os.system('cls')
+                exit()          
             print('\nTerima kasih telah menggunakan aplikasi kami :)')
     
 main()
