@@ -145,7 +145,7 @@ def loginAdmin():
         if not os.path.exists(FILE_ADMIN):
             print("File data_admin.csv tidak ditemukan!")
             df = pd.DataFrame(columns=['Username', 'Password'])
-            df.to_csv('dt_operator.csv', index=False)
+            df.to_csv('data_admin.csv', index=False)
             print("Silakan buat akun admin terlebih dahulu.")
             input("Tekan Enter...")
             return
@@ -184,7 +184,7 @@ def loginOperator():
 
         # Cek apakah file admin ada
         if not os.path.exists(FILE_OPERATOR):
-            print("File data_oeprator.csv tidak ditemukan!")
+            print("File data_operator.csv tidak ditemukan!")
             df = pd.DataFrame(columns=['Username', 'Password'])
             df.to_csv(FILE_OPERATOR, index=False)
             print("Silakan buat akun admin terlebih dahulu.")

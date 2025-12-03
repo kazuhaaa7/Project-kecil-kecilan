@@ -236,10 +236,13 @@ def tambahDataPelanggan():
     print('╚' + '═'*48 + '╝') 
 
 
-# jika file blm ada, buat file baru
     if not os.path.exists(FILE_PELANGGAN):
-        print(" Belum ada data pelanggan.")
+        with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+            newFile = csv.writer(addfile)
+            newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+        print(" File untuk pelanggan baru saja dibuat.")
         input("\nTekan Enter untuk melanjutkan...")
+        return
 
     df = pd.read_csv(FILE_PELANGGAN, dtype={'noTelp': 'str'})
 
@@ -292,7 +295,10 @@ def lihatData():
     print('╚' + '═'*48 + '╝') 
 
     if not os.path.exists(FILE_PELANGGAN):
-        print(" Belum ada data pelanggan.")
+        with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+            newFile = csv.writer(addfile)
+            newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+            print(" File untuk pelanggan baru saja dibuat.")
         input("\nTekan Enter untuk melanjutkan...")
         return
 
@@ -330,7 +336,7 @@ def cariPelanggan():
 
     try:
         df = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
-   
+
         if df.empty:
             print(" Data pelanggan masih kosong.")
             input("\nTekan Enter untuk melanjutkan...")
@@ -377,7 +383,10 @@ def editDataPelanggan():
     print('╚' + '═'*48 + '╝') 
 
     if not os.path.exists(FILE_PELANGGAN):
-        print("Belum ada data pelanggan.")
+        with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+            newFile = csv.writer(addfile)
+            newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+            print(" File untuk pelanggan baru saja dibuat.")
         input("\nTekan Enter untuk melanjutkan...")
         return
     
@@ -466,7 +475,10 @@ def hapusDataPelanggan():
 
         # Pastikan file ada
     if not os.path.exists(FILE_PELANGGAN):
-        print("Belum ada data pelanggan.")
+        with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+            newFile = csv.writer(addfile)
+            newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+            print(" File untuk pelanggan baru saja dibuat.")
         input("\nTekan Enter untuk melanjutkan...")
         return
 
@@ -568,8 +580,10 @@ def setHarga():
     read = pd.read_csv(FILE_HARGA)
 
     if not os.path.exists(FILE_HARGA):
-        df = pd.DataFrame(columns=['harga/kg','tglDibuat'])
-        df.to_csv(FILE_HARGA, index=False)
+        with open(FILE_HARGA, 'w', newline='') as addfile:
+            newFile = csv.writer(addfile)
+            newFile.writwrow(['harga/kg', 'tglDibuat'])
+        print(" File untuk harga baru saja dibuat.")
 
     df = pd.read_csv(FILE_HARGA)
 
@@ -589,7 +603,7 @@ def setHarga():
 
     try:
         hargaBaru = float(input("\nMasukkan harga baru per kg: "))
-        tampilHarga = f"Rp {hargaBaru}"
+        tampilHarga = f"Rp {hargaBaru:,}"
         if hargaBaru <= 0:
             print("Harga harus lebih dari 0!")
             input("Tekan Enter untuk kembali...")
@@ -634,7 +648,14 @@ def laporanHarian():
             inpTgl = datetime.now().strftime("%d-%m-%Y")
 
         if not os.path.exists(FILE_TRANSAKSI) or not  os.path.exists(FILE_PELANGGAN) :
-            print(" Belum ada data tranksaski.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
+            with open(FILE_TRANSAKSI, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['idPel','tanggal','berat','harPerKg','total'])
+                print(" File untuk transaksi baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
@@ -693,13 +714,19 @@ def laporanPerdiode():
         print('╚' + '═'*48 + '╝')
         
         if not os.path.exists(FILE_PELANGGAN):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
 
         if not os.path.exists(FILE_TRANSAKSI):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_TRANSAKSI, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['idPel','tanggal','berat','harPerKg','total'])
+                print(" File untuk transaksi baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
@@ -737,14 +764,13 @@ def laporanPerdiode():
                 break
 
             except:
-                print("Format tangall salah, Gunakan format DD-MM-YYYY")
+                print("Format tanggal salah, Gunakan format DD-MM-YYYY")
         
         filtered = dfc[
             (dfc['tanggal']>= start_date) &
             (dfc['tanggal'] <= end_date)
         ] 
-        
-        #mengelompokkan data tanggal yg ada di var filtered dan (agg = > agregat) mencari totalnya 
+
         laporanPerdiode = filtered.groupby(filtered['tanggal']).agg({
             'total' : 'sum'
         }).reset_index()
@@ -753,7 +779,7 @@ def laporanPerdiode():
         print(f"Laporan Periode {namaPeriode}:")
         if len(laporanPerdiode) > 0:
             print(tabulate(laporanPerdiode, headers='keys', tablefmt="fancy_grid", showindex=False))
-            print(f"Total keuntungan: Rp {laporanPerdiode['total'].sum():,.0f}")
+            print(f"Total keuntungan: Rp {laporanPerdiode['total'].sum():,}")
             input("Tekan Enter untuk kembali...")
             return
 # ============================= FITUR ADMIN 3 | LAPORAN===================
@@ -881,23 +907,25 @@ def ubahUsername(username):
 
     # Pastikan file ada
     if not os.path.exists( FILE_ADMIN):
-        print("File data_admin.csv belum ditemukan!")
+        with open(FILE_ADMIN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['username','password'])
+                print(" File untuk transaksi baru saja dibuat.")
         input("\nTekan Enter untuk melanjutkan...")
         return 
 
-    # Baca file CSV
     df = pd.read_csv(FILE_ADMIN)
 
-    # Cek apakah kolom yang dibutuhkan ada
     if not {'username', 'password'}.issubset(df.columns):
         print("File CSV tidak memiliki kolom 'username' atau 'password'.")
         input("\nTekan Enter untuk melanjutkan...")
         return 
     
     print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
-    # Cari user
+
     username = input("Masukkan username sebelumnya untuk konfirmasi: ").strip().lower()
     user = df[df['username'] == username] 
+
     if user.empty:
         print("Username tidak ditemukan!")
         input("\nTekan Enter untuk melanjutkan...")
@@ -905,7 +933,7 @@ def ubahUsername(username):
 
     # Verifikasi password
     if username != user.iloc[0]['username']:
-        print("username salah!")
+        print("username yang anda masukkan salah!")
         input("\nTekan Enter untuk melanjutkan...")
         return
 
@@ -917,7 +945,7 @@ def ubahUsername(username):
         return
 
     if usernameBaru == username:
-        print("Username baru sama dengan yang lama.")
+        print("Usename yang anda masukkan sudah ada")
         input("\nTekan Enter untuk melanjutkan...")
         return 
 
@@ -958,8 +986,12 @@ def transaksi():
     while True:
 # bikin alert jika tidak ada file pelanggan
         if not os.path.exists(FILE_PELANGGAN):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
+            return
 
 
         df_pelanggan = pd.read_csv(FILE_PELANGGAN, dtype={'noTelp': 'str'})
@@ -1035,7 +1067,10 @@ def cariPetani():
     print('╚' + '═'*48 + '╝') 
     while True:
         if not os.path.exists(FILE_PELANGGAN):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
 
         try:
@@ -1089,8 +1124,8 @@ def cariPetani():
         cost = dfc['total'].sum()
 
 
-        print(f"\nBerat total gabah: {gabah:.0f} Kg")
-        print(f"Total Pendapatan: {cost:,.0f}")
+        print(f"\nBerat total gabah: {gabah:,} Kg")
+        print(f"Total Pendapatan: {cost:,}")
 
         input("\nEnter untuk kembali...")
         return
@@ -1118,7 +1153,10 @@ def riwayatHarian():
             inpTanggal = datetime.now().strftime("%d-%m-%Y")
 
         if not os.path.exists(FILE_TRANSAKSI) or not  os.path.exists(FILE_PELANGGAN) :
-            print(" Belum ada data tranksaski.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
@@ -1189,9 +1227,11 @@ def riwayatBasedPetani():
             input("Enter untuk kembali...")
             return riwayatTransaksi()
 
-    # cek keberadaan file
         if not os.path.exists(FILE_TRANSAKSI) or not  os.path.exists(FILE_PELANGGAN) :
-            print(" Belum ada data tranksaski.")
+            with open(FILE_TRANSAKSI, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['idPel','tanggal','berat','harPerKg','total'])
+                print(" File untuk transaksi baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return riwayatTransaksi()
         
@@ -1261,13 +1301,19 @@ def riwayatKeseluruhan():
         print('╚' + '═'*48 + '╝') 
 
         if not os.path.exists(FILE_PELANGGAN):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
 
         if not os.path.exists(FILE_TRANSAKSI):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_TRANSAKSI, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['idPel','tanggal','berat','harPerKg','total'])
+                print(" File untuk transaksi baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
@@ -1318,13 +1364,19 @@ def statistik():
         print('╚' + '═'*48 + '╝') 
 
         if not os.path.exists(FILE_PELANGGAN):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
 
         if not os.path.exists(FILE_TRANSAKSI):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_TRANSAKSI, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['idPel','tanggal','berat','harPerKg','total'])
+                print(" File untuk transaksi baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
