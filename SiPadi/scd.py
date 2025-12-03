@@ -11,7 +11,6 @@ FILE_HARGA = 'dt_harga.csv'
 FILE_PELANGGAN = 'data_pelanggan.csv'
 FILE_TRANSAKSI = 'data_trasaksi.csv'
 
-# sinkronkan kata katanya ketika error dari kedua fungsi login
 # ================================================ CEK DATA ======================================================
 def cekData():
     if not os.path.exists(FILE_ADMIN):  
@@ -89,7 +88,6 @@ def regisOperator():
         return 
 
 # ================================================ LOGIN ADMIN ======================================================
-# fungsi login
 def loginAdmin():
     while True:
         os.system('cls')
@@ -145,13 +143,10 @@ def loginAdmin():
         if not os.path.exists(FILE_ADMIN):
             print("File data_admin.csv tidak ditemukan!")
             df = pd.DataFrame(columns=['Username', 'Password'])
-            df.to_csv('data_admin.csv', index=False)
+            df.to_csv('dt_operator.csv', index=False)
             print("Silakan buat akun admin terlebih dahulu.")
             input("Tekan Enter...")
             return
-        # Cek username & password di CSV
-        # Dalam pandas, kamu tidak bisa memakai and, or, atau not langsung.
-        # Kamu harus pakai &, |, dan ~, serta setiap kondisi harus dalam tanda kurung ( ).
         min = admin[(admin['username'] == username) & (admin['password'] == password)].astype(str)
         if not min.empty:
             admin_menu(username)
@@ -182,9 +177,8 @@ def loginOperator():
 
         admin = pd.read_csv(FILE_OPERATOR)
 
-        # Cek apakah file admin ada
         if not os.path.exists(FILE_OPERATOR):
-            print("File data_operator.csv tidak ditemukan!")
+            print("File data_oeprator.csv tidak ditemukan!")
             df = pd.DataFrame(columns=['Username', 'Password'])
             df.to_csv(FILE_OPERATOR, index=False)
             print("Silakan buat akun admin terlebih dahulu.")
@@ -213,9 +207,6 @@ def loginOperator():
             else:
                 break
 
-        # Cek username & password di CSV
-        # Dalam pandas, kamu tidak bisa memakai and, or, atau not langsung.
-        # Kamu harus pakai &, |, dan ~, serta setiap kondisi harus dalam tanda kurung ( ).
         min = admin[(admin['username'] == username) & (admin['password'] == password)].astype(str)
         if not min.empty:
             operator_menu(username)
@@ -224,7 +215,6 @@ def loginOperator():
             print("\nTunggu sebentar, kmau akan diarahkan ke halaman login")
             time.sleep(2) #delay
             return
-
 
 # ==================================MENU FITUR ADMIN===========================================
 # ==================================MENU FITUR ADMIN - CRUD===========================================
@@ -246,14 +236,15 @@ def tambahDataPelanggan():
     print('╚' + '═'*48 + '╝') 
 
 
-# jika file blm ada, buat file baru
     if not os.path.exists(FILE_PELANGGAN):
-        print(" Belum ada data pelanggan.")
+        with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+            newFile = csv.writer(addfile)
+            newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+        print(" File untuk pelanggan baru saja dibuat.")
         input("\nTekan Enter untuk melanjutkan...")
+        return
 
     df = pd.read_csv(FILE_PELANGGAN, dtype={'noTelp': 'str'})
-    # writer.writerow(["ID", "Nama_Petani", "No_Telp", "Alamat"])  # <-- header kolom
-
 
     nama = input("Nama Petani: ").strip().upper()
     if not nama:
@@ -269,8 +260,6 @@ def tambahDataPelanggan():
         return
     alamat = input("Masukkan Alamat Lengkap : ").strip()
     
-# cari id cus
-    # if os.path.exists(data_customer):
     idPelanggan = 1
     try:
         with open(FILE_PELANGGAN, mode="r", encoding="utf-8") as file:
@@ -279,13 +268,8 @@ def tambahDataPelanggan():
             idTerakhir = int(read[-1][0]) #pahami syntax
             idPelanggan = idTerakhir + 1
     except:
-            pass #placeholder — yaitu perintah kosong yang tidak melakukan apa-apa.
-
-            # membuat file + menulis header
-    # df = pd.DataFrame(columns= ['id','namaPetani','noTelp', 'alamat'] )
-    # df.to_csv(FILE_PELANGGAN, index=False, encoding='utf-8')
-
-    # sv ke csv
+            pass 
+    
     with open(FILE_PELANGGAN, mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow([idPelanggan, nama, notelp, alamat])
@@ -293,7 +277,7 @@ def tambahDataPelanggan():
     print(f"\nPelanggan '{nama}' berhasil ditambahkan! (ID: {idPelanggan})")
     input("\nEnter untuk lanjut...")
 # =======================FITUR 2 -- FITUR ADMIN===============================\
-# ADA BUG YG PERLU DIFIX
+
 def lihatData():
     os.system('cls')
     teks = """
@@ -311,7 +295,10 @@ def lihatData():
     print('╚' + '═'*48 + '╝') 
 
     if not os.path.exists(FILE_PELANGGAN):
-        print(" Belum ada data pelanggan.")
+        with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+            newFile = csv.writer(addfile)
+            newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+            print(" File untuk pelanggan baru saja dibuat.")
         input("\nTekan Enter untuk melanjutkan...")
         return
 
@@ -347,10 +334,9 @@ def cariPelanggan():
     print('║' + "CARI PELANGGAN".center(48) + '║')
     print('╚' + '═'*48 + '╝') 
 
-# tampilkan tabel customer
     try:
         df = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
-   
+
         if df.empty:
             print(" Data pelanggan masih kosong.")
             input("\nTekan Enter untuk melanjutkan...")
@@ -366,11 +352,9 @@ def cariPelanggan():
         input("Tekan Enter untuk melanjutkan...")
         return
     
-    # lakukan pencarian
     df = df.astype(str)
     hasil = df[
-            df['namaPetani'].str.contains(keyword, case=False)] #.str.contains = untuk memeriksa apakah ada suatu str yg mengandungg kata tertentu
-# tampilkan hasil pencarian
+            df['namaPetani'].str.contains(keyword, case=False)] 
     if not hasil.empty:
         os.system('cls')
         print("\n Hasil pencarian ditemukan:\n")
@@ -398,9 +382,11 @@ def editDataPelanggan():
     print('║' + "EDIT DATA PELANGGAN".center(48) + '║')
     print('╚' + '═'*48 + '╝') 
 
-        # pastikan file ada
     if not os.path.exists(FILE_PELANGGAN):
-        print("Belum ada data pelanggan.")
+        with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+            newFile = csv.writer(addfile)
+            newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+            print(" File untuk pelanggan baru saja dibuat.")
         input("\nTekan Enter untuk melanjutkan...")
         return
     
@@ -414,7 +400,6 @@ def editDataPelanggan():
     
     print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
 
-# input ID pelanggan yang mau diedit
     try:
         idPelanggan = int(input("Masukkan ID Pelanggan yang ingin diedit: "))
     except ValueError:
@@ -423,17 +408,13 @@ def editDataPelanggan():
         return
 
 
-    # cek apakah ID ada
     if idPelanggan not in df['id'].values:
         print("Pelanggan dengan ID tersebut tidak ditemukan!")
         input("\nTekan Enter untuk melanjutkan...")
         return 
-    
 
-    # ambil data pelanggan yang sesuai
     dt_Customer = df[df['id'] == idPelanggan].iloc[0]
     
-
     print(f"\nData saat ini:")
     print(f"Nama: {dt_Customer['namaPetani']}")
     print(f"Telepon: {dt_Customer['noTelp']}")
@@ -494,7 +475,10 @@ def hapusDataPelanggan():
 
         # Pastikan file ada
     if not os.path.exists(FILE_PELANGGAN):
-        print("Belum ada data pelanggan.")
+        with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+            newFile = csv.writer(addfile)
+            newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+            print(" File untuk pelanggan baru saja dibuat.")
         input("\nTekan Enter untuk melanjutkan...")
         return
 
@@ -518,25 +502,25 @@ def hapusDataPelanggan():
         input("\nTekan Enter untuk melanjutkan...")
         return
 
-# konfirmasih penghapusan
     confirm = input("\nYakin ingin menghapus? (y/n): ").strip().lower()
     if confirm == 'y':
-        # Hapus data dan reset index agar tetap rapi
         df = df[df['id'].astype(str) != idPelanggan]  
-        df.reset_index(drop=True, inplace=False)  # Optional: perbarui kolom ID agar urut kembali
+        df.reset_index(drop=True, inplace=False) 
 
-        # df['id'] = range(1, len(df) + 1)
         df.to_csv(FILE_PELANGGAN, index=False)  
         print("Pelanggan berhasil dihapus!")
+        input("Tekan Enter untuk kembali...")
+        return kelolaPelanggan()
+
     elif confirm == 'n':
-        print("Penghapusan data dibatalkan. \nprogram akan berjalan 2 detik dari sekarang")
+        print("Penghapusan data dibatalkan.")
+        input("Tekan Enter untuk kembali...")
         return hapusDataPelanggan()
     else:
-        print("Masukkan huruf yang sesuai dengan pilihan. \nprogram akan berjalan 2 detik dari sekarang")
-        return hapusDataPelanggan()
+        print("Masukkan huruf yang sesuai dengan pilihan.")
+        input("Tekan Enter untuk kembali ke menu utama...")
+        return kelolaPelanggan()
 
-
-    input("Tekan Enter untuk melanjutkan...")
 
 # ============================= FITUR ADMIN 1 |AKU ADMIN DAN KAU ROOTS ===================
 def kelolaPelanggan():
@@ -556,18 +540,15 @@ def kelolaPelanggan():
         print('║' + "MANAJEMEN DATA PELANGGAN (PETANI)".center(48) + '║')
         print('╚' + '═'*48 + '╝') 
         print("[1]. Tambah Data Pelanggan")
-        print("[2]. Cari Pelanggan")
+        print("[2]. Daftar Akun Petani")
         print("[3]. Edit Pelanggan")
         print("[4]. Hapus Pelanggan")
-        print("[5]. ")
         print("[0]. Kembali")
-        
+
         pilih = input("\nPilih menu: ")
         
         if pilih == "1":
             tambahDataPelanggan()
-        # elif pilih == "2":
-            # lihatData()
         elif pilih == "2":
             cariPelanggan()
         elif pilih == "3":
@@ -598,35 +579,31 @@ def setHarga():
     
     read = pd.read_csv(FILE_HARGA)
 
-    # Pastikan file CSV ada
     if not os.path.exists(FILE_HARGA):
-        df = pd.DataFrame(columns=['harga/kg','tglDibuat'])
-        df.to_csv(FILE_HARGA, index=False)
+        with open(FILE_HARGA, 'w', newline='') as addfile:
+            newFile = csv.writer(addfile)
+            newFile.writwrow(['harga/kg', 'tglDibuat'])
+        print(" File untuk harga baru saja dibuat.")
 
-    # Baca data CSV
     df = pd.read_csv(FILE_HARGA)
 
-    # Tampilkan harga terakhir jika ada
     if not df.empty:
-        hargaTerakhir = df.iloc[-1]["harga/kg"] #mengambil nilai dari var df dengan atribut .iloc[] (yg bisa diakses dengan indeks atau nama kolom)  lalu -1 karna ingin mengambil nilai paling akhir yg ada di kolom p
+        hargaTerakhir = df.iloc[-1]["harga/kg"] 
         last_date = df.iloc[-1]["tglDibuat"]
-        print(f"\nHarga saat ini: Rp {float(hargaTerakhir):,}/kg (ditetapkan pada {last_date}") # format replace: ("yg akan diganti", "pengganti")
+        print(f"\nHarga saat ini: Rp {float(hargaTerakhir):,}/kg (ditetapkan pada {last_date}")
     else:
         print("\n Belum ada harga jasa yang ditetapkan.")
-
-    # Tanyakan apakah ingin update harga
     print()
     pilihan = input("Apakah Anda ingin mengubah harga jasa? (y/n): ").strip().lower()
 
     if pilihan != "y":
-        print("\nTidak ada perubahan harga. Kembali ke menu...")
+        print("\nTidak ada perubahan harga.")
         input("Tekan Enter untuk keluar...")
-        return  # langsung keluar dari fungsi
+        return 
 
-    # Input harga baru jika user memilih "y"
     try:
         hargaBaru = float(input("\nMasukkan harga baru per kg: "))
-        tampilHarga = f"Rp {hargaBaru}"
+        tampilHarga = f"Rp {hargaBaru:,}"
         if hargaBaru <= 0:
             print("Harga harus lebih dari 0!")
             input("Tekan Enter untuk kembali...")
@@ -636,7 +613,6 @@ def setHarga():
         input("Tekan Enter untuk kembali...")
         return
 
-    # Simpan ke CSV
     dataBaru = {
         "harga/kg":  hargaBaru,
         "tglDibuat": datetime.now().strftime("%d-%m-%Y")
@@ -649,7 +625,6 @@ def setHarga():
     input("\nTekan Enter untuk melanjutkan...")
 
 # ============================= FITUR ADMIN 1 | LAPORAN===================
-# laporan hari based tgl
 def laporanHarian():
     os.system('cls')
     teks = """
@@ -668,14 +643,19 @@ def laporanHarian():
     while True:
         df = pd.read_csv(FILE_TRANSAKSI) 
 
-        # input tanggal yg ingin ditentukkan
         inpTgl = input("Masukkan tanggal (DD-MM-YYY) atau Enter untuk hari ini: ").strip()
         if not inpTgl:
             inpTgl = datetime.now().strftime("%d-%m-%Y")
 
-    # cek keberadaan file
         if not os.path.exists(FILE_TRANSAKSI) or not  os.path.exists(FILE_PELANGGAN) :
-            print(" Belum ada data tranksaski.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
+            with open(FILE_TRANSAKSI, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['idPel','tanggal','berat','harPerKg','total'])
+                print(" File untuk transaksi baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
@@ -734,13 +714,19 @@ def laporanPerdiode():
         print('╚' + '═'*48 + '╝')
         
         if not os.path.exists(FILE_PELANGGAN):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
 
         if not os.path.exists(FILE_TRANSAKSI):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_TRANSAKSI, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['idPel','tanggal','berat','harPerKg','total'])
+                print(" File untuk transaksi baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
@@ -763,6 +749,11 @@ def laporanPerdiode():
                 start = input("Tanggal Awal: ")
                 end = input("Tanggal Akhir: ")
 
+                if not start and not end:
+                    print("Mohon diisi tanggalnya")
+                    input('Tekan Enter untuk kembali...')
+                    return
+
                 start_date = pd.to_datetime(start, format='%d-%m-%Y')
                 end_date = pd.to_datetime(end, format='%d-%m-%Y')
 
@@ -773,15 +764,13 @@ def laporanPerdiode():
                 break
 
             except:
-                print("Format tangall salah, Gunakan format DD-MM-YYYY")
+                print("Format tanggal salah, Gunakan format DD-MM-YYYY")
         
-        # memfilter tanggal yg diminta yg ada di var dfc
         filtered = dfc[
             (dfc['tanggal']>= start_date) &
             (dfc['tanggal'] <= end_date)
         ] 
-        
-        #mengelompokkan data tanggal yg ada di var filtered dan (agg = > agregat) mencari totalnya 
+
         laporanPerdiode = filtered.groupby(filtered['tanggal']).agg({
             'total' : 'sum'
         }).reset_index()
@@ -790,13 +779,9 @@ def laporanPerdiode():
         print(f"Laporan Periode {namaPeriode}:")
         if len(laporanPerdiode) > 0:
             print(tabulate(laporanPerdiode, headers='keys', tablefmt="fancy_grid", showindex=False))
-            print(f"Total keuntungan: Rp {laporanPerdiode['total'].sum():,.0f}")
+            print(f"Total keuntungan: Rp {laporanPerdiode['total'].sum():,}")
             input("Tekan Enter untuk kembali...")
             return
-#             : = Menandakan awal dari format specifier
-#             , = Pemisah ribuan(menambahkan koma sebagai pemisah ribuan, jutaan, dst.)
-#             .0 = tidak menampilkan desimal
-#             f = Tipe format: fixed-point number (angka desimal, tapi di sini dibulatkan karena.0 
 # ============================= FITUR ADMIN 3 | LAPORAN===================
 def laporan():
     while True:
@@ -837,7 +822,7 @@ def laporan():
             print("Pilihan tidak valid!")
 
 # ============================= FITUR ADMIN 3 | UBAH PW===================
-def ubahPasswordAdmin(): #pahami dan ubah syntax sepaham kmu"
+def ubahPasswordAdmin(): 
     os.system('cls')
     teks = """
 
@@ -859,11 +844,9 @@ def ubahPasswordAdmin(): #pahami dan ubah syntax sepaham kmu"
             print("File data_admin.csv belum ditemukan!")
             input("\nTekan Enter untuk melanjutkan...")
             return 
-
-        # Baca file CSV
+        
         df = pd.read_csv(FILE_ADMIN)
 
-        # Cek apakah kolom yang dibutuhkan ada
         if not {'username', 'password'}.issubset(df.columns):
             print("File CSV tidak memiliki kolom 'username' atau 'password'.")
             input("\nTekan Enter untuk melanjutkan...")
@@ -871,7 +854,6 @@ def ubahPasswordAdmin(): #pahami dan ubah syntax sepaham kmu"
         
         print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
         
-        # Cari user
         df['password'] = df['password'].astype(str)
         password = input("Masukkan password sebelumnya untuk konfirmasi: ").strip().lower()
         passwordCheck = df[df['password'] == password]
@@ -882,20 +864,17 @@ def ubahPasswordAdmin(): #pahami dan ubah syntax sepaham kmu"
             input("\nTekan Enter untuk melanjutkan...")
             return 
 
-        # # Verifikasi password
         if password != passwordCheck.iloc[0]['password']:
             print("Username salah!")
             input("\nTekan Enter untuk melanjutkan...")
             return 
     
-        # Input pw baru       
         passwordBaru = input("Masukkan password baru: ").strip().lower()     
         if not passwordBaru:
             print("Password baru tidak boleh kosong!")
             input("\nTekan Enter untuk melanjutkan...")
             return 
         
-        # Update password
         df.loc[df['password'] == password, 'password'] = passwordBaru
         df.to_csv(FILE_ADMIN, index=False)
         print(f"\npassword berhasil diubah menjadi '{passwordBaru}'!")
@@ -904,7 +883,7 @@ def ubahPasswordAdmin(): #pahami dan ubah syntax sepaham kmu"
         return 
 
 ## ==============================l====MENU FITUR ADMIN - ubah admin operator ====================================
-def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
+def ubahUsername(username):
 
     os.system('cls')
     teks = """
@@ -928,23 +907,25 @@ def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
 
     # Pastikan file ada
     if not os.path.exists( FILE_ADMIN):
-        print("File data_admin.csv belum ditemukan!")
+        with open(FILE_ADMIN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['username','password'])
+                print(" File untuk transaksi baru saja dibuat.")
         input("\nTekan Enter untuk melanjutkan...")
         return 
 
-    # Baca file CSV
     df = pd.read_csv(FILE_ADMIN)
 
-    # Cek apakah kolom yang dibutuhkan ada
     if not {'username', 'password'}.issubset(df.columns):
         print("File CSV tidak memiliki kolom 'username' atau 'password'.")
         input("\nTekan Enter untuk melanjutkan...")
         return 
     
     print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
-    # Cari user
+
     username = input("Masukkan username sebelumnya untuk konfirmasi: ").strip().lower()
     user = df[df['username'] == username] 
+
     if user.empty:
         print("Username tidak ditemukan!")
         input("\nTekan Enter untuk melanjutkan...")
@@ -952,7 +933,7 @@ def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
 
     # Verifikasi password
     if username != user.iloc[0]['username']:
-        print("username salah!")
+        print("username yang anda masukkan salah!")
         input("\nTekan Enter untuk melanjutkan...")
         return
 
@@ -964,7 +945,7 @@ def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
         return
 
     if usernameBaru == username:
-        print("Username baru sama dengan yang lama.")
+        print("Usename yang anda masukkan sudah ada")
         input("\nTekan Enter untuk melanjutkan...")
         return 
 
@@ -985,7 +966,6 @@ def ubahUsername(username): #pahami dan ubah syntax sepaham kmu
 
 # ==================================MENU FITUR OPERATOR===========================================
 # ==================================MENU FITUR OPERATOR - add cust ====================================
-# sudah ada
 
 # ==================================MENU FITUR OPERATOR - transaksi ====================================
 def transaksi():
@@ -1006,8 +986,12 @@ def transaksi():
     while True:
 # bikin alert jika tidak ada file pelanggan
         if not os.path.exists(FILE_PELANGGAN):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
+            return
 
 
         df_pelanggan = pd.read_csv(FILE_PELANGGAN, dtype={'noTelp': 'str'})
@@ -1020,36 +1004,12 @@ def transaksi():
             print("Keyword tidak boleh kosong!")
             input("Enter untuk lanjut...")
             return
-        
-        # tujuan diencoding untuk data menjadi byts dann menghindar error ketika value dari csv mengandung karakter unik
-#         with open(FILE_PELANGGAN, mode='r', encoding='utf-8') as file:
-#             baca = list(csv.reader(file))
-#             data = baca[1:]
-
-# # menambah data ke list
-#         pelanggan = []
-#         for i in data:
-#             if id in i[1]:
-#                 pelanggan.append(i)
-        
-#         # alert jika iterasi di atas gagal
-#         if not pelanggan:
-#             print("Petani tidak ditemukan!")
-#             input("Enter untuk lanjut...")
-#             return
-        
-        # if len(pelanggan) > 1:
-        #     print("\n ditemukan beberapa petani")
-        #     print(tabulate(pelanggan, headers='keys', showindex=False))
-
-            # mencari baris yang ID-nya sama dengan input user
         elif id in df_pelanggan['id'].astype(str).values:
             # .loc[ ..., 'namaPetani']
             # → ambil kolom namaPetani
             nama = df_pelanggan.loc[df_pelanggan['id'].astype(str) == id, 'namaPetani'].values[0] #→ ambil nilai pertama (karena hasil pencarian berupa array)
             print(f"Petani ditemukan, atas nama {nama}")
 
-# baca data harga
         if not os.path.exists(FILE_HARGA):
             print("Harga belum ditetapkan admin!")
             input("Enter untuk lanjut...")
@@ -1089,9 +1049,6 @@ def transaksi():
             sv.writerow([id, tgl ,gabah, p, x])
             input("\nTransaksi selesai, tekan Enter untuk kembali...")
             return
-        # kolom id tidak + 1
-        # input id bila diluar batas ga ada peringatan
-
 # ==================================MENU FITUR OPERATOR - cari petani ====================================
 def cariPetani():
     os.system('cls')
@@ -1109,14 +1066,13 @@ def cariPetani():
     print('║' + "CARI PETANI".center(48) + '║')
     print('╚' + '═'*48 + '╝') 
     while True:
-# bikin alert jika tidak ada file pelanggan
         if not os.path.exists(FILE_PELANGGAN):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
 
-
-        # df1 = df1['id'] .astype(str)
-        # df2 = df2['idPelanggan'].astype(str)
         try:
             df1 = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
             df2 = pd.read_csv(FILE_TRANSAKSI)
@@ -1136,12 +1092,8 @@ def cariPetani():
         if not object:
             print("Keyword tidak boleh kosong!")
             input("Tekan Enter untuk melanjutkan...")
-            return
-        # elif object not in dfc['namaPetani']:
-       
-            
+            return       
 
-        # lakukan pencarian
         try:
             os.system('cls')
             teks = """
@@ -1157,19 +1109,23 @@ def cariPetani():
             print('╔' + '═'*48 + '╗')
             print('║' + "CARI PETANI".center(48) + '║')
             print('╚' + '═'*48 + '╝') 
-            # hasil = dfc[dfc['id'].str.contains(object)] #case=False membuat pencarian tidak sensitif huruf besar/kecil
-            hasil = dfc[dfc['id'].astype(str) == object] # aku ubah biar jadi str, klo int ga kedeteksi
+            hasil = dfc[dfc['id'].astype(str) == object] 
             print(tabulate(hasil, headers='keys', tablefmt="fancy_grid", showindex=False))
 
 
         except ValueError:
             print("ERROR bagian pencrian data")
             return
-        # .str.contains() adalah fungsi pencarian teks (substring match) pada kolom bertipe string.
-        # if not dfc['namaPetani'].str.contains(object, case=False).any():
         if hasil.empty:
             print("id yang kamu cari mungkin belum didaftarkan")
             print("\nSilahkan daftar terlebih dahulu")
+
+        gabah = dfc['berat'].sum()
+        cost = dfc['total'].sum()
+
+
+        print(f"\nBerat total gabah: {gabah:,} Kg")
+        print(f"Total Pendapatan: {cost:,}")
 
         input("\nEnter untuk kembali...")
         return
@@ -1192,48 +1148,39 @@ def riwayatHarian():
     print('║' + "RIWAYAT HARIAN".center(48) + '║')
     print('╚' + '═'*48 + '╝') 
     while True:
-
-# input tanggal yg ingin ditentukkan
         inpTanggal = input("\nMasukkan tanggal (DD-MM-YYY) atau Enter untuk hari ini: ").strip()
         if not inpTanggal:
             inpTanggal = datetime.now().strftime("%d-%m-%Y")
 
-    # cek keberadaan file
         if not os.path.exists(FILE_TRANSAKSI) or not  os.path.exists(FILE_PELANGGAN) :
-            print(" Belum ada data tranksaski.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
-# baca file
         df1 = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
         df2 = pd.read_csv(FILE_TRANSAKSI)
 
-# memeriksa file
         if df1.empty or df2.empty:
                 print(" Data pelanggan atau data transaksi masih kosong.")
                 input("\nTekan Enter untuk melanjutkan...")
                 return
         
-        # gabungkan data
         dfc = pd.merge(df1, df2, left_on = 'id', right_on='idPel' ,how='inner')
         dfc.drop(columns=['idPel'], inplace=True)
 
-# apabila dfc ada value yg kosong
         if dfc.empty:
             print(" Data pelanggan atau data transaksi masih kosong.")
             input("\nTekan Enter untuk melanjutkan...")
             return
 
-# Pastikan kolom tanggal dalam format datetime
         dfc['tanggal'] = pd.to_datetime(dfc['tanggal'], dayfirst=True )
-        # mengubah value 'tanggal' menjaddi object pd datetime| dayfrist= dimulai dari hari
 
-# filter transaksi based tanggal yg gdiinout
         filter = dfc[dfc['tanggal'] == inpTanggal]
 
-    # Urutkan berdasarkan tanggal terbaru
         dfc = dfc.sort_values(by="tanggal", ascending=False)
-        # mengurutkan baris' dlm kolom based (by='tanggal)| asceding=false => mengurutkan data daru yg terbaru ke terlama, jika asceding=true => mengurutkan data terlama ke terbaru
         if dfc.empty:
             print("Belum ada transaksi atau belum ada pelanggan.")
             input("\nTekan Enter untuk melanjutkan...")
@@ -1242,7 +1189,6 @@ def riwayatHarian():
         totalBerat = filter['berat'].sum()
         print(tabulate(filter,headers='keys', tablefmt='fancy_grid', showindex=False))
 
-        # tampilkan ringkasan
         print(f"\nTanggal {inpTanggal}")
         print(f"Jumlah Transaksi: {len(filter)}")
         print(f"Total Berat: {totalBerat} Kg")
@@ -1270,25 +1216,24 @@ def riwayatBasedPetani():
     print('║' + "RIWAYAT BERDASARKAN ID PETANI".center(48) + '║')
     print('╚' + '═'*48 + '╝') 
     while True:
-# tampilkan data pelanggan
         df1 = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
         print("Daftar Petani:".center(50))
         print(tabulate(df1, headers='keys', tablefmt='fancy_grid', showindex=False))
 
 
-
-# input tanggal yg ingin ditentukkan
         inpPetani = input("Masukkan id Petani: ")
         if not inpPetani:
             print("id petani tidak boleh kosong")
             input("Enter untuk kembali...")
-            return
+            return riwayatTransaksi()
 
-    # cek keberadaan file
         if not os.path.exists(FILE_TRANSAKSI) or not  os.path.exists(FILE_PELANGGAN) :
-            print(" Belum ada data tranksaski.")
+            with open(FILE_TRANSAKSI, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['idPel','tanggal','berat','harPerKg','total'])
+                print(" File untuk transaksi baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
-            return
+            return riwayatTransaksi()
         
 # baca file
         df1 = pd.read_csv(FILE_PELANGGAN,dtype={'noTelp': 'str'})
@@ -1298,7 +1243,7 @@ def riwayatBasedPetani():
         if df1.empty or df2.empty:
                 print(" Data pelanggan atau data transaksi masih kosong.")
                 input("\nTekan Enter untuk melanjutkan...")
-                return
+                return riwayatTransaksi()
         
         # gabungkan data
 
@@ -1309,12 +1254,7 @@ def riwayatBasedPetani():
         if dfc.empty:
             print(" Data pelanggan atau data transaksi masih kosong.")
             input("\nTekan Enter untuk melanjutkan...")
-            return
-        
-
-# Pastikan kolom tanggal dalam format datetime
-        # dfc['tanggal'] = pd.to_datetime(dfc['namaPetani'], ) 
-        # mengubah value 'tanggal' menjaddi object pd datetime| dayfrist= dimulai dari hari
+            return riwayatTransaksi()
 
 # filter transaksi based tanggal yg iidinput
         filter = dfc[dfc['id'] == inpPetani]
@@ -1323,24 +1263,12 @@ def riwayatBasedPetani():
             print("Silahkan isi dengan id yang sudah melakukan transaksi")
             time.sleep(1.4)
             return riwayatBasedPetani()
-        # if not filter.empty:
-        #     namaPetani = filter['namaPetani'].iloc[0]
-        # filter = dfc[dfc['id'].str.contains(inpPetani)]
-
-    # Urutkan berdasarkan tanggal terbaru
-        # dfc = dfc.sort_values(by="tanggal", ascending=False)
-        # mengurutkan baris' dlm kolom based (by='tanggal)| asceding=false => mengurutkan data daru yg terbaru ke terlama, jika asceding=true => mengurutkan data terlama ke terbaru
-        # if dfc.empty:
-        #     print("Belum ada transaksi atau belum ada pelanggan.")
-        #     input("\nTekan Enter untuk melanjutkan...")
-
 
         totalBerat = filter['berat'].sum()
         totalBiaya = filter['total'].sum()
         namaPetani = filter['namaPetani'].iloc[0]
         namatgl = filter['tanggal'].unique()
 
-        # tampilkan ringkasan
         os.system('cls')
         print(tabulate(filter,headers='keys', tablefmt='fancy_grid', showindex=False))
 
@@ -1373,13 +1301,19 @@ def riwayatKeseluruhan():
         print('╚' + '═'*48 + '╝') 
 
         if not os.path.exists(FILE_PELANGGAN):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
 
         if not os.path.exists(FILE_TRANSAKSI):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_TRANSAKSI, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['idPel','tanggal','berat','harPerKg','total'])
+                print(" File untuk transaksi baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
@@ -1392,7 +1326,7 @@ def riwayatKeseluruhan():
                 print(" Data pelanggan masih kosong.")
                 input("\nTekan Enter untuk melanjutkan...")
                 return
-            # ubah type data
+
             dfc = pd.merge(df1, df2, left_on='id', right_on='idPel', how='inner')
             dfc.drop(columns=['idPel'], inplace=True)
             print(tabulate(dfc, headers='keys', tablefmt="fancy_grid", showindex=False))
@@ -1409,7 +1343,7 @@ def riwayatKeseluruhan():
         print(f"Jumlah Pendapatn: Rp {dfc['total'].sum():,.0f}")
         input("\nTekan Enter untuk melanjutkan...")
         os.system('cls')
-        return
+        return riwayatTransaksi()
 
 # ==================================MENU FITUR OPERATOR - Tansaksi statistik ====================================
 def statistik():
@@ -1430,13 +1364,19 @@ def statistik():
         print('╚' + '═'*48 + '╝') 
 
         if not os.path.exists(FILE_PELANGGAN):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_PELANGGAN, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['id', 'namaPetani','noTelp', 'alamat'])
+                print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
 
         if not os.path.exists(FILE_TRANSAKSI):
-            print(" Belum ada data pelanggan.")
+            with open(FILE_TRANSAKSI, 'w', newline='') as addfile:
+                newFile = csv.writer(addfile)
+                newFile.writwrow(['idPel','tanggal','berat','harPerKg','total'])
+                print(" File untuk transaksi baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
         
@@ -1451,7 +1391,6 @@ def statistik():
             # ubah type data
             dfc = pd.merge(df1, df2, left_on='id', right_on='idPel', how='inner')
             dfc.drop(columns=['idPel'], inplace=True)
-            # print(tabulate(dfc, headers='keys', tablefmt="fancy_grid", showindex=False))
 
         except Exception as e:
             print(f"Terjadi kesalahan saat membaca data: {e}")
@@ -1474,7 +1413,7 @@ def statistik():
         print(f"Rata-rata Berat per Transaksi: {sigmaBobot} Kg")
         print(f"Rata-rata Pendapatan per Transaksi: Rp {sigmaPendapatan:,.0f}")
         input("\nTekan Enter untuk melanjutkan...")
-        return
+        return riwayatTransaksi()
 
 # ==================================MENU FITUR OPERATOR - Tansaksi ====================================
 def riwayatTransaksi():
@@ -1495,7 +1434,7 @@ def riwayatTransaksi():
     while True:
     
         print("[1]. Riwayat transaksi harian")
-        print("[2]. Riwayat transaksi berdasarkan nama petani")
+        print("[2]. Riwayat transaksi berdasarkan id petani")
         print("[3]. Riwayat Keseleruhan")
         print("[0]. Kembali")
         
@@ -1532,16 +1471,13 @@ def ubahPWOperator():
     print('╚' + '═'*48 + '╝') 
 
     while True:
-        # Pastikan file ada
         if not os.path.exists(FILE_OPERATOR):
             print("File data_admin.csv belum ditemukan!")
             input("\nTekan Enter untuk melanjutkan...")
             return 
 
-        # Baca file CSV
         df = pd.read_csv(FILE_OPERATOR)
 
-        # Cek apakah kolom yang dibutuhkan ada
         if not {'username', 'password'}.issubset(df.columns):
             print("File CSV tidak memiliki kolom 'username' atau 'password'.")
             input("\nTekan Enter untuk melanjutkan...")
@@ -1562,13 +1498,11 @@ def ubahPWOperator():
             input("\nTekan Enter untuk melanjutkan...")
             return 
 
-        # Verifikasi password
         if password != pwCheck.iloc[0]['password']:
             print("Password salah!")
             input("\nTekan Enter untuk melanjutkan...")
             return password
 
-            # Input pw baru
         passwordBaru = input(f"Masukkan password baru : ").strip().lower()
         if not passwordBaru:
             print("Password baru tidak boleh kosong!")
@@ -1603,35 +1537,22 @@ def ubahUSEROperator(username):
     print('╚' + '═'*48 + '╝') 
 
     while True:
-        # Pastikan file ada
         if not os.path.exists( FILE_OPERATOR):
             print("File data_admin.csv belum ditemukan!")
             input("\nTekan Enter untuk melanjutkan...")
             return 
 
-        # Baca file CSV
         df = pd.read_csv(FILE_OPERATOR)
 
-        # Cek apakah kolom yang dibutuhkan ada
         if not {'username', 'password'}.issubset(df.columns):
             print("File CSV tidak memiliki kolom 'username' atau 'password'.")
             input("\nTekan Enter untuk melanjutkan...")
             return 
         
         print(tabulate(df, headers='keys', tablefmt="fancy_grid", showindex=False))
-        
-        # # Cari user
-        # user = df[df['username'] == username]
-        # if user.empty:
-        #     print("Username tidak ditemukan!")
-        #     input("\nTekan Enter untuk melanjutkan...")
-        #     return 
-
-        # Verifikasi password
         username = input("Masukkan username sebelumnya untuk konfirmasi: ").strip()
         userCheck = df[df['username']== username]
 
-        # ubah jadi str
         df = df[df['username'] == username].astype(str)
 
 
@@ -1640,14 +1561,12 @@ def ubahUSEROperator(username):
             input("\nTekan Enter untuk melanjutkan...")
             return 
 
-
-                # Verifikasi password
         if username != userCheck.iloc[0]['username']:
             print("username salah!")
             input("\nTekan Enter untuk melanjutkan...")
             return
 
-        # Input username baru
+
         usernameBaru = input(f"Masukkan username baru (saat ini: {username}): ").strip()
         if not usernameBaru :
             print("Username baru tidak boleh kosong!")
@@ -1659,13 +1578,11 @@ def ubahUSEROperator(username):
             input("\nTekan Enter untuk melanjutkan...")
             return 
         
-        # apabila len user < 3
         if len(usernameBaru) <3 :
             print("\nUsername minimmal 3 character")
             input("Enter untuk kembali ke menu")
             return
-
-        # Update username
+        
         df.loc[df['username'] == username, 'username'] = usernameBaru
         df.to_csv( FILE_OPERATOR, index=False)
 
@@ -1776,7 +1693,7 @@ def operator_menu(username):
         print(f"\nLogin berhasil sebagai OPERATOR! Selamat datang, {username}")
         print("[1]. Tambah Pelanggan (Petani)")
         print("[2]. Transaksi Penggilingan")
-        print("[3]. Akun Petani")
+        print("[3]. Daftar Akun Petani (Yang Sudah Transaksi)")
         print("[4]. Lihat Riwayat Transaksi")
         print("[0]. Kembali")
         
@@ -1790,20 +1707,6 @@ def operator_menu(username):
             cariPetani()
         elif choice == "4":
             riwayatTransaksi()
-        # elif choice == "5":
-        #     new_password = ubahPWOperator()
-        #     if new_password:
-        #         # Logout after username change
-        #         print("\nAnda akan logout untuk login ulang.\nSilahkan Login ulang")
-        #         input("Tekan Enter untuk melanjutkan...")
-        #         return loginOperator()
-        # elif choice == "6":
-        #     new_username = ubahUSEROperator(username)
-        #     if new_username:
-        #         # Logout after username change
-        #         print("\nAnda akan logout untuk login ulang.\nSilahkan Login ulang")
-        #         input("Tekan Enter untuk melanjutkan...")
-        #         return loginOperator()
         elif choice == "0":
             return main()
         else:
@@ -1834,10 +1737,6 @@ def main():
     
         piliihan = input("\nMenu yang dipilih: (1/0) ")
         while True:
-# ==============================================REGISTRASI======================================================
-            # if piliihan == '1':
-            #     regisOperator()
-                        
 # ==============================================LOGIN======================================================
             if piliihan == '1'  or piliihan == 'Masuk':
                 os.system('cls')
@@ -1870,21 +1769,19 @@ def main():
 
             elif piliihan == "0" or piliihan == 'Keluar':
                 os.system('cls')
-                print('\nTerima kasih telah menggunakan aplikasi kami :)')
-                time.sleep(3)
-                os.system('cls')
-                exit()
-            else: 
-                os.system('cls')
                 print('╔' + '═'*48 + '╗')
                 print('║' + 'Sipadi'.center(48) + '║')
                 print('╠' + '═'*48 + '╣')
                 print('║' + 'Pilihan Terpercaya Petani Indonesia'.center(48) + '║')
                 print('╚' + '═'*48 + '╝') 
-                print('\n1. Registrasi\n2. Login\n3. Keluar\n')
-                print('Input anda tidak sesuai pilihan!')
+                exit()
 
+            else: 
+                print('Input anda tidak sesuai pilihan!')
+                print('Terima kasih telah menggunakan aplikasi kami :)')
+                time.sleep(3)     
+                os.system('cls')
+                exit()          
             print('\nTerima kasih telah menggunakan aplikasi kami :)')
-            time.sleep(3)
     
 main()

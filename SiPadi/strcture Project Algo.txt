@@ -1,0 +1,123 @@
+Project Algo:
+1. mau dibawak ke produk web
+2. FOKUS PEMBUATAN PROGRAM PYTHON DULU
+
+pr:
+PLOTING
+: PERCANTEEK KATA KATANYA
+1. blm nemu topik: done
+1.1 sumber:
+- https://sipora.polije.ac.id/24371/
+- file:///C:/Users/ADVAN/Downloads/1734-Article%20Text-2686-1-10-20190715.pdf
+
+why encoding= 'utf8':
+Kode 'utf-8' dalam konteks pengkodean karakter menunjukkan bahwa file atau teks yang disimpan menggunakan pengkodean ini menggunakan 1-4 byte untuk mewakili setiap karakter. Ini memungkinkan untuk menampilkan karakter dari berbagai bahasa dan simbol, termasuk huruf Latin, aksen, simbol teknis, dan emoji. Pengkodean ini juga memastikan sinkronisasi dan validasi mandiri, sehingga memudahkan deteksi kesalahan. UTF-8 adalah standar yang paling tersebar luas di web dan dasar komunikasi digital, dan digunakan dalam berbagai aplikasi, termasuk sistem operasi, bahasa pemrograman, API, dan aplikasi perangkat lunak.
+
+2. fiturnya apa saja:
+PROBLEM - DATA ADMIN DAN OPERATOR MASI HBLM TERSINKRON
+home page:done
+register
+login
+back
+- as admin:
+1. Manajemen Data Pelanggan (Petani)
+-6/6
+1. Tambah Pelanggan: done
+2. Lihat Semua Pelanggan: done
+3. Cari Pelanggan: done
+4. Edit identitas Pelanggan: done
+5. Hapus Pelanggan: done
+0. Kembali: done
+
+2. Atur Harga Jasa per kg: -kasih plihan, apakah ada perebaruan harga barang atau tida.RUNG MARI(PELAJARI SYNTAXNYA)
+3. Lihat Laporan Penggilingan
+- 5/5
+1. Laporan Harian :done(PELAJARI SYNTAXNYA)
+2. Laporan Bulanan :done(PELAJARI SYNTAXNYA)
+3. Laporan Semua Transaksi :done(PELAJARI SYNTAXNYA)
+4. Statistik Keseluruhan :done(PELAJARI SYNTAXNYA)
+0. Kembali
+
+4. Ubah Password  : done(PELAJARI SYNTAXNYA)
+5. Ubah Username : done(PELAJARI SYNTAXNYA)
+0. Logout
+
+- as operator:
+1. Input Transaksi Penggilingan :done(PELAJARI SYNTAXNYA)
+masih rancu untuk kegunaannya, di bagian transaksi ganti kalimat tanya waktu cari nm petani
+2. Cari Petani :done(PELAJARI SYNTAXNYA)
+3. Lihat Riwayat Transaksi
+-
+1. Riwayat Transaksi Hari Ini
+2. Riwayat Transaksi Petani
+3. Riwayat Semua Transaksi
+0. Kembali
+
+4. Ubah Password | DONEE.
+5. Ubah Username | DONEE.
+0. Logout
+
+
+kejelasan:
+fitur operator, input tani?
+.strip() => menghapus spasi depan dan belakang dri inputan
+penggunaan loc => berdasrakan label atau nama kolom
+penggunaan iloc => berdasarkan index
+
+
+fitur tambah data milik admin hapus saja, tapi ngga jangan yang fitur crud lainnnya -- fitur ADMIN
+
+data passing antar fungsi, misal aku punya fungsi yang tak haruskan mencatat usernya ketika login nah usernya itu akan otomastis ke kekirim ketika fungsi dipanggil dan sesuai dengan usernya
+
+Parameter operator hanya “membawa” informasi username dari menu login ke fungsi transaksi.
+Tanpa parameter ini, kolom “AS” (operator yang mencatat transaksi) bakal kosong atau error.
+Konsepnya disebut data passing antar fungsi — dari fungsi operator_menu() → input_transaction().
+
+
+OPERATOR => fokus ke operasi harian
+ADMIN =>  MENGELOLA USER, AKSES, PEMELIHARAAN SISTEM
+
+NOTELP => FLOAT UBAH KE STR
+login- adm dan op [acc]
+admin:
+1. Manajemen Data Pelanggan (Petani)
+ 	1.Tambah Data Pelanggan[done]
+ 	2. Lihat Semua Pelanggan[done]
+ 	3.Cari Pelanggan[done]
+ 	4.Edit Pelanggan[done]
+ 	5.Hapus Pelanggan[done]
+ 	0.[acc]
+2.Atur Harga Jasa per kg[acc]
+3.Lihat Laporan Penggilingan
+ 	1. report transaksi harian | notelp masih float
+ 	2. Laporan Bulanan
+ 	3. Laporan Semua Transaksi
+ 	4. Statistik Keseluruhan
+4.ubah pw[acc]
+5.ubah user[acc]
+0. [acc]
+
+operator:
+1.tambah pelanggan[done]
+2. transaksi[done]
+3.cari petani[done]
+4.Lihat Riwayat Transaksi
+ 	1. riwayat transaksi hari ini [done]
+ 	2. riwayat transaksi based name petani [done]
+ 	3. riwayat semua transaksi [done]
+5.ubah pw[done]
+6.ubah user[done]
+0.[done]
+
+TASK:
+1. ubah data transaksi menjadi Rp. & ubah format ribuan, ratusan dkk
+2. crosscek program
+3. fix ubah pw dan user di admin [done]
+4. pw regis op bisa kosong [done]
+5. lokasi sipadi ga sinkron
+
+quest:[done]
+1. better sistem loggin dipisah, as admin or as op, atau dikasi role?
+2. untuk nomor telp bagian file pelanggan better diubah jdi int or tetap str?
+3. fitur penambahan pelanggan masih memakai str, acc ga? [-] gampang di manipulasi
+4. fitur admin -> laporan penggilingan: laporan bulanan, smua transaksi => biingung harus diisi apa, hari ini=> masih kedeteksi terakhir transaksi bukan sesuai hari 
