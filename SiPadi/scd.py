@@ -572,6 +572,7 @@ def setHarga():
     ██████╔╝██║██║░░░░░██║░░██║██████╔╝██║
     ╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═════╝░╚═╝
     """
+
     print(teks)
     print('╔' + '═'*48 + '╗')
     print('║' + "ATUR HARGA JASA PER KG)".center(48) + '║')
@@ -658,7 +659,7 @@ def laporanHarian():
                 print(" File untuk transaksi baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
-        
+
 
         if df.empty:
             print(" Data transaksi masih kosong.")
@@ -720,7 +721,7 @@ def laporanPerdiode():
                 print(" File untuk pelanggan baru saja dibuat.")
             input("\nTekan Enter untuk melanjutkan...")
             return
-        
+
 
         if not os.path.exists(FILE_TRANSAKSI):
             with open(FILE_TRANSAKSI, 'w', newline='') as addfile:
